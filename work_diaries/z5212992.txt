@@ -3,4 +3,4 @@ Set up Jira and discussed with everyone what project to do.
 
 
 Week 2
-Set up GitHub classroom and discussed which parts of the project to allocate to each team member and got started on the project proposal.
+In last week, I set up our project’s programing environment, including Jira, discussed our project topics with my teammates and we decided to do project 4(Task Manager System). I plan to finish the background of our project proposal and half of  the UI design by next week.
