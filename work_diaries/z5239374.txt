@@ -11,4 +11,6 @@ One of our team members dropped the course, we are a ground of 4 now.
 we had a meeting about the proposal, assigned jobs to everyone, I was mainly responsible for the system architechture.
 
 Week 3
-A new member joined our team, but he seems to have some troubles getting in. I worked with other teammates together on users stories and system architecture for our proposal. I also installed a virtually machine, and tested our only frontend in the new environment, it works fine. We will start to work on the actual project soon.
+A new member joined our team, but he seems to have some troubles getting in. I worked with other teammates together on users stories and system 
+architecture for our proposal. I also installed a virtually machine, and tested our only frontend in the new environment, it works fine. We will start to 
+work on the actual project soon.
