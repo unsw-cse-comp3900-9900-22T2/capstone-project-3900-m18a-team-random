@@ -3,7 +3,11 @@ Set up Jira and discussed with everyone what project to do.
 
 
 Week 2
-In last week, I set up our project’s programing environment, including Jira, discussed our project topics with my teammates and we decided to do project 4(Task Manager System). I plan to finish the background of our project proposal and half of the UI design by next week.
+In last week, I set up our project’s programing environment,
+discussed our project topics with my teammates and we decided to do project 4(Task Manager System), 
+plan to finish the background of our project proposal, user stories, product backlog,UI design and system archiectual by next week.
 
 Week 3
-I finish the user interface and flow diagram in proposal, and create 7 user stories in Jira.
+In last week, I finish the user interface and flow diagram in proposal, and create 7 user stories in Jira(the proposal is finished and submitted),
+we plan to finish the spring 1 by next week,
+I need to finish the backend foundation implement with Justin.
