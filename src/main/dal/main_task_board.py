@@ -1,7 +1,8 @@
-import DBSession;
-from sqlalchemy import Column, String, DateTime, create_engine
+import DBSession
+from sqlalchemy import Column, String, DateTime, create_engine, null
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+
 
 # create base object:
 Base = declarative_base()
@@ -33,6 +34,12 @@ def show_query_result(rest):
 rest = session.query(MainTaskBoard).all()
 show_query_result(rest)
 '''
+# search task
+def search_task(task_name):
+    task_result = session.query(MainTaskBoard).filter_by(taskname = task_name).first()
+    if (None != task_result): 
+        return True
+    return False
 
 # add task
 def add_task(task_name, person_name, task_status, task_priority, task_due_date):
@@ -77,5 +84,3 @@ def update_task_name(task_name_old, task_name_new):
     for task in task_result:
         task.task_name_old = task_name_new
         session.commit()
-
-
