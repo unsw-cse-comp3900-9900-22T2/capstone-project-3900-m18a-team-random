@@ -16,3 +16,4 @@ def delete_task(task_name):
         return False
     main_task_board.delete_task(task_name)
     return True
+add_task('schoo', 'lee', 'done', 'high', '2020-1-20')

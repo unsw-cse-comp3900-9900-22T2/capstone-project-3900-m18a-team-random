@@ -22,3 +22,4 @@ def add_user(person_name, pass_word):
     newuser = UserProfile(username = person_name, password = pass_word)
     session.add(newuser)
     session.commit()
+add_user('lee', '1234')

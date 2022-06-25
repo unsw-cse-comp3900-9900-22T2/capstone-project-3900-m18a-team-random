@@ -59,7 +59,7 @@ def update_executor(task_name, person_name):
     task_result = session.query(MainTaskBoard).filter_by(taskname = task_name).first()
     task_result.person = person_name
     session.commit()
-
+                            
 # update task's status by task_name
 def update_task_status(task_name, task_status):
     task_result = session.query(MainTaskBoard).filter_by(taskname = task_name).first()
@@ -84,3 +84,4 @@ def update_task_name(task_name_old, task_name_new):
     for task in task_result:
         task.task_name_old = task_name_new
         session.commit()
+# add_task('school', 'lee', 'done', 'high', '2020-1-20')
