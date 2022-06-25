@@ -14,3 +14,8 @@ Week 3
 A new member joined our team, but he seems to have some troubles getting in. I worked with other teammates together on users stories and system 
 architecture for our proposal. I also installed a virtually machine, and tested our only frontend in the new environment, it works fine. We will start to 
 work on the actual project soon.
+
+week 4
+Our new member seems to be dropping out. We've managed to finish our proposal, as the only frontend developer in the team, I worked on the fronted with full speed,
+the UI looks ugly, but I only want to get the frontend connected with the backend as soon as possible so we can test the whole system and make sure the core functionalities
+are working. My assigned user stories can't be finished until our server is also working.
