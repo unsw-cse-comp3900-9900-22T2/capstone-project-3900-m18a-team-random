@@ -54,11 +54,15 @@ def delete_task(task_name):
         session.delete(task)
         session.commit()
 
-# update task's executor by task_name
 def update_executor(task_name, person_name):
+    """
+    update task's status by task_name, this function returns the old executor
+    """
     task_result = session.query(MainTaskBoard).filter_by(taskname = task_name).first()
+    old_executor = task_result.person 
     task_result.person = person_name
     session.commit()
+    return old_executor
 
 
 def update_task_status(task_name, task_status):
@@ -83,16 +87,23 @@ def update_task_priority(task_name, task_priority):
     return old_priority
     
 
-# update task's due date by task_name
 def update_task_due_date(task_name, task_due_date):
+    """
+    update task's due_date by task_name, this function returns the old due date
+    """
     task_result = session.query(MainTaskBoard).filter_by(taskname = task_name).first()
+    old_due_date = task_result.due_date
     task_result.due_date= task_due_date
     session.commit()
+    return old_due_date
 
-# update task name
 def update_task_name(task_name_old, task_name_new):
-    task_result = session.query(MainTaskBoard).filter_by(taskname = task_name_old).all()
-    for task in task_result:
-        task.taskname = task_name_new
-        session.commit()
+    """
+    update task's name by task_name, this function returns the old task name
+    """
+    task_result = session.query(MainTaskBoard).filter_by(taskname = task_name_old).first()
+    old_task_name = task_result.taskname
+    task_result.taskname = task_name_new
+    session.commit()
+    return old_task_name
 
