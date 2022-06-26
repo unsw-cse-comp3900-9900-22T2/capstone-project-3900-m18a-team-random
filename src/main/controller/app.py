@@ -112,16 +112,14 @@ def user_login():
 @app.route('/user-logout',methods=['POST'])
 def user_logout():
     data = request.get_json()
-    user_token = data['token']
+    user_token = int(data['token'])
 
-    for value in used_token_list:
-        print("used_token_list:" + str(value))
-    if (token not in used_token_list):
-        return json.dumps('token invalid')
-    else:
+    if (user_token in used_token_list):
         used_token_list.remove(int(user_token))
         not_used_token_list.append(user_token)
-        return json.dumps('user log out')
+        return json.dumps('user logs out')
+    else:
+        return json.dumps('token invalid')
 
 
 if __name__ == '__main__':
