@@ -1,5 +1,6 @@
 import sys
-
+from turtle import update
+from error import InputError, AccessError
 from sqlalchemy import false, true
 sys.path.append('src/main/dal')
 
@@ -21,8 +22,6 @@ def delete_task(task_name):
 
 def update_task_name(task_name_old, task_name_new):
     if main_task_board.search_task(task_name_old) is False:
-        print("The task does not exist, please enter a valid task name you are trying to replace the name with")
-        return False
+        raise InputError("The task does not exist, please enter a valid task name you are trying to replace the name with")
     main_task_board.update_task_name(task_name_old, task_name_new)
-    print('new taskname is updated successfully')
-    return True 
+    return {"task_name_old":task_name_old, "task_name_new": task_name_new}
