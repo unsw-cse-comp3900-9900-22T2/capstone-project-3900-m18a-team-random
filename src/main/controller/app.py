@@ -58,7 +58,7 @@ def delete_task():
     
     return json.dumps('Success to delete task in task management')
 
-@app.route('/user-register',methods=['POST'])
+@app.route('/register',methods=['POST'])
 def user_register():
     data = request.get_json()
     user_email = data['email']
@@ -71,7 +71,7 @@ def user_register():
     return json.dumps('successful registe')
 
 # user login shoule be update later
-@app.route('/user-login',methods=['POST'])
+@app.route('/login',methods=['POST'])
 def user_login():
     data = request.get_json()
     user_email = data['email']

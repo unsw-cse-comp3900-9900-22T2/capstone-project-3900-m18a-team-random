@@ -22,6 +22,7 @@ def user_log_in(email, password):
    
     else:
         return "success log in"
+user_register('42@qq.com', 'kai', 'pwd')
 
     
 
