@@ -60,17 +60,28 @@ def update_executor(task_name, person_name):
     task_result.person = person_name
     session.commit()
 
-# update task's status by task_name
+
 def update_task_status(task_name, task_status):
+    """
+    update task's status by task_name, this function returns the old status
+    """
     task_result = session.query(MainTaskBoard).filter_by(taskname = task_name).first()
+    old_status = task_result.status
     task_result.status = task_status
     session.commit()
+    return old_status
 
-# update task's priority by task_name
+
 def update_task_priority(task_name, task_priority):
+    """
+    update task's priority by task_name, this function returns the old priority
+    """
     task_result = session.query(MainTaskBoard).filter_by(taskname = task_name).first()
+    old_priority = task_result.priority 
     task_result.priority = task_priority
     session.commit()
+    return old_priority
+    
 
 # update task's due date by task_name
 def update_task_due_date(task_name, task_due_date):
