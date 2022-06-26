@@ -24,4 +24,5 @@ def update_task_name(task_name_old, task_name_new):
         print("The task does not exist, please enter a valid task name you are trying to replace the name with")
         return False
     main_task_board.update_task_name(task_name_old, task_name_new)
-    return True
+    print('new taskname is updated successfully')
+    return True 
