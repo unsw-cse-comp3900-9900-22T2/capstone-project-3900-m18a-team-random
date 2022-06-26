@@ -6,6 +6,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import PopupButton from '../popupButton';
+import TaskDetailPanel from './taskDetailPanel';
 
 
 function orgnizeData(taskTitle, assignee, status, priority, deadline) {
@@ -37,13 +39,15 @@ const TaskTable = () => {
                         key={row.taskTitle}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                        <TableCell component="th" scope="row">
-                            {row.taskTitle}
-                        </TableCell>
-                        <TableCell>{row.assignee}</TableCell>
-                        <TableCell>{row.status}</TableCell>
-                        <TableCell>{row.priority}</TableCell>
-                        <TableCell>{row.deadline}</TableCell>
+                            <TableCell component="th" scope="row">
+                                <PopupButton buttonTitle={row.taskTitle} title={row.taskTitle}>
+                                    <TaskDetailPanel/>
+                                </PopupButton>
+                            </TableCell>
+                            <TableCell>{row.assignee}</TableCell>
+                            <TableCell>{row.status}</TableCell>
+                            <TableCell>{row.priority}</TableCell>
+                            <TableCell>{row.deadline}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
