@@ -10,22 +10,12 @@ import json
 import random
 import main_task_board_service
 import user_profile_service
+import tokens
+
 app = Flask(__name__)
 
 # generated token---should be updated later
-not_used_token_list = []
-used_token_list = []
-c = 0
-while(c < 1000):
-    found = False
-    while(not found):
-        token = random.randint(1000,9000)
-        if token in not_used_token_list:
-            found = False
-        else:   
-            not_used_token_list.append(token)
-            found = True
-    c = c + 1
+
 
 @app.route('/add-task',methods=['POST'])
 def add_task():
@@ -65,12 +55,15 @@ def user_register():
     user_name = data['name']
     user_password = data['password']
 
-    result = user_profile_service.user_register(email=user_email,username=user_name,password=user_password)
-    if (result == "email already taken"): return json.dumps('email already taken')
+    registration_passed = user_profile_service.user_register(email=user_email,username=user_name,password=user_password)
+    if registration_passed:
+        token = tokens.generate_token(user_email)
+        tokens.active_tokens.append(token)
+        return json.dumps(token)
+    else:
+        return json.dumps('Registration Unsuccessful - an account linked to this email address already exists.')
 
-    return json.dumps('successful registe')
-
-# user login shoule be update later
+# Login a user, given their email and password.
 @app.route('/user-login',methods=['POST'])
 def user_login():
     data = request.get_json()
@@ -78,33 +71,24 @@ def user_login():
     user_password = data['password']
 
     result = user_profile_service.user_log_in(user_email,user_password)
-    if (result == 'The user has not registed'): return json.dumps('The user has not registed')
-
-    elif (result == 'The password is incorrect'): return json.dumps('The password is incorrect')
-
+    if 'Error' in result:
+        return json.dumps(result)
     else:
-        if (len(not_used_token_list)<1): return json.dumps('The service is full')
+        token = tokens.generate_token(user_email)
+        tokens.active_tokens.append(token)
+        return json.dumps(token)
 
-        else:
-            token = not_used_token_list[0]
-            used_token_list.append(token)
-            not_used_token_list.remove(token)
-            return json.dumps(token)
-
-# user log out shoule be update later
+# Logout a user.
 @app.route('/user-logout',methods=['POST'])
 def user_logout():
     data = request.get_json()
-    user_token = data['token']
-
-    for value in used_token_list:
-        print("used_token_list:" + str(value))
-    if (token not in used_token_list):
-        return json.dumps('token invalid')
+    token = data['token']
+    
+    if token in tokens.active_tokens:
+        tokens.active_tokens.remove(token)
+        return json.dumps('User logged out successfully.')
     else:
-        used_token_list.remove(int(user_token))
-        not_used_token_list.append(user_token)
-        return json.dumps('user log out')
+        return json.dumps('Error - Invalid Token.')
 
 
 if __name__ == '__main__':

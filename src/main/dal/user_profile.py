@@ -12,27 +12,35 @@ class UserProfile(Base):
     __tablename__ = 'userprofile'
 
     # table structure:
-    email = Column(String(20), primary_key=True)
-    username = Column(String(20))
-    password = Column(String(50))
+    email = Column(String(20), primary_key=True, nullable=False)
+    username = Column(String(20), unique=True)
+    password = Column(String(64))
     
 session = DBSession.getSession()
 
-# add user
+# Adds a user to the database
 def add_user(user_email, person_name, pass_word):
-    newuser = UserProfile(email = user_email, username = person_name, password = pass_word)
-    session.add(newuser)
+    new_user = UserProfile(email = user_email, username = person_name, password = pass_word)
+    session.add(new_user)
     session.commit()
     
-# delete user
+# Deletes a user from the database
 def delete_user(user_email):
-    user_willdel = session.query(UserProfile).filter_by(email = user_email).first()
-    session.delete(user_willdel)
+    user_to_delete = session.query(UserProfile).filter_by(email = user_email).first()
+    session.delete(user_to_delete)
     session.commit()
 
-# search user by email
-def search_user_password_by_email(user_email):
-    search_result = session.query(UserProfile).filter_by(email = user_email).first()
-    if (None == search_result): 
-        return None
-    return search_result.password
+# Check if the email of a user already exists in the database.
+def user_email_already_exists(user_email):
+    user = session.query(UserProfile).filter_by(email = user_email).first()
+    if (user == None): 
+        return True
+    return False
+
+# Check if the email of a user already exists in the database.
+def get_encrypted_password(user_email):
+    user = session.query(UserProfile).filter_by(email = user_email).first()
+    if (user == None): 
+        return None 
+    
+    return user.password
