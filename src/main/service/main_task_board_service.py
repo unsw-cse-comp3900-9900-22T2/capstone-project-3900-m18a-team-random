@@ -29,3 +29,9 @@ def update_task_priority(task_name, task_priority):
         raise InputError("The task does not exist, please enter a valid task name you are trying to change the priority with")
     old_priority = main_task_board.update_task_priority(task_name, task_priority)
     return {"task_name":task_name, "new_task_priority":task_priority, "old_task_priority":old_priority}
+
+def update_task_status(task_name, task_status):
+    if main_task_board.search_task(task_name) is False:
+        raise InputError("The task does not exist, please enter a valid task name you are trying to change the status with")
+    old_status = main_task_board.update_task_status(task_name, task_status)
+    return {"task_name":task_name, "new_task_status":task_status, "old_task_status":old_status}
