@@ -58,6 +58,14 @@ def delete_task():
     
     return json.dumps('Success to delete task in task management')
 
+@app.route('/update-task-name',methods=['POST'])
+def update_task_name():
+    data = request.get_json()
+
+    task_name_old = data['task_name_old']
+    task_name_new = data['task_name_new']
+    
+    return json.dumps(main_task_board_service.update_task_name(task_name_old, task_name_new))
 @app.route('/register',methods=['POST'])
 def user_register():
     data = request.get_json()
