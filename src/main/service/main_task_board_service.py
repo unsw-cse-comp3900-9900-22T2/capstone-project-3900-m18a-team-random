@@ -27,5 +27,5 @@ def update_task_name(task_name_old, task_name_new):
 def update_task_priority(task_name, task_priority):
     if main_task_board.search_task(task_name) is False:
         raise InputError("The task does not exist, please enter a valid task name you are trying to change the priority with")
-    main_task_board.update_task_priority(task_name, task_priority)
-    return {"task_name":task_name}
+    old_priority = main_task_board.update_task_priority(task_name, task_priority)
+    return {"task_name":task_name, "new_task_priority":task_priority, "old_task_priority":old_priority}

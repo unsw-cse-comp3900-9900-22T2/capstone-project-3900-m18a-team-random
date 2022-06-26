@@ -66,6 +66,15 @@ def update_task_name():
     task_name_new = data['task_name_new']
     
     return json.dumps(main_task_board_service.update_task_name(task_name_old, task_name_new))
+
+@app.route('/update-task-priority',methods=['POST'])
+def update_task_priority():
+    data = request.get_json()
+
+    task_name = data['task_name']
+    task_priority = data['task_priority']
+    
+    return json.dumps(main_task_board_service.update_task_priority(task_name, task_priority))
 @app.route('/register',methods=['POST'])
 def user_register():
     data = request.get_json()
