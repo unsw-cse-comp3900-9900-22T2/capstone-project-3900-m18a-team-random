@@ -15,7 +15,7 @@ const Register = () => {
 
 
         const registration = {email,name, password};
-        const response = await fetch('/user-register', {
+        const response = await fetch('/register', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'

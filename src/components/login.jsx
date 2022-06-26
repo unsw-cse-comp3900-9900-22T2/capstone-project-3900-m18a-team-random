@@ -10,7 +10,7 @@ const Login = () => {
 
     const handleLogin = async () => {
         const loginInfo = {email, password};
-        const response = await fetch('/user-login', {
+        const response = await fetch('/login', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
