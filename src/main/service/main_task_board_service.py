@@ -8,17 +8,15 @@ import main_task_board
 
 def add_task(task_name, person_name, task_status, task_priority, task_due_date):
     if (main_task_board.search_task(task_name)):
-        print("The task was already inserted in task board")
-        return False
+        raise InputError("The task was already inserted in task board")
     main_task_board.add_task(task_name, person_name, task_status, task_priority, task_due_date)
-    return True
+    return {"task_name": task_name}
 
 def delete_task(task_name):
     if(main_task_board.search_task(task_name) == False):
-        print("The task was not found")
-        return False
+        raise InputError("The task was not found")
     main_task_board.delete_task(task_name)
-    return True
+    return {"task_name": task_name}
 
 def update_task_name(task_name_old, task_name_new):
     if main_task_board.search_task(task_name_old) is False:
