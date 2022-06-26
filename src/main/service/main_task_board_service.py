@@ -35,3 +35,15 @@ def update_task_status(task_name, task_status):
         raise InputError("The task does not exist, please enter a valid task name you are trying to change the status with")
     old_status = main_task_board.update_task_status(task_name, task_status)
     return {"task_name":task_name, "new_task_status":task_status, "old_task_status":old_status}
+
+def update_task_due_date(task_name, task_due_date):
+    if main_task_board.search_task(task_name) is False:
+        raise InputError("The task does not exist, please enter a valid task name you are trying to change the due date with")
+    old_due_date = main_task_board.update_task_due_date(task_name, task_due_date)
+    return {"task_name":task_name, "new_task_due_date":task_due_date, "old_task_due_date":old_due_date}
+
+def update_task_executor(task_name, person_name):
+    if main_task_board.search_task(task_name) is False:
+        raise InputError("The task does not exist, please enter a valid task name you are trying to change the executor with")
+    old_executor = main_task_board.update_executor(task_name, person_name)
+    return {"task_name":task_name, "new_task_executor":person_name, "old_task_executor":old_executor}

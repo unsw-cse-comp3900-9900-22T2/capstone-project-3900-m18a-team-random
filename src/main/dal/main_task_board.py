@@ -102,8 +102,5 @@ def update_task_name(task_name_old, task_name_new):
     update task's name by task_name, this function returns the old task name
     """
     task_result = session.query(MainTaskBoard).filter_by(taskname = task_name_old).first()
-    old_task_name = task_result.taskname
     task_result.taskname = task_name_new
     session.commit()
-    return old_task_name
-
