@@ -82,5 +82,6 @@ def update_task_due_date(task_name, task_due_date):
 def update_task_name(task_name_old, task_name_new):
     task_result = session.query(MainTaskBoard).filter_by(taskname = task_name_old).all()
     for task in task_result:
-        task.task_name_old = task_name_new
+        task.taskname = task_name_new
         session.commit()
+
