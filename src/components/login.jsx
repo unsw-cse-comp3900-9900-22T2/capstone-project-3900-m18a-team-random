@@ -22,7 +22,7 @@ const Login = () => {
         if(response.ok){
             navigate("/main");
         } else {
-            alert("Registration failed");
+            alert("please enter then corret email or password");
         }
     }
 

@@ -28,7 +28,7 @@ const Register = () => {
         });
 
         if(response.ok){
-            navigate("/login");
+            navigate("/");
         } else {
             alert("Registration failed");
         }
