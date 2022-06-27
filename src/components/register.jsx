@@ -10,9 +10,13 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const handleRegister = async () => {
+    const handleRegister = async (e) => {
         // need to add confirm password checking
-
+        if(password !== confirmPassword){
+            e.preventDefault();
+            alert("Please enter the correct confirm password");
+            return;
+        }
 
         const registration = {email,name, password};
         const response = await fetch('/register', {
@@ -25,6 +29,8 @@ const Register = () => {
 
         if(response.ok){
             navigate("/login");
+        } else {
+            alert("Registration failed");
         }
     }
 
