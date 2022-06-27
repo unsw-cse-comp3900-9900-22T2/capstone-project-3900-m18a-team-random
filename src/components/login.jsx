@@ -20,6 +20,8 @@ const Login = () => {
 
         if(response.ok){
             navigate("/main");
+        } else {
+            alert("Registration failed");
         }
     }
 
