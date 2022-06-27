@@ -12,8 +12,8 @@ const Register = () => {
 
     const handleRegister = async (e) => {
         // need to add confirm password checking
+        e.preventDefault();
         if(password !== confirmPassword){
-            e.preventDefault();
             alert("Please enter the correct confirm password");
             return;
         }
@@ -28,7 +28,7 @@ const Register = () => {
         });
 
         if(response.ok){
-            navigate("/login");
+            navigate("/");
         } else {
             alert("Registration failed");
         }

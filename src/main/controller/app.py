@@ -75,6 +75,34 @@ def update_task_priority():
     task_priority = data['task_priority']
     
     return json.dumps(main_task_board_service.update_task_priority(task_name, task_priority))
+
+@app.route('/update-task-status',methods=['POST'])
+def update_task_status():
+    data = request.get_json()
+
+    task_name = data['task_name']
+    task_status = data['task_status']
+    
+    return json.dumps(main_task_board_service.update_task_status(task_name, task_status))
+
+@app.route('/update-task-duedate',methods=['POST'])
+def update_task_due_date():
+    data = request.get_json()
+
+    task_name = data['task_name']
+    task_due_date = data['task_due_date']
+    
+    return json.dumps(main_task_board_service.update_task_due_date(task_name, task_due_date))
+
+@app.route('/update-task-executor',methods=['POST'])
+def update_task_executor():
+    data = request.get_json()
+
+    task_name = data['task_name']
+    person_name = data['task_executor']
+    
+    return json.dumps(main_task_board_service.update_task_executor(task_name, person_name))
+
 @app.route('/register',methods=['POST'])
 def user_register():
     data = request.get_json()

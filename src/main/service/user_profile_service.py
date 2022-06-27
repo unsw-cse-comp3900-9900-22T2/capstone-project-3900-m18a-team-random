@@ -1,4 +1,5 @@
 from hashlib import new
+from error import InputError, AccessError
 from lib2to3.pgen2.pgen import generate_grammar
 import sys
 sys.path.append('src/main/dal')
@@ -16,13 +17,9 @@ def user_register(email, username, password):
 # user log in
 def user_log_in(email, password):
     user_password = user_profile.search_user_password_by_email(email)
-    if (user_password == None): return "The user has not registed"
-    
-    elif (user_password != password): return "The password is incorrect"
-   
-    else:
-        return "success log in"
-user_register('42@qq.com', 'kai', 'pwd')
+    if (user_password == None): raise AccessError("The user has not yet registered")
+    elif (user_password != password): raise InputError("The password is incorrect")
+    return "success log in"
 
     
 
