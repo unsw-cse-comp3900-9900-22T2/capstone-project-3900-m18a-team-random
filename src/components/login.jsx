@@ -2,7 +2,7 @@ import { Button, Grid, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-const Login = () => {
+const Login = ({setUserEmail}) => {
     let navigate = useNavigate();
 
     const [email, setEmail] = useState("");
@@ -20,6 +20,7 @@ const Login = () => {
         });
 
         if(response.ok){
+            setUserEmail(email);
             navigate("/main");
         } else {
             alert("Registration failed");
@@ -27,26 +28,26 @@ const Login = () => {
     }
 
     return (
-        <Grid container 
-              spacing={1}
-              minHeight="40vh" 
-              direction="column" 
-              alignItems="center" 
-              justifyContent="center">
-            <h2>Sign in</h2>
-                <form onSubmit={handleLogin}>
-                    <Grid item>
-                        <TextField label='Email' type='email' required onChange={e=>{setEmail(e.target.value)}}/>
-                    </Grid>
-                    <Grid item>
-                        <TextField label='Password' type='password' required onChange={e=>{setPassword(e.target.value)}}/>
-                    </Grid>
-                    <Grid item>
-                        <Button color='secondary' onClick={()=>{navigate("/register")}}>Register</Button>
-                        <Button type='submit' color='primary'>Sign in</Button>
-                    </Grid>
-                </form>
-        </Grid>
+        <form onSubmit={handleLogin}>
+            <Grid container 
+                spacing={2}
+                minHeight="40vh" 
+                direction="column" 
+                alignItems="center" 
+                justifyContent="center">
+                <h2>Sign in</h2>
+                        <Grid item>
+                            <TextField label='Email' type='email' required onChange={e=>{setEmail(e.target.value)}}/>
+                        </Grid>
+                        <Grid item>
+                            <TextField label='Password' type='password' required onChange={e=>{setPassword(e.target.value)}}/>
+                        </Grid>
+                        <Grid item>
+                            <Button color='secondary' onClick={()=>{navigate("/register")}}>Register</Button>
+                            <Button type='submit' color='primary'>Sign in</Button>
+                        </Grid>
+            </Grid>
+        </form>
     )
 }
 

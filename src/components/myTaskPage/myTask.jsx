@@ -9,7 +9,7 @@ import TaskTable from './taskTable';
 import PopupButton from '../popupButton';
 import AddTaskForm from './addTaskForm';
 
-const MyTask = () => {
+const MyTask = ({email}) => {
     return (
         <Box sx={{flexGrow: 1}} mt={4}>
             <Grid container spacing={2} direction='column'>
@@ -24,7 +24,7 @@ const MyTask = () => {
                     </Grid>
                     <Grid item xs={4}>
                         <PopupButton buttonTitle='Add Task' title='Add Task'>
-                            <AddTaskForm/>
+                            <AddTaskForm email={email}/>
                         </PopupButton>
                     </Grid>
                 </Grid>

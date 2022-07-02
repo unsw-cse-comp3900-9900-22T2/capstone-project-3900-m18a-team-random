@@ -48,7 +48,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function PopupButton({buttonTitle, title, children}) {
+export default function PopupButton({variant, buttonTitle, title, children}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -60,7 +60,7 @@ export default function PopupButton({buttonTitle, title, children}) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant={variant} onClick={handleClickOpen}>
         {buttonTitle}
       </Button>
       <BootstrapDialog
