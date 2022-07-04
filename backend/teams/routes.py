@@ -179,16 +179,16 @@ def add_comment():
     return json.dumps(comment_add(data['token'],data['task_title'],data['comment_content']))
     
 @app.route('/delete_comment', methods=['POST'])
-def add_comment():
+def delete_comment():
     data = request.get_json()
     return json.dumps(comment_delete(data['token'],data['comment_id']))
     
 @app.route('/edit_comment', methods=['POST'])
-def add_comment():
+def edit_comment():
     data = request.get_json()
     return json.dumps(comment_edit(data['token'],data['comment_id'],data['new_content']))
 
 @app.route('/reply_comment', methods=['POST'])
-def add_comment():
+def reply_comment():
     data = request.get_json()
     return json.dumps(comment_reply(data['token'],data['parent_comment_id'],data['comment_content']))
