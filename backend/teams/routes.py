@@ -29,8 +29,11 @@ from teams.team import (
     team_leave,
     team_remove_member
 )
-from teams.search import (
-    task_search
+from teams.comment import (
+    comment_add,
+    comment_delete,
+    comment_edit,
+    comment_reply
 )
 import json
 
@@ -126,6 +129,11 @@ def update_task_assignee():
     data = request.get_json()
     return json.dumps(task_update_assignee(data['token'],data['task_title'],data['assignee_email']))
     
+@app.route('/search_task', methods=['POST'])
+def search_task():
+    data = request.get_json()
+    return json.dumps(task_search(data['token'],data['query_string']))
+    
 # Team Functions
 
 @app.route('/create_team', methods=['POST'])
@@ -163,9 +171,24 @@ def remove_team_member():
     data = request.get_json()
     return json.dumps(team_remove_member(data['token'],data['member_email_address']))
 
-# Search function
+# Comment Functions
 
-@app.route('/search_task', methods=['POST'])
-def search_task():
+@app.route('/add_comment', methods=['POST'])
+def add_comment():
     data = request.get_json()
-    return json.dumps(task_search(data['token'],data['query_string']))
+    return json.dumps(comment_add(data['token'],data['task_title'],data['comment_content']))
+    
+@app.route('/delete_comment', methods=['POST'])
+def add_comment():
+    data = request.get_json()
+    return json.dumps(comment_delete(data['token'],data['comment_id']))
+    
+@app.route('/edit_comment', methods=['POST'])
+def add_comment():
+    data = request.get_json()
+    return json.dumps(comment_edit(data['token'],data['comment_id'],data['new_content']))
+
+@app.route('/reply_comment', methods=['POST'])
+def add_comment():
+    data = request.get_json()
+    return json.dumps(comment_reply(data['token'],data['parent_comment_id'],data['comment_content']))

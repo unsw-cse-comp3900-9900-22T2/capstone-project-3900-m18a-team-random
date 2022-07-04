@@ -1,4 +1,4 @@
-from hashlib import new
+from hashlib import new, sha256
 from teams.error import InputError, AccessError
 from lib2to3.pgen2.pgen import generate_grammar
 import sys

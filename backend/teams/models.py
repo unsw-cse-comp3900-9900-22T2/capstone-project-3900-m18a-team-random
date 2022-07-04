@@ -58,3 +58,14 @@ class Task(db.Model):
     
     def __repr__(self):
         return f"Task('{self.title}','{self.status}','{self.priority}'"
+
+class Comment(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    parent_id = db.Column(db.Integer)
+    task_id = db.Column(db.Integer, db.ForeignKey(Task.id))
+    author_id = db.Column(db.Integer,db.ForeignKey(User.id))
+    content = db.Column(db.String(300))
+    
+    def __repr__(self):
+        return f"Comment('{self.content}'"
+    
