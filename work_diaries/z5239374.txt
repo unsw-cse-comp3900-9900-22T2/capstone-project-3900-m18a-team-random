@@ -1,0 +1,24 @@
+Z5239374 Zhen Tan
+
+Week 1
+I joined in a team for the project, I proposed that everyone should not rush but to gather resources for the first week.
+I was assigned to work on the frontend cause I'm the only one that has some frontend background.
+I had some researches about react.js and material ui, which are the two main libraries I'm going to use for the frontend.
+I made a simple login page and partially the main page.
+
+Week 2
+One of our team members dropped the course, we are a ground of 4 now.
+we had a meeting about the proposal, assigned jobs to everyone, I was mainly responsible for the system architechture.
+
+Week 3
+A new member joined our team, but he seems to have some troubles getting in. I worked with other teammates together on users stories and system 
+architecture for our proposal. I also installed a virtually machine, and tested our only frontend in the new environment, it works fine. We will start to 
+work on the actual project soon.
+
+week 4
+Our new member seems to be dropping out. We've managed to finish our proposal, as the only frontend developer in the team, I worked on the fronted with full speed,
+the UI looks ugly, but I only want to get the frontend connected with the backend as soon as possible so we can test the whole system and make sure the core functionalities are working. My assigned user stories can't be finished until our server is also working.
+
+week 5
+New member officially joined in. We had our first demo this week, the result wasn't good, we had too many stories in spring one which we couldn't complete. 
+We also had some reconsideration about our database design.

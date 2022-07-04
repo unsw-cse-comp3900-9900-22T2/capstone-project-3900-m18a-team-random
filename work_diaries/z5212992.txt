@@ -1,0 +1,17 @@
+Week 1
+Set up Jira and discussed with everyone what project to do.
+
+
+Week 2
+In last week, I set up our project’s programing environment,
+discussed our project topics with my teammates and we decided to do project 4(Task Manager System), 
+plan to finish the background of our project proposal, user stories, product backlog,UI design and system archiectual by next week.
+
+Week 3
+In last week, I finish the user interface and flow diagram in proposal, and create 7 user stories in Jira(the proposal is finished and submitted),
+we plan to finish the spring 1 by next week.
+
+Week 4
+In last week, I built up the whole backend structure and developing envirnment-set up the Data Accree Layer(DAL uses SQLAlchemy to create connection between python and MySQL), Service Layer(Service Layer encapsulates DAL and our system logical judgment builts in Service Layer), Controller(Controller encapsulates service layer, and send https request to interact with the frontend),
+I finished my assigned user stories in Spring 1,
+I helped other backend developers to solve their problems during Spring 1, such as set up MySql and understand backend structure interacting process.
