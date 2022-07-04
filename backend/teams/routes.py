@@ -36,7 +36,7 @@ import json
 @app.route("/register", methods=['GET','POST'])
 def register():
     data = request.get_json()
-    return json.dumps(auth_register(data['email'],data['username'],data['password']))
+    return json.dumps(auth_register(data['email'],data['name'],data['password']))
 
 
 @app.route("/login",methods=['POST'])
