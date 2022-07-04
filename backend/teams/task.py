@@ -1,11 +1,7 @@
 from hashlib import new
 from teams.error import InputError, AccessError
-from lib2to3.pgen2.pgen import generate_grammar
-import sys
-import random
 from teams.models import User, Token, ResetCode, Team, Task
-from teams.auth import get_user_from_token, get_user_from_email
-import re
+from teams.auth import get_user_from_token
 from teams import db
 import jwt
 
@@ -17,8 +13,6 @@ def task_add(token, title, status, priority, email, due_date):
 
     if user.team_id is None:
         raise InputError('Task creation failed: User must be in a team in order to create a task.')
-    
-    team = get_team_from_team_id(user.team_id)
 
     # If there is no assignee specified, assign the task to the user
     if email == 'creator':
@@ -52,7 +46,7 @@ def task_delete(token, task_title):
 
 # Updates the title of a task with new_task_title.
 def task_update_name(token, old_task_title, new_task_title):
-    user, team = get_user_and_team_from_token(token)
+    team = get_team_from_token(token)
     
     task_to_update = get_task_from_team_and_title(team.name, old_task_title)
     
@@ -67,7 +61,7 @@ def task_update_name(token, old_task_title, new_task_title):
 
 # Updates the description of a task.
 def task_update_description(token, task_title, description):
-    user, team = get_user_and_team_from_token(token)
+    team = get_team_from_token(token)
     task = get_task_from_team_and_title(team.name, task_title)
     task.description = description
     return {
@@ -76,7 +70,7 @@ def task_update_description(token, task_title, description):
     
 # Updates the priority of a task.
 def task_update_priority(token, task_title, priority):
-    user, team = get_user_and_team_from_token(token)
+    team = get_team_from_token(token)
     task = get_task_from_team_and_title(team.name, task_title)
     
     task.priority = priority
@@ -86,7 +80,7 @@ def task_update_priority(token, task_title, priority):
 
 # Updates the status of a task.
 def task_update_status(token, task_title,status):
-    user, team = get_user_and_team_from_token(token)
+    team = get_team_from_token(token)
     task = get_task_from_team_and_title(team.name, task_title)
     
     task.status = status
@@ -96,7 +90,7 @@ def task_update_status(token, task_title,status):
 
 # Updates the due date of a task.
 def task_update_due_date(token, task_title, due_date):
-    user, team = get_user_and_team_from_token(token)
+    team = get_team_from_token(token)
     task = get_task_from_team_and_title(team.name, task_title)
 
     task.due_date = due_date
@@ -106,7 +100,7 @@ def task_update_due_date(token, task_title, due_date):
     
 # Updates the assignee of a task.
 def task_update_assignee(token, task_title, assignee_email):
-    user, team = get_user_and_team_from_token(token)
+    team = get_team_from_token(token)
     task = get_task_from_team_and_title(team.name, task_title)
 
     task.assignee_email = assignee_email
@@ -129,6 +123,11 @@ def get_team_from_team_name(team_name):
 # Helper function to return a team object given the team id.
 def get_team_from_team_id(team_id):
     return Team.query.filter_by(id=team_id).first()
+    
+# Helper function to return a team object given a token.
+def get_team_from_token(token):
+    user = get_user_from_token(token)
+    return Team.query.filter_by(id=user.team_id).first()
 
 def get_user_and_team_from_token(token):
     user = get_user_from_token(token)
