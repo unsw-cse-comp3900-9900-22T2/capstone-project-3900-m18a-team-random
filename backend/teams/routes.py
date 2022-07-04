@@ -29,6 +29,9 @@ from teams.team import (
     team_leave,
     team_remove_member
 )
+from teams.search import (
+    task_search
+)
 import json
 
 # User Authentication Functions
@@ -159,4 +162,10 @@ def leave_team():
 def remove_team_member():
     data = request.get_json()
     return json.dumps(team_remove_member(data['token'],data['member_email_address']))
-    
+
+# Search function
+
+@app.route('/search_task', methods=['POST'])
+def search_task():
+    data = request.get_json()
+    return json.dumps(task_search(data['token'],data['query_string']))
