@@ -1,16 +1,13 @@
-from hashlib import new
 from teams.error import InputError, AccessError
-from lib2to3.pgen2.pgen import generate_grammar
-import sys
 import random
 from teams.models import User, Token, ResetCode, Team, Task
-import re
 from teams import db
 import jwt
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from teams.auth import get_user_from_id, get_user_from_email
+from teams.auth import get_user_from_email
+import string
 
 PASSWORD_RESET_CODE_LENGTH = 10
 SENDER_EMAIL = "teamrandom3900@yahoo.com"
