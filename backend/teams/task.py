@@ -4,7 +4,7 @@ from lib2to3.pgen2.pgen import generate_grammar
 import sys
 import random
 from teams.models import User, Token, ResetCode, Team, Task
-from teams.auth import get_user_from_token
+from teams.auth import get_user_from_token, get_user_from_email
 import re
 from teams import db
 import jwt
@@ -66,55 +66,53 @@ def task_update_name(token, old_task_title, new_task_title):
     }
 
 # Updates the description of a task.
-def task_update_description(token, description):
+def task_update_description(token, task_title, description):
     user, team = get_user_and_team_from_token(token)
-    task_to_update = get_task_from_team_and_title(team.name, old_task_title)
-    
-    task_to_update.description = description
+    task = get_task_from_team_and_title(team.name, task_title)
+    task.description = description
     return {
-        "task_id": task_to_update.id
+        "task_id": task.id
     }
     
 # Updates the priority of a task.
-def task_update_priority(token, priority):
+def task_update_priority(token, task_title, priority):
     user, team = get_user_and_team_from_token(token)
-    task_to_update = get_task_from_team_and_title(team.name, old_task_title)
+    task = get_task_from_team_and_title(team.name, task_title)
     
-    task_to_update.priority = priority
+    task.priority = priority
     return {
-        "task_id": task_to_update.id
+        "task_id": task.id
     }
 
 # Updates the status of a task.
-def task_update_status(token, status):
+def task_update_status(token, task_title,status):
     user, team = get_user_and_team_from_token(token)
-    task_to_update = get_task_from_team_and_title(team.name, old_task_title)
+    task = get_task_from_team_and_title(team.name, task_title)
     
-    task_to_update.status = status
+    task.status = status
     return {
-        "task_id": task_to_update.id
+        "task_id": task.id
     }
 
 # Updates the due date of a task.
-def task_update_due_date(token, due_date):
+def task_update_due_date(token, task_title, due_date):
     user, team = get_user_and_team_from_token(token)
-    task_to_update = get_task_from_team_and_title(team.name, old_task_title)
+    task = get_task_from_team_and_title(team.name, task_title)
 
-    task_to_update.due_date = due_date
+    task.due_date = due_date
     return {
-        "task_id": task_to_update.id
+        "task_id": task.id
     }
     
 # Updates the assignee of a task.
-def task_update_assignee(token, assignee_email):
+def task_update_assignee(token, task_title, assignee_email):
     user, team = get_user_and_team_from_token(token)
-    task_to_update = get_task_from_team_and_title(team.name, old_task_title)
-    
-    assignee = get_user_from_email(assignee_email)
-    task_to_update.assignee_email = assignee_email
+    task = get_task_from_team_and_title(team.name, task_title)
+
+    task.assignee_email = assignee_email
     
     return {
-        "task_id": task_to_update.id
+        "task_id": task.id
     }
 
 ## HELPER FUNCTIONS

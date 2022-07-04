@@ -101,27 +101,27 @@ def update_task_name():
 @app.route('/update-task-description',methods=['POST'])
 def update_task_description():
     data = request.get_json()
-    return json.dumps(task_update_description(data['token'],data['description']))
+    return json.dumps(task_update_description(data['token'],data['task_title'],data['description']))
     
 @app.route('/update-task-priority',methods=['POST'])
 def update_task_priority():
     data = request.get_json()
-    return json.dumps(task_update_priority(data['token'],data['priority']))
+    return json.dumps(task_update_priority(data['token'],data['task_title'],data['priority']))
 
 @app.route('/update-task-status', methods=['POST'])
 def update_task_status():
     data = request.get_json()
-    return json.dumps(task_update_status(data['token'],data['status']))
+    return json.dumps(task_update_status(data['token'],data['task_title'],data['status']))
 
 @app.route('/update-task-duedate',methods=['POST'])
 def update_task_due_date():
     data = request.get_json()
-    return json.dumps(task_update_due_date(data['token'],data['due_date']))
+    return json.dumps(task_update_due_date(data['token'],data['task_title'],data['due_date']))
 
 @app.route('/update-task-assignee', methods=['POST'])
 def update_task_assignee():
     data = request.get_json()
-    return json.dumps(task_update_assignee(data['token'],data['assignee_email']))
+    return json.dumps(task_update_assignee(data['token'],data['task_title'],data['assignee_email']))
     
 # Team Functions
 
