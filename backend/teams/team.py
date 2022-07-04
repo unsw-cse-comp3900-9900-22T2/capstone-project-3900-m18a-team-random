@@ -26,7 +26,8 @@ def team_create(token, team_name):
     db.session.commit()
     
     return {
-        "team_id": team.id
+        "token": token,
+        "team_name": team.name
     }
 
 # Delete a team from the database.
