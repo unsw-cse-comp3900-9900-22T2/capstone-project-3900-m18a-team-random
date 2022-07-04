@@ -21,4 +21,8 @@ the UI looks ugly, but I only want to get the frontend connected with the backen
 
 week 5
 New member officially joined in. We had our first demo this week, the result wasn't good, we had too many stories in spring one which we couldn't complete. 
+<<<<<<< HEAD
 We also had some reconsideration about our database design.
+=======
+We also had some reconsideration about our database design.
+>>>>>>> cd580f535d3bf9c87da7070ffc91299b56d5f670
