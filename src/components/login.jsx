@@ -21,7 +21,7 @@ const Login = ({setUserEmail}) => {
 
         if(response.ok){
             setUserEmail(email);
-            navigate("/home/teamSelection");
+            navigate("home");
         } else {
             alert("Registration failed");
         }
