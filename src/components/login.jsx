@@ -21,7 +21,7 @@ const Login = ({setUserEmail}) => {
 
         if(response.ok){
             setUserEmail(email);
-            navigate("/main");
+            navigate("/home/teamSelection");
         } else {
             alert("Registration failed");
         }
@@ -36,16 +36,16 @@ const Login = ({setUserEmail}) => {
                 alignItems="center" 
                 justifyContent="center">
                 <h2>Sign in</h2>
-                        <Grid item>
-                            <TextField label='Email' type='email' required onChange={e=>{setEmail(e.target.value)}}/>
-                        </Grid>
-                        <Grid item>
-                            <TextField label='Password' type='password' required onChange={e=>{setPassword(e.target.value)}}/>
-                        </Grid>
-                        <Grid item>
-                            <Button color='secondary' onClick={()=>{navigate("/register")}}>Register</Button>
-                            <Button type='submit' color='primary'>Sign in</Button>
-                        </Grid>
+                <Grid item>
+                    <TextField label='Email' type='email' required onChange={e=>{setEmail(e.target.value)}}/>
+                </Grid>
+                <Grid item>
+                    <TextField label='Password' type='password' required onChange={e=>{setPassword(e.target.value)}}/>
+                </Grid>
+                <Grid item>
+                    <Button color='secondary' onClick={()=>{navigate("/register")}}>Register</Button>
+                    <Button type='submit' color='primary'>Sign in</Button>
+                </Grid>
             </Grid>
         </form>
     )

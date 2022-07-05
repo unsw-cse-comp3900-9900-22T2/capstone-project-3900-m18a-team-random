@@ -8,47 +8,44 @@ import { Typography } from '@mui/material';
 import TaskTable from './taskTable';
 import PopupButton from '../popupButton';
 import AddTaskForm from './addTaskForm';
+import PopupFab from '../popupFab';
+import { useParams } from 'react-router-dom';
+import Epic from './epic';
+import NewEpicForm from './newEpicForm';
 
 const MyTask = ({email}) => {
+    const {teamId} = useParams();
+
     return (
         <Box sx={{flexGrow: 1}} mt={4}>
             <Grid container spacing={2} direction='column'>
                 <Grid item xs={12} spacing={3} container>
-                    <Grid item xs={3}>
-                        <Paper>
-                            <h1>Task Name</h1>
-                        </Paper>
+                    <Grid item>
+                        <Typography variant='h3'>
+                            {teamId}
+                        </Typography>
                     </Grid>
                     <Grid item xs={4}>
                         <TextField placeholder='Search by Task Name'/>
                     </Grid>
-                    <Grid item xs={4}>
-                        <PopupButton buttonTitle='Add Task' title='Add Task'>
-                            <AddTaskForm email={email}/>
-                        </PopupButton>
-                    </Grid>
-                </Grid>
-
-                <Grid item xs={12} spacing={2} container>
-                    <Grid item>
-                        <Button>Analysis Board</Button>
-                    </Grid>
-                    <Grid item>
-                        <Button>Historical Record</Button>
-                    </Grid>
-                    <Grid item>
-                        <Button>Filter</Button>
-                    </Grid>
-                    <Grid item>
-                        <Button>help</Button>
-                    </Grid>
                 </Grid>
 
                 <Grid item>
-                    <TaskTable/>
+                    <Epic title='Profile'/>
                 </Grid>
 
             </Grid>
+            <PopupFab 
+            style={{
+                position:"absolute",
+                bottom:30,
+                right:20,
+            }}
+            title='New Epic'
+            color='primary'
+            >
+                <NewEpicForm/>
+            </PopupFab>
         </Box>
     )
 }

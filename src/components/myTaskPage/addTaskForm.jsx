@@ -27,7 +27,7 @@ const AddTaskForm = ({email}) => {
 
     return (
         <form>
-            <Grid container spacing={2} direction='column'>
+            <Grid container spacing={2} direction='column' alignItems='center'>
                     <Grid item xs={12}>
                         <TextField label='Title' required onChange={e=>{setTitle(e.target.value)}}/>
                     </Grid>

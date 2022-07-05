@@ -25,7 +25,7 @@ const TaskTable = () => {
             <Table sx={{minWidth:500}}>
             <TableHead>
             <TableRow>
-                <TableCell>COMP3900-Spring 1</TableCell>
+                <TableCell>Task</TableCell>
                 <TableCell>Assignee</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Priority</TableCell>
