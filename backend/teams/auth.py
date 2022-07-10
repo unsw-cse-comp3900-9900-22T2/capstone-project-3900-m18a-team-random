@@ -17,6 +17,7 @@ AWAY = 'Away'
 
 # Creates a user instance and adds them to the database.
 def auth_register(email, username, password):
+    print(user_email_already_exists(email),11111)
 
     if valid_email(email) is False:
         raise InputError("Email is invalid.")
@@ -39,7 +40,7 @@ def auth_register(email, username, password):
     user = get_user_from_email(email)
     response = {
         "u_id": user.id,
-        "token": token.jwt_token
+        "token": str(token.jwt_token)
     }
     return response
 
@@ -90,7 +91,7 @@ def auth_login(email, password):
         
         response = {
             "u_id": user_id,
-            "token": active_token
+            "token": str(active_token)
         }
         return response
 
@@ -99,7 +100,7 @@ def auth_login(email, password):
 # Helper function decode the JWT.
 def jwt_decode(token):
     try:
-        return jwt.decode(token.encode("utf-8"), TOKEN_SECRET_KEY,algorithms=["HS256"])
+        return jwt.decode(token, TOKEN_SECRET_KEY,algorithms=["HS256"])
     except jwt.exceptions.InvalidTokenError:
         raise AccessError("Decoding token failure.")
 
@@ -116,7 +117,6 @@ def login_details_are_correct(email,password):
     user = User.query.filter_by(email=email).first()
     if user is None:
         raise InputError("Couldn't find your Teams account - no account exists with this email address.")
-        
     if user.verify_password(password):
         return True
     else:
