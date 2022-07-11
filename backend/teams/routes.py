@@ -36,13 +36,14 @@ from teams.comment import (
     comment_reply
 )
 import json
+from teams.MyEncoder import MyEncoder
 
 # User Authentication Functions
 
 @app.route("/register", methods=['GET','POST'])
 def register():
     data = request.get_json()
-    return json.dumps(auth_register(data['email'],data['name'],data['password']))
+    return json.dumps(auth_register(data['email'],data['name'],data['password']), cls=MyEncoder, indent=4)
 
 
 @app.route("/login",methods=['POST'])
