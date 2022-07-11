@@ -166,16 +166,15 @@ def get_user_from_id(id):
 
 # Helper function to return a user object from a token
 def get_user_from_token(token):
+    if token is None:
+        raise InputError('Token failure: user could not be found')
     jwt_token = token.jwt_token
     jwt_token = jwt_decode(jwt_token)
     user_id = jwt_token["id"]
     #user_token = db.session.query(User).filter_by(jwt_token=token).first()
     
     user = User.query.filter_by(id=user_id).first()
-    if user is None:
-        raise InputError('Token failure: user could not be found')
     return user
-
 # Helper function to check if a User with the specified email already exists in the database.
 def user_email_already_exists(email):
     if User.query.filter_by(email=email).first() is None:
