@@ -23,7 +23,7 @@ const Login = ({setUserEmail}) => {
             setUserEmail(email);
             navigate("home");
         } else {
-            alert("Registration failed");
+            alert("please enter then corret email or password");
         }
     }
 

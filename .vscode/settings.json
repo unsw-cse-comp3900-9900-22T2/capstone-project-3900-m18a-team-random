@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./src/main/dal",
+        "./src/main/service"
+    ]
+}
