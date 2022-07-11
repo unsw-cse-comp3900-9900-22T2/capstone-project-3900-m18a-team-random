@@ -20,21 +20,24 @@ const Login = () => {
         });
 
         if(response.ok){
-            navigate("/main");
+            response.json().then(data =>{
+                sessionStorage.setItem("token", data['token'])
+                navigate("home");
+            })
         } else {
             alert("Invalid email or password. Please enter the correct email or password");
         }
     }
 
     return (
-        <Grid container 
-              spacing={1}
-              minHeight="40vh" 
-              direction="column" 
-              alignItems="center" 
-              justifyContent="center">
-            <h2>Sign in</h2>
-                <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin}>
+            <Grid container 
+                spacing={1}
+                minHeight="40vh" 
+                direction="column" 
+                alignItems="center" 
+                justifyContent="center">
+                <h2>Sign in</h2>
                     <Grid item>
                         <TextField label='Email' type='email' required onChange={e=>{setEmail(e.target.value)}}/>
                     </Grid>
@@ -45,8 +48,8 @@ const Login = () => {
                         <Button color='secondary' onClick={()=>{navigate("/register")}}>Register</Button>
                         <Button type='submit' color='primary'>Sign in</Button>
                     </Grid>
-                </form>
-        </Grid>
+            </Grid>
+        </form>
     )
 }
 

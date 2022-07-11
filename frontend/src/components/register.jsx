@@ -39,32 +39,32 @@ const Register = () => {
     }
 
     return (
-        <Grid container 
-              spacing={1}
-              minHeight="40vh" 
-              direction="column" 
-              alignItems="center" 
-              justifyContent="center">
-            <h2>Sign up</h2>
-            <form onSubmit={handleRegister}>
-                <Grid item>
-                    <TextField label='Name' required onChange={e => setName(e.target.value)}/>
-                </Grid>
-                <Grid item>
-                    <TextField label='Email' type='email' required onChange={e=>setEmail(e.target.value)}/>
-                </Grid>
-                <Grid item>
-                    <TextField label='Password' type='password' required onChange={e=>setPassword(e.target.value)}/>
-                </Grid>
-                <Grid item>
-                    <TextField label='Confirm Password' type='password' required onChange={e=>setConfirmPassword(e.target.value)}/>
-                </Grid>
-                <Grid item>
-                    <Button color='secondary' onClick={()=>{navigate("/")}}>Cancel</Button>
-                    <Button type='submit' color='primary'>Register</Button>
-                </Grid>
-            </form>
-        </Grid>
+        <form onSubmit={handleRegister}>
+            <Grid container 
+                spacing={1}
+                minHeight="40vh" 
+                direction="column" 
+                alignItems="center" 
+                justifyContent="center">
+                <h2>Sign up</h2>
+                    <Grid item>
+                        <TextField label='Name' required onChange={e => setName(e.target.value)}/>
+                    </Grid>
+                    <Grid item>
+                        <TextField label='Email' type='email' required onChange={e=>setEmail(e.target.value)}/>
+                    </Grid>
+                    <Grid item>
+                        <TextField label='Password' type='password' required onChange={e=>setPassword(e.target.value)}/>
+                    </Grid>
+                    <Grid item>
+                        <TextField label='Confirm Password' type='password' required onChange={e=>setConfirmPassword(e.target.value)}/>
+                    </Grid>
+                    <Grid item>
+                        <Button color='secondary' onClick={()=>{navigate("/")}}>Cancel</Button>
+                        <Button type='submit' color='primary'>Register</Button>
+                    </Grid>
+            </Grid>
+        </form>
     )
 }
 
