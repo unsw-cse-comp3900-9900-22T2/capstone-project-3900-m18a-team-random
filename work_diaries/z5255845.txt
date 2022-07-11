@@ -1,9 +1,26 @@
 Week 1
 Set up Jira and discussed with everyone what project to do.
 
-
 Week 2
 Set up GitHub classroom and discussed which parts of the project to allocate to each team member and got started on the project proposal.
 
 Week 3 
-Completed the project proposal.
+Consolidated everyone's contributions for the project proposal, added my own revisions and completed and submitted the project proposal.
+
+Week 4
+I completed the user authentication implementation for the backend and finished our first user story.
+
+Week 5
+We completed our lab demonstration for Sprint 1, and I wrote up the Retrospective A report.
+Then, since our existing backend structure was quite confusing and not very maintainable, I 
+did some major refactoring to make the project easier to maintain and work with. 
+
+Then, I redid the backend implementation from scratch as the old one was not very maintainable. The old version contained two python files for each feature, e.g. UserProfile, TaskBoard, etc.; however,
+this made things too confusing and complicated when adding new features. 
+I also added new implementations, including:
+- User authentication + JW Tokens 
+- Task functionality 
+- Team functionality 
+- Comment functionality 
+- Password reset functionality
+

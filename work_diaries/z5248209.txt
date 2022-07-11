@@ -13,3 +13,18 @@ week3
 we had two meetings with the group this week finalizing the group proposal, I finished the product backlog and put
 all the user stories on jira, I also disscussed with the team which stories should be put in the initial sprint
 I watched some crash courses of Js react framework on Youtube 
+
+week4
+I was assigned to do backend as now Zhen took our frontend, Barry helped me set up the envirment on virtual machine and taught me all the logics and the code he wrote
+back then, he built the prototype all by himself, I did not do much this week rather than understanding the code
+
+week5
+I successfully implemeted some backend features in our user story, I implemented some features and APIs such as update task, delete task and so on base on the APIs from 
+the data access layer, I successfully ran the frontend and backend, with the help from my team, we connect frontend and backend together, I was chosen to demo
+
+
+week6
+
+I did not do much in week6 as I was working on another assignment, Zhen, Barry and Justin held a meeting, I am glad that our new member Mingfei contributed to the progress of our project
+
+week7
