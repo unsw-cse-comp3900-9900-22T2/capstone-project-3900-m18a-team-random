@@ -38,7 +38,7 @@ const Sidebar = () => {
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                    <ListItemButton>
+                    <ListItemButton onClick={()=>{navigate("history")}}>
                         <ListItemIcon>
                             <HistoryEduIcon />
                         </ListItemIcon>

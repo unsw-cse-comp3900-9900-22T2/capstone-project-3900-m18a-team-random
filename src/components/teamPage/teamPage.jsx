@@ -7,6 +7,7 @@ import MyTaskPage from '../myTaskPage/myTaskPage';
 import MemberPage from '../memberPage/memberPage';
 import MyTask from '../myTaskPage/myTask';
 import Members from '../memberPage/members';
+import HistoryPage from '../historyPage';
 
 const TeamPage = ()=>{
     return (
@@ -19,6 +20,7 @@ const TeamPage = ()=>{
                     <Routes>
                         <Route path="/" element={<MyTask/>}/>
                         <Route path="members" element={<Members/>}/>
+                        <Route path="history" element={<HistoryPage/>}/>
                     </Routes>
                 </Grid>
             </Grid>

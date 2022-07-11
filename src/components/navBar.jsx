@@ -15,42 +15,38 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import AppBar from '@mui/material/AppBar';
+import PopupIcon from './popupIcon';
+import ProfilePanel from './profilePanel';
+import { Button } from '@mui/material';
+import MenuIconButton from './menuIconButton';
 
 const NavBar = () => {
     return (
-        <AppBar position="static">
-            <Toolbar>
-                <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ display: { xs: 'none', sm: 'block' } }}
-                >
-                    ATeam
-                </Typography>
-                <Box sx={{ flexGrow: 1 }} />
-                <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                    <IconButton size="large">
-                        <Badge badgeContent={4} color="error">
-                            <MailIcon />
-                        </Badge>
-                    </IconButton>
-                    <IconButton
-                        size="large"
-                        edge="end"
+        <Box>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography
+                    variant="h6"
+                    noWrap
+                    component="div"
+                    sx={{ display: { xs: 'none', sm: 'block' } }}
                     >
-                        <AccountCircle />
-                    </IconButton>
-                </Box>
-                <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                    <IconButton
-                        size="large"
-                    >
-                        <MoreIcon />
-                    </IconButton>
-                </Box>
-            </Toolbar>
-      </AppBar>
+                        ATeam
+                    </Typography>
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                        <MenuIconButton>
+                            <Badge badgeContent={2} color="error">
+                                <MailIcon />
+                            </Badge>
+                        </MenuIconButton>
+                        <PopupIcon icon={<AccountCircle/>} title='Profile'>
+                            <ProfilePanel/>
+                        </PopupIcon>
+                    </Box>
+                </Toolbar>
+            </AppBar>
+        </Box>
     )
 }
 
