@@ -1,5 +1,5 @@
 import DBSession;
-from sqlalchemy import Column, String, DateTime, create_engine, null
+from sqlalchemy import Column, String, BigInteger, create_engine, null
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -12,9 +12,10 @@ class UserProfile(Base):
     __tablename__ = 'userprofile'
 
     # table structure:
-    email = Column(String(20), primary_key=True)
-    username = Column(String(20))
+    email = Column(String(50), primary_key=True)
+    username = Column(String(50))
     password = Column(String(50))
+    team_id = Column(BigInteger)
     
 session = DBSession.getSession()
 

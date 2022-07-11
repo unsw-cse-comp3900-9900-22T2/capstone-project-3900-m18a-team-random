@@ -1,5 +1,5 @@
 import DBSession
-from sqlalchemy import Column, String, DateTime, create_engine, null
+from sqlalchemy import Column, Integer, String, BigInteger, create_engine, null
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -14,10 +14,11 @@ class MainTaskBoard(Base):
 
     # table structure:
     taskname = Column(String(50), primary_key=True)
-    person = Column(String(20))
-    status = Column(String(10))
-    priority = Column(String(10))
-    due_date = Column(String(10))
+    person = Column(String(50))
+    status = Column(String(50))
+    priority = Column(String(50))
+    due_date = Column(String(50))
+    team_id = Column(BigInteger)
 
 session = DBSession.getSession()
 
