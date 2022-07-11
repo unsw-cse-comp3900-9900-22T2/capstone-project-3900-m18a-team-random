@@ -124,7 +124,7 @@ def login_details_are_correct(email,password):
 
 # Helper function encode a dictionary containing user information.
 def jwt_encode(user_info):
-    return jwt.encode(user_info, TOKEN_SECRET_KEY,algorithm="HS256")
+    return jwt.encode(user_info, TOKEN_SECRET_KEY,algorithm="HS256").decode('utf-8')
 
 # Helper function to return a dictionary containing the user id, email and username.
 def get_user_info(user):
