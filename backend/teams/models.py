@@ -70,6 +70,9 @@ class Task(db.Model):
     def __repr__(self):
         return f"Task('{self.title}','{self.status}','{self.priority}'"
     
+    def set_title(self, title):
+        self.title = title
+        
     def set_description(self, description):
         self.description = description
 
