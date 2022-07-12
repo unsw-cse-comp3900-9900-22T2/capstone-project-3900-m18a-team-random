@@ -106,6 +106,7 @@ def auth_login(email, password):
 # Helper function decode the JWT.
 def jwt_decode(token):
     try:
+        print(jwt.decode(token.encode("utf-8"), TOKEN_SECRET_KEY,algorithms=["HS256"]))
         return jwt.decode(token.encode("utf-8"), TOKEN_SECRET_KEY,algorithms=["HS256"])
     except jwt.exceptions.InvalidTokenError:
         raise AccessError("Decoding token failure.")
@@ -168,11 +169,7 @@ def get_user_from_id(id):
 def get_user_from_token(token):
     if token is None:
         raise InputError('Token failure: user could not be found')
-    token = db.session.query(Token).filter_by(jwt_token=token).first()
-    if token is None:
-        raise InputError('Token failure: user could not be found')
-    jwt_token = token.jwt_token
-    jwt_token = jwt_decode(jwt_token)
+    jwt_token = jwt_decode(token)
     user_id = jwt_token["id"]
     #user_token = db.session.query(User).filter_by(jwt_token=token).first()
     
