@@ -18,3 +18,7 @@ I helped other backend developers to solve their problems during Spring 1, such 
 
 Week 5
 We completed our lab demonstration for Sprint 1, but the result is not good, we need to redesign our strcuture of database. I will discuss with my teammate and decide how to refactor our project's backend, and I will start to plan what algorithm need to use in "Task Analysis System".
+
+Week 6
+In week6, we almost finish to re-design our backend structure, but the implementation has some bugs need to be fixed. For exmaple, the token should
+be decode from bytes to json, and the some functions are not fully work weel, I will fix these bugs in next week.
