@@ -1,7 +1,7 @@
 from hashlib import new
 from teams.error import InputError, AccessError
 from teams.models import User, Token, ResetCode, Team, Task
-from teams.auth import get_user_from_token, get_user_from_email
+from teams.auth import get_active_tokens, get_user_from_token, get_user_from_email
 from teams import db
 import jwt
 
@@ -55,7 +55,8 @@ def task_update_name(token, old_task_title, new_task_title):
     if Task.query.filter_by(team_id=team.id,title=new_task_title).first() is not None:
         raise InputError('Task name cannot be changed to ' + new_task_title + ' as a task already exists with that name.')
     
-    task_to_update.title = new_task_title
+    task_to_update.set_title(new_task_title)
+    db.session.commit()
     return {
         "task_id": task_to_update.id
     }
@@ -64,7 +65,8 @@ def task_update_name(token, old_task_title, new_task_title):
 def task_update_description(token, task_title, description):
     team = get_team_from_token(token)
     task = get_task_from_team_and_title(team.name, task_title)
-    task.description = description
+    task.set_description(description)
+    db.session.commit()
     return {
         "task_id": task.id
     }
@@ -74,7 +76,8 @@ def task_update_priority(token, task_title, priority):
     team = get_team_from_token(token)
     task = get_task_from_team_and_title(team.name, task_title)
     
-    task.priority = priority
+    task.set_priority(priority)
+    db.session.commit()
     return {
         "task_id": task.id
     }
@@ -84,7 +87,9 @@ def task_update_status(token, task_title,status):
     team = get_team_from_token(token)
     task = get_task_from_team_and_title(team.name, task_title)
     
-    task.status = status
+    task.set_status(status)
+    db.session.commit()
+    
     return {
         "task_id": task.id
     }
@@ -94,7 +99,8 @@ def task_update_due_date(token, task_title, due_date):
     team = get_team_from_token(token)
     task = get_task_from_team_and_title(team.name, task_title)
 
-    task.due_date = due_date
+    task.set_due_date(due_date)
+    db.session.commit()
     return {
         "task_id": task.id
     }
@@ -104,8 +110,8 @@ def task_update_assignee(token, task_title, assignee_email):
     team = get_team_from_token(token)
     task = get_task_from_team_and_title(team.name, task_title)
 
-    task.assignee_email = assignee_email
-    
+    task.set_assignee_email(assignee_email)
+    db.session.commit()
     return {
         "task_id": task.id
     }
@@ -118,14 +124,16 @@ def task_search(token, query_string):
     
     # Loop through every task in the user's team task board, add matching task names
     # to the list
-    tasks = Task.query.filter_by(team_id=user.team_id)
-    team = Team.query.filter_by(id=user.team_id)
+    tasks = Task.query.filter_by(team_id=user.team_id).all()
+    team = Team.query.filter_by(id=user.team_id).first()
     task_titles = []
     for task in tasks:
         task_titles.append(task.title)
     
     for task_title in task_titles:
         if query_string in task_title:
+            print(query_string + '\\\\\\\\')
+            print(task_title)
             task = Task.query.filter_by(team_id=user.team_id,title=task_title).first()
             assignee = get_user_from_email(task.assignee_email)
             matching_tasks.append(
@@ -151,22 +159,60 @@ def task_search(token, query_string):
 
 # Helper function to return a task object given its title and the team name from which it belongs.
 def get_task_from_team_and_title(team_name, task_title):
+    if team_name not in get_active_teams():
+        raise InputError('invalid team name')
+    if task_title not in get_active_task_titles():
+        print(task_title)
+        print(get_active_task_titles())
+        raise InputError('invalid task title')
     team = get_team_from_team_name(team_name)
     return Task.query.filter_by(team_id=team.id,title=task_title).first()
     
 # Helper function to returns a team object given the team name.
 def get_team_from_team_name(team_name):
+    if team_name not in get_active_teams():
+        raise InputError('invalid team name')
     return Team.query.filter_by(name=team_name).first()
     
 # Helper function to return a team object given the team id.
 def get_team_from_team_id(team_id):
+    if team_id not in get_active_team_ids():
+        raise InputError('invalid team id')
     return Team.query.filter_by(id=team_id).first()
     
 # Helper function to return a team object given a token.
 def get_team_from_token(token):
+    if token not in get_active_tokens():
+        raise InputError('Token failure: user could not be found')
     user = get_user_from_token(token)
     return Team.query.filter_by(id=user.team_id).first()
 
 def get_user_and_team_from_token(token):
+    if token not in get_active_tokens():
+        raise InputError('Token failure: user could not be found')
     user = get_user_from_token(token)
     return get_user_from_token(token), get_team_from_team_id(user.team_id)
+
+def get_active_teams():
+    active_teams = []
+    team_list = Team.query.all()
+    for team in team_list:
+        active_teams.append(team.name)
+        
+    return active_teams
+
+def get_active_task_titles():
+    active_task_titles = []
+    task_list = Task.query.all()
+    for task in task_list:
+        active_task_titles.append(task.title)
+        
+    return active_task_titles
+
+def get_active_team_ids():
+    active_team_ids = []
+    team_list = Team.query.all()
+    for team in team_list:
+        active_team_ids.append(team.id)
+
+    return active_team_ids
