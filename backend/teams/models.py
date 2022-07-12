@@ -11,7 +11,7 @@ class User(db.Model):
     team_id = db.Column(db.Integer) 
     
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}')"
+        return f"User('{self.id}', '{self.username}', '{self.email}', '{self.team_id}')"
     
     def hash_password(self, password):
         self.password_hash = sha256(password.encode()).hexdigest()
@@ -21,7 +21,12 @@ class User(db.Model):
     
     def set_status(self,status):
         self.status = status
-    
+
+    def set_team_id(self,team_id):
+        self.team_id = team_id
+
+    def set_password(self,password):
+        self.password = password
 
 class Token(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -45,6 +50,12 @@ class Team(db.Model):
     
     def __repr__(self):
         return f"Team('{self.name}')"
+    
+    def set_name(self,name):
+        self.name = name
+    
+    def set_task_master_id(self, task_master_id):
+        self.task_master_id = task_master_id
 
 class Task(db.Model):
     id = db.Column(db.Integer,primary_key=True)

@@ -13,6 +13,7 @@ from teams.auth_passwordreset import (
 from teams.task import (
     task_add,
     task_delete,
+    task_search,
     task_update_name,
     task_update_description,
     task_update_priority,
