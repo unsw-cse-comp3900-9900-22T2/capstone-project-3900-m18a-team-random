@@ -54,7 +54,9 @@ def auth_logout(jwt_token):
     user_id = get_user_id_from_token(jwt_token)
     user = db.session.query(User).filter_by(id=user_id).first()
     user.set_status(OFFLINE)
-    
+    db.session.add(user)
+    db.session.commit()
+
     # Remove token from database
     if token_to_remove is not None:
         is_success = True
@@ -159,8 +161,8 @@ def get_user_from_id(id):
 
 # Helper function to return a user object from a token
 def get_user_from_token(token):
-    jwt_token = token.jwt_token
-    jwt_token = jwt_decode(jwt_token)
+    #jwt_token = token.jwt_token
+    jwt_token = jwt_decode(token)
     user_id = jwt_token["id"]
     
     user = User.query.filter_by(id=user_id).first()
