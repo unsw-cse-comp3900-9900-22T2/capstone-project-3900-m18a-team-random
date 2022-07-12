@@ -14,7 +14,6 @@ import jwt
 
 # Create a team and add to the database.
 def team_create(token, team_name):
-    token = db.session.query(Token).filter_by(jwt_token=token).first()
     user = get_user_from_token(token)
     
     # Check that there are no existing teams with the specified team name.
@@ -37,7 +36,6 @@ def team_create(token, team_name):
 
 # Delete a team from the database.
 def team_delete(token):
-    token = db.session.query(Token).filter_by(jwt_token=token).first()
     user, team = get_user_and_team_from_token(token)
     if team is None:
         raise AccessError('the team does not exist')
@@ -58,12 +56,12 @@ def team_delete(token):
         
     # Delete the team
     team = db.session.query(Team).filter_by(id=team.id).delete()
+    db.session.commit()
 
     return {}
 
 # Update the task master.
 def team_update_task_master(token, new_task_master_email):
-    token = db.session.query(Token).filter_by(jwt_token=token).first()
     user, team = get_user_and_team_from_token(token)
     new_task_master = get_user_from_email(new_task_master_email)
 
@@ -80,7 +78,6 @@ def team_update_task_master(token, new_task_master_email):
     
 # Update the team name.
 def team_update_team_name(token, new_team_name):
-    token = db.session.query(Token).filter_by(jwt_token=token).first()
     user, team = get_user_and_team_from_token(token)
 
     # Only the task master of the team can update the team name.
@@ -93,7 +90,6 @@ def team_update_team_name(token, new_team_name):
     
 # Add a team member by email address to your team.
 def team_add_team_member(token, member_email_address):
-    token = db.session.query(Token).filter_by(jwt_token=token).first()
     user, team = get_user_and_team_from_token(token)
     check_user_is_task_master(user,team)
     
@@ -109,7 +105,6 @@ def team_add_team_member(token, member_email_address):
     
 # Leave a team.
 def team_leave(token):
-    token = db.session.query(Token).filter_by(jwt_token=token).first()
     user = get_user_from_token(token)
     user.set_team_id(None)
     db.session.commit()
@@ -119,7 +114,6 @@ def team_leave(token):
     
 # Remove a team member from your team.
 def team_remove_member(token, member_email_address):
-    token = db.session.query(Token).filter_by(jwt_token=token).first()
     user, team = get_user_and_team_from_token(token)
     check_user_is_task_master(user,team)
 
@@ -138,7 +132,9 @@ def team_remove_member(token, member_email_address):
 
 # Helper function to check if a user is a task master of a team.
 def check_user_is_task_master(user, team):
-    print(user)
-    print(team)
+    if user is None:
+        raise InputError('Token failure: ticketmaster does not exist, please enter a correct ticketmaster')
+    if team is None:
+        raise InputError('The team does not exist.')
     if team.task_master_id != user.id:
         raise InputError('User does not have sufficient permissions.')

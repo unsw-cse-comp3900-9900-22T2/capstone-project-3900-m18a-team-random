@@ -168,6 +168,9 @@ def get_user_from_id(id):
 def get_user_from_token(token):
     if token is None:
         raise InputError('Token failure: user could not be found')
+    token = db.session.query(Token).filter_by(jwt_token=token).first()
+    if token is None:
+        raise InputError('Token failure: user could not be found')
     jwt_token = token.jwt_token
     jwt_token = jwt_decode(jwt_token)
     user_id = jwt_token["id"]
