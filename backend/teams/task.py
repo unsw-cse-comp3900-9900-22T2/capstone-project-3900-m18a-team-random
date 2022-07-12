@@ -41,6 +41,7 @@ def task_delete(token, task_title):
 
     # Delete the task
     Task.query.filter_by(id=task.id).delete()
+    db.session.commit()
     
     return {}
 
