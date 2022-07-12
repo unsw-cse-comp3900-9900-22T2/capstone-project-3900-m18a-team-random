@@ -1,6 +1,6 @@
 from hashlib import new
 from teams.error import InputError, AccessError
-from teams.models import User, Token, ResetCode, Team, Task
+from teams.models import User, Token, ResetCode, Team, Task, Comment
 from teams.auth import get_user_from_token, get_user_from_email, get_user_from_id
 from teams import db
 import jwt
