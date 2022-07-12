@@ -1,7 +1,6 @@
 Week 1
 Set up Jira and discussed with everyone what project to do.
 
-
 Week 2
 In last week, I set up our project’s programing environment,
 discussed our project topics with my teammates and we decided to do project 4(Task Manager System), 
@@ -21,6 +20,6 @@ We completed our lab demonstration for Sprint 1, but the result is not good, we 
 I will discuss with my teammate and decide how to refactor our project's backend, 
 and I will start to plan what algorithm need to use in "Task Analysis System".
 
-Week 6
-In week6, we almost finish to re-design our backend structure, but the implementation has some bugs need to be fixed. 
-For exmaple, the token should be decoded from byte to json, and the some functions are not fully work weel, I will fix these bugs in next week.
+Week 7
+In last two week, we almost finish to re-design our backend structure, but the implementation has some bugs need to be fixed. 
+For exmaple, the token should be decoded from byte to json, and the some functions are not fully work weel, I will fix these bugs in week 7.
