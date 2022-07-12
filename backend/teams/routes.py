@@ -38,6 +38,10 @@ from teams.comment import (
     comment_edit,
     comment_reply
 )
+from teams.profile import(
+    profile_get,
+    profile_add_description
+)
 import json
 from teams.MyEncoder import MyEncoder
 
@@ -60,7 +64,19 @@ def logout():
     data = request.get_json()
     return json.dumps(auth_logout(data["token"]))
     
-    
+# Profile Functions
+
+@app.route("/profile",methods=['POST'])
+def get_profile():
+    # token=request.args.get('token')
+    data = request.get_json()
+    return json.dumps(profile_get(data['token']))
+
+@app.route("/add_description",methods=['POST'])
+def add_description():
+    data = request.get_json()
+    return json.dumps(profile_add_description(data['token'],data['description']))
+
 # Password Reset Functions
     
 @app.route("/passwordreset/request",methods=['POST'])
