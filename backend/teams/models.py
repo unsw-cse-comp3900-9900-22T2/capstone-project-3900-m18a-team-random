@@ -69,6 +69,24 @@ class Team(db.Model):
     def set_task_master_id(self, task_master_id):
         self.task_master_id = task_master_id
 
+class UserTeamRelation(db.Model):
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    team_id = db.Column(nullable=False)
+
+    def __repr__(self):
+        return f"User_Team_Relation('{self.id}', '{self.user_id}', '{self.team_id}'')"
+
+    def set_user_id(self, user_id):
+        self.user_id = user_id
+    
+    def set_team_id(self,team_id):
+        self.team_id = team_id
+    
+    
+    
+
 class Task(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     title = db.Column(db.String(50), nullable=False)
