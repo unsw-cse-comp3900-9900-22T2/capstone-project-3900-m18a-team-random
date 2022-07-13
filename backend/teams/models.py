@@ -81,7 +81,25 @@ class Task(db.Model):
     
     def __repr__(self):
         return f"Task('{self.title}','{self.status}','{self.priority}'"
+    
+    def set_title(self, title):
+        self.title = title
+        
+    def set_description(self, description):
+        self.description = description
 
+    def set_status(self, status):
+        self.status = status
+    
+    def set_priority(self, priority):
+        self.priority = priority
+
+    def set_assignee_email(self, assignee_email):
+        self.assignee_email = assignee_email
+
+    def set_due_date(self, due_date):
+        self.due_date = due_date
+    
 class Comment(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     parent_id = db.Column(db.Integer)

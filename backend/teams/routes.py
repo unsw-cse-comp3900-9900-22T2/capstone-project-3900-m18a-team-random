@@ -114,10 +114,9 @@ def add_task():
 def delete_task():
     data = request.get_json()
     token = data['token']
-    team_name = data['team_name']
     task_title = data['task_title']
     
-    return json.dumps(task_delete(token, team_name, task_title))
+    return json.dumps(task_delete(token, task_title))
 
 @app.route('/update-task-name',methods=['POST'])
 def update_task_name():
