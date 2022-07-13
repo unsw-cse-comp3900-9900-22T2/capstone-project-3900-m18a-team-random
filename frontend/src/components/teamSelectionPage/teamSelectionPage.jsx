@@ -10,7 +10,7 @@ const TeamSelectionPage = () => {
     useEffect(() => {
         const fetchTeamData = async () => {
             console.log(token);
-            const response = await fetch('/login', {
+            const response = await fetch('/get_team', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -24,7 +24,6 @@ const TeamSelectionPage = () => {
                 })
             }
         }
-
         fetchTeamData();
     }, []);
 

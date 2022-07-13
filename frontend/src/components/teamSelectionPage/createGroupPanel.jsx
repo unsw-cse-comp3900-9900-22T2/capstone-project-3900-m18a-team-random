@@ -11,7 +11,7 @@ const CreateGroupPanel = ({email}) => {
         e.preventDefault();       
         const groupCreation = {'token':sessionStorage.getItem('token'), 'team_name': title};
         console.log(groupCreation);
-        const response = await fetch('/login', {
+        const response = await fetch('/create_team', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'

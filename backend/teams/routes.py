@@ -11,8 +11,10 @@ from teams.auth_passwordreset import (
     auth_password_reset
 )
 from teams.task import (
+    get_team_from_token,
     task_add,
     task_delete,
+    task_search,
     task_update_name,
     task_update_description,
     task_update_priority,
@@ -21,6 +23,7 @@ from teams.task import (
     task_update_assignee
 )
 from teams.team import (
+    get_team_from_user_token,
     team_create,
     team_delete,
     team_update_task_master,
@@ -34,6 +37,10 @@ from teams.comment import (
     comment_delete,
     comment_edit,
     comment_reply
+)
+from teams.profile import(
+    profile_get,
+    profile_add_description
 )
 import json
 from teams.MyEncoder import MyEncoder
@@ -57,7 +64,19 @@ def logout():
     data = request.get_json()
     return json.dumps(auth_logout(data["token"]))
     
-    
+# Profile Functions
+
+@app.route("/get_profile",methods=['POST'])
+def get_profile():
+    # token=request.args.get('token')
+    data = request.get_json()
+    return json.dumps(profile_get(data['token']))
+
+@app.route("/add_description",methods=['POST'])
+def add_description():
+    data = request.get_json()
+    return json.dumps(profile_add_description(data['token'],data['description']))
+
 # Password Reset Functions
     
 @app.route("/passwordreset/request",methods=['POST'])
@@ -141,7 +160,12 @@ def search_task():
 def create_team():
     data = request.get_json()
     return json.dumps(team_create(data['token'],data['team_name']))
-    
+
+@app.route('/get_team', methods=['GET','POST'])
+def get_team():
+    data = request.get_json()
+    return json.dumps(get_team_from_user_token(data['token']))
+
 @app.route('/delete_team', methods=['POST'])
 def delete_team():
     data = request.get_json()
