@@ -66,7 +66,7 @@ def logout():
     
 # Profile Functions
 
-@app.route("/profile",methods=['POST'])
+@app.route("/get_profile",methods=['POST'])
 def get_profile():
     # token=request.args.get('token')
     data = request.get_json()
