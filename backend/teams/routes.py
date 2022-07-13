@@ -188,7 +188,7 @@ def join_team():
 @app.route('/leave_team',methods=['POST'])
 def leave_team():
     data = request.get_json()
-    return json.dumps(team_leave(data['token']))
+    return json.dumps(team_leave(data['token'], data['team_id']))
     
 @app.route('/remove_team_member', methods=['POST'])
 def remove_team_member():
