@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PopupFab from '../popupFab';
 import CreateGroupPanel from './createGroupPanel';
 import Grid from '@mui/material/Grid';
@@ -6,6 +6,28 @@ import GroupCard from './groupCard';
 import { Box } from '@mui/system';
 
 const TeamSelectionPage = () => {
+    const token = {'token':sessionStorage.getItem('token')}
+    useEffect(() => {
+        const fetchTeamData = async () => {
+            console.log(token);
+            const response = await fetch('/login', {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(token)
+            });
+            
+            if(response.ok){
+                response.json().then(data =>{
+                    console.log(data);
+                })
+            }
+        }
+
+        fetchTeamData();
+    }, []);
+
     return (
         <Box mt={2}>
             <Grid container spacing={2}>

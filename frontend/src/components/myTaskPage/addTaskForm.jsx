@@ -26,7 +26,7 @@ const AddTaskForm = ({email}) => {
     }
 
     return (
-        <form>
+        <form onSubmit={handleCreateTask}>
             <Grid container spacing={2} direction='column' alignItems='center'>
                     <Grid item xs={12}>
                         <TextField label='Title' required onChange={e=>{setTitle(e.target.value)}}/>
@@ -38,7 +38,7 @@ const AddTaskForm = ({email}) => {
                         <TextField required type='date'/>
                     </Grid> 
                     <Grid item>
-                        <Button variant='contained'>Create Task</Button>
+                        <Button type='submit' variant='contained'>Create Task</Button>
                     </Grid>
             </Grid>
         </form>

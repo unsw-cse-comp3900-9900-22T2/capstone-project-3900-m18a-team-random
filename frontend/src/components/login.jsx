@@ -25,29 +25,29 @@ const Login = () => {
                 navigate("home");
             })
         } else {
-            alert("Invalid email or password. Please enter the correct email or password");
+            alert("Please enter a valid email or password");
         }
     }
 
     return (
         <form onSubmit={handleLogin}>
             <Grid container 
-                spacing={1}
+                spacing={2}
                 minHeight="40vh" 
                 direction="column" 
                 alignItems="center" 
                 justifyContent="center">
                 <h2>Sign in</h2>
-                    <Grid item>
-                        <TextField label='Email' type='email' required onChange={e=>{setEmail(e.target.value)}}/>
-                    </Grid>
-                    <Grid item>
-                        <TextField label='Password' type='password' required onChange={e=>{setPassword(e.target.value)}}/>
-                    </Grid>
-                    <Grid item>
-                        <Button color='secondary' onClick={()=>{navigate("/register")}}>Register</Button>
-                        <Button type='submit' color='primary'>Sign in</Button>
-                    </Grid>
+                <Grid item>
+                    <TextField label='Email' type='email' required onChange={e=>{setEmail(e.target.value)}}/>
+                </Grid>
+                <Grid item>
+                    <TextField label='Password' type='password' required onChange={e=>{setPassword(e.target.value)}}/>
+                </Grid>
+                <Grid item>
+                    <Button color='secondary' onClick={()=>{navigate("/register")}}>Register</Button>
+                    <Button type='submit' color='primary'>Sign in</Button>
+                </Grid>
             </Grid>
         </form>
     )

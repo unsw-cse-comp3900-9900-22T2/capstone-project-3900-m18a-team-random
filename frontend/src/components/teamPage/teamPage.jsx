@@ -7,7 +7,7 @@ import MyTaskPage from '../myTaskPage/myTaskPage';
 import MemberPage from '../memberPage/memberPage';
 import MyTask from '../myTaskPage/myTask';
 import Members from '../memberPage/members';
-import HistoryPage from '../historyPage';
+import HistoryPage from '../history/historyPage';
 
 const TeamPage = ()=>{
     return (
