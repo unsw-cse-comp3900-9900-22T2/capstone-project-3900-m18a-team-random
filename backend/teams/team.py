@@ -16,7 +16,8 @@ import jwt
 def get_team_from_user_token(token):
     user = get_user_from_token(token)
     team_info = Team.query.filter_by(id=user.team_id).first()
-    return {"team_id": team_info.id, "team_name":team_info.name,"team_task_master_id":team_info.task_master_id}
+    resp = {"team_id": team_info.id, "team_name":team_info.name,"team_task_master_id":team_info.task_master_id}
+    return resp
 
 # Create a team and add to the database.
 def team_create(token, team_name):
