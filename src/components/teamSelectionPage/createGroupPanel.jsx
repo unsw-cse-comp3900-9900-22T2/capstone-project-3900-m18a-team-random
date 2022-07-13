@@ -7,15 +7,16 @@ const CreateGroupPanel = ({email}) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
-    const handleCreateTask = async (e) => {
+    const handleCreateGroup = async (e) => {
         e.preventDefault();       
-        
+        const groupCreation = {'token':sessionStorage.getItem('token'), 'team_name': title};
+        console.log(groupCreation);
         const response = await fetch('/login', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
             },
-            body: JSON.stringify()
+            body: JSON.stringify(groupCreation)
         });
 
         if(response.ok){
@@ -25,16 +26,16 @@ const CreateGroupPanel = ({email}) => {
     }
 
     return (
-        <form>
+        <form onSubmit={handleCreateGroup}>
             <Grid container spacing={2} direction='column' alignItems='center'>
                     <Grid item xs={12}>
                         <TextField label='Group Name' required onChange={e=>{setTitle(e.target.value)}}/>
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField label='Description' required multiline minRows={3} onChange={e=>setDescription(e.target.value)}/>
+                        <TextField label='Description' multiline minRows={3} onChange={e=>setDescription(e.target.value)}/>
                     </Grid>
                     <Grid item>
-                        <Button variant='contained'>Create</Button>
+                        <Button type='submit' variant='contained'>Create</Button>
                     </Grid>
             </Grid>
         </form>

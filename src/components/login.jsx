@@ -2,7 +2,7 @@ import { Button, Grid, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-const Login = ({setUserEmail}) => {
+const Login = () => {
     let navigate = useNavigate();
 
     const [email, setEmail] = useState("");
@@ -20,10 +20,12 @@ const Login = ({setUserEmail}) => {
         });
 
         if(response.ok){
-            setUserEmail(email);
-            navigate("home");
+            response.json().then(data =>{
+                sessionStorage.setItem("token", data['token'])
+                navigate("home");
+            })
         } else {
-            alert("Registration failed");
+            alert("Please enter a valid email or password");
         }
     }
 

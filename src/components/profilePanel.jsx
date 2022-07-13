@@ -28,10 +28,33 @@ const ProfilePanel = ({email}) => {
         <form>
             <Grid container spacing={2} direction='column' alignItems='center'>
                 <Grid item xs={12}>
-                    <TextField label='Name' value='Kai' required onChange={e=>{setTitle(e.target.value)}}/>
+                    <TextField 
+                    label='Name' 
+                    value='Kai' 
+                    required 
+                    onChange={e=>{setTitle(e.target.value)}}
+                    />
                 </Grid>
                 <Grid item xs={12}>
-                    <TextField label='Email' value='Kai@cc.com' required onChange={e=>setDescription(e.target.value)}/>
+                    <TextField 
+                    label='Email' 
+                    value='Kai@cc.com' 
+                    required 
+                    onChange={e=>setDescription(e.target.value)}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField 
+                    label='Description' 
+                    value='No description here!'
+                    required 
+                    multiline 
+                    minRows={3} 
+                    onChange={e=>setDescription(e.target.value)}
+                    />
+                </Grid>
+                <Grid item>
+                    <Button variant='contained'>Confirm</Button>
                 </Grid>
             </Grid>
         </form>
