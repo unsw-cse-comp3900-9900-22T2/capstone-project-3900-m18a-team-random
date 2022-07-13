@@ -16,6 +16,8 @@ import jwt
 def get_team_from_user_token(token):
     user = get_user_from_token(token)
     team_info = Team.query.filter_by(id=user.team_id).first()
+    if (team_info.id is None):
+        resp = {"team_id": "", "team_name":team_info.name,"team_task_master_id":team_info.task_master_id}
     resp = {"team_id": team_info.id, "team_name":team_info.name,"team_task_master_id":team_info.task_master_id}
     return resp
 
