@@ -15,12 +15,16 @@ import jwt
 # From user token get team infromation
 def get_team_from_user_token(token):
     user = get_user_from_token(token)
-    team_info = Team.query.filter_by(id=user.team_id).first()
-    if (team_info is None):
-        resp = {"team":"{}"}
-    else:
-        resp = {"team_id": team_info.id, "team_name":team_info.name,"team_task_master_id":team_info.task_master_id}
-    return resp
+    relation_info = UserTeamRelation.query.filter_by(user_id=user.id).all()
+    team_list = []
+    for relation in relation_info:
+        team_info = Team.query.filter_by(id = relation.team_id).first()
+        if (team_info is None):
+            resp = {"team":"{}"}
+        else:
+            resp = {"team_id": team_info.id, "team_name":team_info.name,"team_task_master_id":team_info.task_master_id}
+        team_list.append(resp)
+    return {"team_list":team_list}
 
 # Create a team and add to the database.
 def team_create(token, team_name):
@@ -35,8 +39,8 @@ def team_create(token, team_name):
     db.session.add(team)
     db.session.commit()
     #fill team id attribute in user object
-    user.set_team_id(team.id)
-    db.session.commit()
+    #user.set_team_id(team.id)
+    #db.session.commit()
     
     # add relation into user_team relation table
     relation = UserTeamRelation(user_id=user.id,team_id=team.id)
@@ -55,10 +59,10 @@ def team_delete(token):
     check_user_is_task_master(user,team)
     
     # Unassign all members from the team
-    team_members = User.query.filter_by(team_id=team.id).all()
-    for team_member in team_members:
-        team_member.set_team_id(None)
-        db.session.commit()
+    #team_members = User.query.filter_by(team_id=team.id).all()
+    #for team_member in team_members:
+        #team_member.set_team_id(None)
+        #db.session.commit()
     
     # Remove all tasks
     tasks = Task.query.filter_by(team_id=team.id)
