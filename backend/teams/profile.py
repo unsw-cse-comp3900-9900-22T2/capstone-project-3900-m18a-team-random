@@ -6,7 +6,6 @@ import sys
 import random
 from teams.models import UserProfile, Token, ResetCode, Team, Task
 from teams.auth import get_user_from_token, get_user_from_email
-from teams.task import get_user_and_team_from_token
 import re
 from teams import db
 import jwt

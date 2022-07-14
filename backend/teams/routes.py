@@ -168,22 +168,22 @@ def get_team():
 @app.route('/delete_team', methods=['POST'])
 def delete_team():
     data = request.get_json()
-    return json.dumps(team_delete(data['token']))
+    return json.dumps(team_delete(data['token'],data['team_name']))
 
 @app.route('/update_task_master', methods=['POST'])
 def update_task_master():
     data = request.get_json()
-    return json.dumps(team_update_task_master(data['token'],data['new_task_master_email']))
+    return json.dumps(team_update_task_master(data['token'],data['new_task_master_email'],data['team_name']))
     
 @app.route('/update_team_name', methods=['POST'])
 def update_team_name():
     data = request.get_json()
-    return json.dumps(team_update_team_name(data['token'],data['new_team_name']))
+    return json.dumps(team_update_team_name(data['token'],data['new_team_name'],data['old_team_name']))
 
 @app.route('/add_team_member', methods=['POST'])
 def join_team():
     data = request.get_json()
-    return json.dumps(team_add_team_member(data['token'],data['member_email_address']))
+    return json.dumps(team_add_team_member(data['token'],data['member_email_address'],data['team_name']))
     
 @app.route('/leave_team',methods=['POST'])
 def leave_team():
