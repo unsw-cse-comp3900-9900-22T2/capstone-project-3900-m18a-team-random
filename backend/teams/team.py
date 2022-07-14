@@ -5,7 +5,7 @@ import sys
 import random
 from teams.models import User, Token, ResetCode, Team, Task, UserTeamRelation
 from teams.auth import get_user_from_token, get_user_from_email
-from teams.task import get_user_and_team_from_token
+from teams.task import get_team_from_team_name
 import re
 from teams import db
 import jwt
@@ -51,8 +51,9 @@ def team_create(token, team_name):
     }
 
 # Delete a team from the database.
-def team_delete(token):
-    user, team = get_user_and_team_from_token(token)
+def team_delete(token,team_name):
+    user = get_user_from_token(token)
+    team = get_team_from_team_name(team_name)
     if team is None:
         raise AccessError('the team does not exist')
     # Only the task master of the team can delete the team.
@@ -84,8 +85,9 @@ def team_delete(token):
     return {}
 
 # Update the task master.
-def team_update_task_master(token, new_task_master_email):
-    user, team = get_user_and_team_from_token(token)
+def team_update_task_master(token, new_task_master_email, team_name):
+    user = get_user_from_token(token)
+    team = get_team_from_team_name(team_name)
     new_task_master = get_user_from_email(new_task_master_email)
 
     # Only the task master of the team can choose the task master.
@@ -100,8 +102,9 @@ def team_update_task_master(token, new_task_master_email):
     }
     
 # Update the team name.
-def team_update_team_name(token, new_team_name):
-    user, team = get_user_and_team_from_token(token)
+def team_update_team_name(token, new_team_name, old_team_name):
+    user = get_user_from_token(token)
+    team = get_team_from_team_name(old_team_name)
 
     # Only the task master of the team can update the team name.
     check_user_is_task_master(user,team)
@@ -112,8 +115,9 @@ def team_update_team_name(token, new_team_name):
     }
     
 # Add a team member by email address to your team.
-def team_add_team_member(token, member_email_address):
-    user, team = get_user_and_team_from_token(token)
+def team_add_team_member(token, member_email_address,team_name):
+    user = get_user_from_token(token)
+    team = get_team_from_team_name(team_name)
     check_user_is_task_master(user,team)
     
     team_member = get_user_from_email(member_email_address)
@@ -153,8 +157,9 @@ def team_leave(token,team_id):
     }
     
 # Remove a team member from your team.
-def team_remove_member(token, member_email_address):
-    user, team = get_user_and_team_from_token(token)
+def team_remove_member(token, member_email_address, team_name):
+    user = get_user_from_token(token)
+    team = get_team_from_team_name(team_name)
     check_user_is_task_master(user,team)
 
     # Task master can't remove themselves.

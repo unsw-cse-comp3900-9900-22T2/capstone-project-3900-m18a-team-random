@@ -1,6 +1,6 @@
 from hashlib import new
 from teams.error import InputError, AccessError
-from teams.models import User, Token, ResetCode, Team, Task
+from teams.models import User, Token, ResetCode, Team, Task, UserTeamRelation
 from teams.auth import get_active_tokens, get_user_from_token, get_user_from_email
 from teams import db
 import jwt
@@ -185,13 +185,12 @@ def get_team_from_token(token):
     if token not in get_active_tokens():
         raise InputError('Token failure: user could not be found')
     user = get_user_from_token(token)
-    return Team.query.filter_by(id=user.team_id).first()
-
-def get_user_and_team_from_token(token):
-    if token not in get_active_tokens():
-        raise InputError('Token failure: user could not be found')
-    user = get_user_from_token(token)
-    return get_user_from_token(token), get_team_from_team_id(user.team_id)
+    relation_info = UserTeamRelation.query.filter_by(user_id=user.id).all()
+    team_list = []
+    for relation in relation_info:
+        team = Team.query.filter_by(id = relation.team_id).first()
+        team_list.append(team)
+    return team_list
 
 def get_active_teams():
     active_teams = []
