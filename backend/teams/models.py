@@ -84,8 +84,12 @@ class UserTeamRelation(db.Model):
     def set_team_id(self,team_id):
         self.team_id = team_id
     
-    
-    
+class Epic(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    epic_name = db.Column(db.String(120), nullable=False)   
+
+    def __repr__(self):
+        return f"Task('{self.id}','{self.epic_name}'"
 
 class Task(db.Model):
     id = db.Column(db.Integer,primary_key=True)
@@ -96,6 +100,7 @@ class Task(db.Model):
     assignee_email = db.Column(db.String(120),db.ForeignKey(User.email))
     due_date = db.Column(db.String(120))
     team_id = db.Column(db.Integer,db.ForeignKey(Team.id))
+    epic_id = db.Column(db.Integer,db.ForeignKey(Epic.id))
     
     def __repr__(self):
         return f"Task('{self.title}','{self.status}','{self.priority}'"
@@ -117,6 +122,9 @@ class Task(db.Model):
 
     def set_due_date(self, due_date):
         self.due_date = due_date
+    
+    def set_epic_id(self, epic_id):
+        self.epic_id = epic_id
     
 class Comment(db.Model):
     id = db.Column(db.Integer,primary_key=True)

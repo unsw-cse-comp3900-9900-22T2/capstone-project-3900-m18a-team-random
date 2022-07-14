@@ -42,6 +42,10 @@ from teams.profile import(
     profile_get,
     profile_add_description
 )
+from teams.epic import(
+    epic_create
+)
+
 import json
 from teams.MyEncoder import MyEncoder
 
@@ -89,7 +93,11 @@ def reset_password():
     data = request.get_json()
     return json.dumps(auth_password_reset(data['password_reset_code'], data['new_password']))
     
-
+# Epic Functions
+@app.route("/create-epic",methods=['POST'])
+def create_epic():
+    data = request.get_json()
+    return json.dumps(epic_create(data['token'],data['epic']))
 # Task Functions
 
 @app.route('/add-task', methods=['POST'])
@@ -98,7 +106,8 @@ def add_task():
     title = data['title']
     status = data['status']
     priority = data['priority']
-    
+    team_name = data['team_name']
+    epic_id = data['epic_id']
     if 'assignee_email' in data.keys():
         assignee_email = data['assignee_email']
     else:
@@ -108,15 +117,16 @@ def add_task():
     due_date = data['due_date']
     token = data['token']
     
-    return json.dumps(task_add(token,title,status,priority,assignee_email,due_date))
+    return json.dumps(task_add(token,title,status,priority,assignee_email,due_date,team_name,epic_id))
 
 @app.route('/delete-task', methods=['POST'])
 def delete_task():
     data = request.get_json()
     token = data['token']
     task_title = data['task_title']
+    team_name = data['team_name']
     
-    return json.dumps(task_delete(token, task_title))
+    return json.dumps(task_delete(token, task_title, team_name))
 
 @app.route('/update-task-name',methods=['POST'])
 def update_task_name():
