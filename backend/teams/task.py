@@ -1,6 +1,6 @@
 from hashlib import new
 from teams.error import InputError, AccessError
-from teams.models import User, Token, ResetCode, Team, Task, UserTeamRelation
+from teams.models import User, Token, ResetCode, Team, Task, UserTeamRelation, Epic
 from teams.auth import get_active_tokens, get_user_from_token, get_user_from_email
 from teams import db
 import jwt
@@ -8,21 +8,28 @@ import jwt
 ## MAIN FUNCTIONS
 
 # Create a Task and add it to the database.
-def task_add(token, title, status, priority, email, due_date):
+def task_add(token, title, status, priority, email, due_date, team_name, epic_id):
     user = get_user_from_token(token)
 
-    if user.team_id is None:
+    team = get_team_from_team_name(team_name)
+    relation = db.session.query(UserTeamRelation).filter_by(user_id=user.id,team_id=team.id).first()
+    if relation is None:
         raise InputError('Task creation failed: User must be in a team in order to create a task.')
 
     # If there is no assignee specified, assign the task to the user
     if email == 'creator':
         email = user.email
     
+    # If epic_id is not exist, raise input error
+    epic = db.session.query(Epic).filter_by(id=epic_id).first()
+    if epic is None:
+        raise InputError("epic is not exist")
+    
     # Check that the task name is unique within the Team task board that it was created in.
     if Task.query.filter_by(title=title,team_id=user.team_id).first() is not None:
         raise InputError('Task creation failed: a task with the same title already exists.')
     
-    task = Task(title=title,status=status,priority=priority,assignee_email=email,due_date=due_date,team_id=user.team_id)
+    task = Task(title=title,status=status,priority=priority,assignee_email=email,due_date=due_date,team_id=team.id,epic_id=epic_id)
     db.session.add(task)
     db.session.commit()
     
@@ -31,9 +38,9 @@ def task_add(token, title, status, priority, email, due_date):
     }
 
 # Given the task's title, delete the task from the database.
-def task_delete(token, task_title):
+def task_delete(token, task_title, team_name):
     user = get_user_from_token(token)
-    team = get_team_from_team_id(user.team_id)
+    team = get_team_from_team_name(team_name)
     
     task = get_task_from_team_and_title(team.name, task_title)
     if task is None:
