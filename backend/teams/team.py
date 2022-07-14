@@ -93,7 +93,7 @@ def team_update_task_master(token, new_task_master_email):
         
     team.set_task_master_id(new_task_master.id)
     db.session.commit()
-    new_task_master.set_team_id(team.id)
+    #new_task_master.set_team_id(team.id)
     db.session.commit()
     return {
         "team_id": team.id
