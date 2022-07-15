@@ -77,7 +77,7 @@ def get_profile():
     return json.dumps(profile_get(data['token']))
 
 @app.route("/profile_add_description",methods=['POST'])
-def add_description():
+def profile_description():
     data = request.get_json()
     return json.dumps(profile_add_description(data['token'],data['description']))
 

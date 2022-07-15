@@ -72,6 +72,7 @@ def auth_logout(jwt_token):
 
 # Logs in a user given their email and password. Generates a new token if necessary.
 def auth_login(email, password):
+    print(email, password,login_details_are_correct(email, password))
     if login_details_are_correct(email, password):
         user = get_user_from_email(email)
         user.set_status(ONLINE)
@@ -94,7 +95,6 @@ def auth_login(email, password):
             active_token = token.jwt_token
             db.session.add(token)
             db.session.commit()
-        
         response = {
             "u_id": user_id,
             "token": active_token
