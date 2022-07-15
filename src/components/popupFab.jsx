@@ -79,7 +79,7 @@ const PopupFab = ({title, style, color, size, children}) => {
                 {title}
             </BootstrapDialogTitle>
             <DialogContent dividers>
-                {children}
+                {React.cloneElement(children, {close: handleClose})}
             </DialogContent>
           </BootstrapDialog>
         </div>

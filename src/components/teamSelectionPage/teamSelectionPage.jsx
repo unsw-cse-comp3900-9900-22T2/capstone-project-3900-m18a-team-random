@@ -48,7 +48,7 @@ const TeamSelectionPage = () => {
             }}
             title='New Group'
             >
-                <CreateGroupPanel/>
+                <CreateGroupPanel onNewTeam={team=>setTeams(currentTeams=>[...currentTeams,team])}/>
             </PopupFab>
         </Box>
     )

@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-const CreateGroupPanel = ({email}) => {
+const CreateGroupPanel = ({onNewTeam, close}) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
@@ -20,6 +20,11 @@ const CreateGroupPanel = ({email}) => {
         });
 
         if(response.ok){
+            response.json().then(data =>{
+                console.log(data);
+                onNewTeam(data);
+                close();
+            })
         } else {
             
         }
@@ -28,15 +33,15 @@ const CreateGroupPanel = ({email}) => {
     return (
         <form onSubmit={handleCreateGroup}>
             <Grid container spacing={2} direction='column' alignItems='center'>
-                    <Grid item xs={12}>
-                        <TextField label='Group Name' required onChange={e=>{setTitle(e.target.value)}}/>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField label='Description' multiline minRows={3} onChange={e=>setDescription(e.target.value)}/>
-                    </Grid>
-                    <Grid item>
-                        <Button type='submit' variant='contained'>Create</Button>
-                    </Grid>
+                <Grid item xs={12}>
+                    <TextField label='Group Name' required onChange={e=>{setTitle(e.target.value)}}/>
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField label='Description' multiline minRows={3} onChange={e=>setDescription(e.target.value)}/>
+                </Grid>
+                <Grid item>
+                    <Button type='submit' variant='contained'>Create</Button>
+                </Grid>
             </Grid>
         </form>
     )
