@@ -1,8 +1,8 @@
 from hashlib import new
-from backend.teams import epic
+from teams import epic
 from teams.error import InputError, AccessError
 from teams.models import User, Token, ResetCode, Team, Task, UserTeamRelation, Epic
-from teams.auth import get_active_tokens, get_user_from_token, get_user_from_email
+from teams.auth import get_active_emails, get_active_tokens, get_user_from_token, get_user_from_email
 from teams import db
 import jwt
 
@@ -10,29 +10,29 @@ import jwt
 
 # Create a Task and add it to the database.
 def task_add(token, title, status, description, priority, email, due_date, team_name, epic_id):
-    if token is None:
+    if token  == "":
         raise InputError('Task creation failed: you must fill out every field')
-    if title is None:
+    if title  == "":
         raise InputError('Task creation failed: you must enter a title')
-    if status is None:
+    if status  == "":
         raise InputError('Task creation failed: you must enter a status')
-    if description is None:
+    if description  == "":
         raise InputError('Task creation failed: you must enter a description')
-    if priority is None:
+    if priority  == "":
         raise InputError('Task creation failed: you must enter a priority')
-    if email is None:
+    if email  == "":
         raise InputError('Task creation failed: you must enter an email')
-    if due_date is None:
+    if due_date  == "":
         raise InputError('Task creation failed: you must enter a due date')
-    if team_name is None:
+    if team_name  == "":
         raise InputError('Task creation failed: you must enter a team name')
-    if epic_id is None:
+    if epic_id  == "":
         raise InputError('Task creation failed: you must enter an epic id')
     user = get_user_from_token(token)
     team = get_team_from_team_name(team_name)
     relation = db.session.query(UserTeamRelation).filter_by(user_id=user.id,team_id=team.id).first()
     if relation is None:
-        raise InputError('Task creation failed: User must be in a team in order to create a task.')
+        raise InputError(f'Task creation failed: User is not a member of {team_name}')
 
     # If there is no assignee specified, assign the task to the user
     
@@ -40,12 +40,13 @@ def task_add(token, title, status, description, priority, email, due_date, team_
         email = user.email
     
     # If epic_id is not exist, raise input error
-    epic = db.session.query(Epic).filter_by(id=epic_id).first()
+    epic = db.session.query(Epic).filter_by(id=int(epic_id)).first()
     if epic is None:
         raise InputError("epic does not exist")
-    
+    if epic.team_name != team.name:
+        raise InputError("epic does not belong to this team")
     # Check that the task name is unique within the Team task board that it was created in.
-    if Task.query.filter_by(title=title,team_id=user.team_id).first() is not None:
+    if Task.query.filter_by(title=title,team_id=team.id).first() is not None:
         raise InputError('Task creation failed: a task with the same title already exists.')
     get_user_from_email(email)
     task = Task(title=title,status=status, description=description, priority=priority,assignee_email=email,due_date=due_date,team_id=team.id,epic_id=epic_id)
@@ -123,44 +124,44 @@ def task_update_assignee(task, assignee_email):
 
 # updates the epic of a task.
 def task_update_epic(task, epic_id):
-    if epic_id not in get_epic_ids():
+    if int(epic_id) not in get_epic_ids():
         raise InputError('epic does not exist')
-    task.set_epic_id(epic_id)
+    task.set_epic_id(int(epic_id))
     db.session.commit()
     return {
         "task_id": task.id
     }
 #update everything
-def task_update_all(token, title, status, priority, email, due_date, epic_id, description):
-    if token is None:
+def task_update_all(token, title, new_title, status, priority, email, due_date, epic_id, description):
+    if token  == "" or token not in get_active_tokens():
         raise InputError('Task update failed: invalid token')
-    if title is None:
+    if title  == "":
         raise InputError('Task update failed: you must enter a title')
-    if status is None:
+    if status  == "":
         raise InputError('Task update failed: you must enter a status')
-    if description is None:
+    if description  == "":
         raise InputError('Task update failed: you must enter a description')
-    if priority is None:
+    if priority  == "":
         raise InputError('Task update failed: you must enter a priority')
-    if email is None:
-        raise InputError('Task update failed: you must enter an email')
-    if due_date is None:
+    if email == "" or email not in get_active_emails():
+        raise InputError('Task update failed: you must enter a correct email')
+    if due_date  == "":
         raise InputError('Task update failed: you must enter a due date')
-    if epic_id is None:
-        raise InputError('Task update failed: you must enter an epic id')
-    team = get_team_from_epic_id(epic_id)
+    if epic_id  == "" or int(epic_id) not in get_epic_ids():
+        raise InputError('Task update failed: you must enter a correct epic id')
+    team = get_team_from_epic_id(int(epic_id))
     if team not in get_team_from_token(token):
         raise AccessError('this user is not in the team to modify this task')
-    task = get_task_from_epid_id(epic_id)
+    task = get_task_from_epid_id(epic_id, title)
     if task is None:
         raise AccessError('task update failed: task can not be found')
-    task_update_name(task, title, team)
+    task_update_name(task, new_title, team)
     task_update_status(task, status)
     task_update_assignee(task, email)
     task_update_priority(task, priority)
     task_update_description(task, description)
     task_update_due_date(task, due_date)
-    task_update_epic(task, epic_id)
+    task_update_epic(task, int(epic_id))
 # Search for all tasks within a user's team task board.
 def task_search(token, query_string):
     user = get_user_from_token(token)
@@ -210,9 +211,9 @@ def get_task_from_team_and_title(team_name, task_title):
     return Task.query.filter_by(team_id=team.id,title=task_title).first()
 
 def get_team_from_epic_id(epic_id):
-    if epic_id not in get_epic_ids():
+    if int(epic_id) not in get_epic_ids():
         raise InputError('invalid epic id')
-    epic = Epic.query.filter_by(epic_id=epic_id).first()
+    epic = Epic.query.filter_by(id=int(epic_id)).first()
     team = get_team_from_team_name(epic.team_name)
     if team is None:
         raise InputError('team is not found with this epic id')
@@ -220,7 +221,7 @@ def get_team_from_epic_id(epic_id):
 
 
 def get_task_from_epid_id(epic_id, task_title):
-    if epic_id not in get_epic_ids():
+    if int(epic_id) not in get_epic_ids():
         raise InputError('invalid epic id')
     if task_title not in get_active_task_titles():
         raise InputError('invalid task title')
