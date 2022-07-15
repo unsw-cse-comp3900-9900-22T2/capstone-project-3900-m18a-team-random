@@ -38,6 +38,7 @@ const ProfilePanel = ({email}) => {
                 <Grid item xs={12}>
                     <TextField 
                     label='Email' 
+                    type='email'
                     value='Kai@cc.com' 
                     required 
                     onChange={e=>setDescription(e.target.value)}
@@ -54,7 +55,7 @@ const ProfilePanel = ({email}) => {
                     />
                 </Grid>
                 <Grid item>
-                    <Button variant='contained'>Confirm</Button>
+                    <Button type='submit' variant='contained'>Confirm</Button>
                 </Grid>
             </Grid>
         </form>
