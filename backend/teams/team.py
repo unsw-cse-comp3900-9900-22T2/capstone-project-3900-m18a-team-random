@@ -20,11 +20,11 @@ def get_team_from_user_token(token):
     for relation in relation_info:
         team_info = Team.query.filter_by(id = relation.team_id).first()
         if (team_info is None):
-            resp = {"team":"{}"}
+            continue
         else:
             resp = {"team_id": team_info.id, "team_name":team_info.name,"team_task_master_id":team_info.task_master_id}
-        team_list.append(resp)
-    return {"team_list":team_list}
+            team_list.append(resp)
+    return team_list
 
 # Create a team and add to the database.
 def team_create(token, team_name):
