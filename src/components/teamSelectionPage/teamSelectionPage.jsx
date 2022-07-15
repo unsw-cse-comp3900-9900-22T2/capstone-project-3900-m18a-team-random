@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PopupFab from '../popupFab';
 import CreateGroupPanel from './createGroupPanel';
 import Grid from '@mui/material/Grid';
@@ -7,6 +7,8 @@ import { Box } from '@mui/system';
 
 const TeamSelectionPage = () => {
     const token = {'token':sessionStorage.getItem('token')}
+    const [teams, setTeams] = useState([]);
+
     useEffect(() => {
         const fetchTeamData = async () => {
             console.log(token);
@@ -21,6 +23,7 @@ const TeamSelectionPage = () => {
             if(response.ok){
                 response.json().then(data =>{
                     console.log(data);
+                    setTeams(data);
                 })
             }
         }
@@ -31,27 +34,11 @@ const TeamSelectionPage = () => {
     return (
         <Box mt={2}>
             <Grid container spacing={2}>
-                <Grid item xs={3}>
-                    <GroupCard/>
-                </Grid>
-                <Grid item xs={3}>
-                    <GroupCard/>
-                </Grid>
-                <Grid item xs={3}>
-                    <GroupCard/>
-                </Grid>
-                <Grid item xs={3}>
-                    <GroupCard/>
-                </Grid>
-                <Grid item xs={3}>
-                    <GroupCard/>
-                </Grid>
-                <Grid item xs={3}>
-                    <GroupCard/>
-                </Grid>
-                <Grid item xs={3}>
-                    <GroupCard/>
-                </Grid>
+                {teams.map((team) => (
+                    <Grid item xs={3} key={team.team_id}>
+                        <GroupCard teamId={team.team_id} name={team.team_name}/>
+                    </Grid>
+                ))}
             </Grid>
             <PopupFab 
             style={{

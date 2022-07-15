@@ -7,7 +7,9 @@ import { CardActionArea } from '@mui/material';
 import GroupDefaultImage from  './GroupDefaultImage.png';
 import { useNavigate } from 'react-router';
 
-const GroupCard = ()=>{
+const GroupCard = ({teamId, name})=>{
+    const team_id = teamId;
+    const team_name = name;
     let navigate = useNavigate();
 
     return (
@@ -20,10 +22,10 @@ const GroupCard = ()=>{
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                        Team Random
+                        {name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Team Random is a team made of random people working on random projects
+                        There's no description
                     </Typography>
                 </CardContent>
             </CardActionArea>
