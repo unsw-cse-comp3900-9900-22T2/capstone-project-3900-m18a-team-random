@@ -126,7 +126,7 @@ def delete_task():
 @app.route('/update-task',methods=['POST'])
 def update_task():
     data = request.get_json()
-    return json.dumps(task_update_all(data['token'], data['title'], data['status'], data['priority'], data['email'], data['due_date'], data['epic_id'], data['description']))
+    return json.dumps(task_update_all(data['token'], data['title'], data['new_title'],data['status'], data['priority'], data['email'], data['due_date'], data['epic_id'], data['description']))
       
 @app.route('/search_task', methods=['POST'])
 def search_task():
