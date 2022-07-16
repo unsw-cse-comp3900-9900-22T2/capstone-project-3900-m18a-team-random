@@ -15,12 +15,7 @@ from teams.task import (
     task_add,
     task_delete,
     task_search,
-    task_update_name,
-    task_update_description,
-    task_update_priority,
-    task_update_due_date,
-    task_update_status,
-    task_update_assignee
+    task_update_all
 )
 from teams.team import (
     get_team_from_user_token,
@@ -97,7 +92,7 @@ def reset_password():
 @app.route("/create-epic",methods=['POST'])
 def create_epic():
     data = request.get_json()
-    return json.dumps(epic_create(data['token'],data['epic']))
+    return json.dumps(epic_create(data['token'],data['epic'], data['team_name']))
 # Task Functions
 
 @app.route('/add-task', methods=['POST'])
@@ -108,16 +103,16 @@ def add_task():
     priority = data['priority']
     team_name = data['team_name']
     epic_id = data['epic_id']
-    if 'assignee_email' in data.keys():
-        assignee_email = data['assignee_email']
-    else:
-        # This will set the assignee to the email of the user that created the task.
+    description = data['description']
+    assignee_email = data['assignee_email']
+    if assignee_email == "":
+        # This will set the assignee to the email of the user that created the task, act as a flag for later use
         assignee_email = 'creator'
-    
+        
     due_date = data['due_date']
     token = data['token']
     
-    return json.dumps(task_add(token,title,status,priority,assignee_email,due_date,team_name,epic_id))
+    return json.dumps(task_add(token,title,status,description, priority,assignee_email,due_date,team_name,epic_id))
 
 @app.route('/delete-task', methods=['POST'])
 def delete_task():
@@ -128,36 +123,11 @@ def delete_task():
     
     return json.dumps(task_delete(token, task_title, team_name))
 
-@app.route('/update-task-name',methods=['POST'])
-def update_task_name():
+@app.route('/update-task',methods=['POST'])
+def update_task():
     data = request.get_json()
-    return json.dumps(task_update_name(data['token'],data['old_task_title'],data['new_task_title']))
-    
-@app.route('/update-task-description',methods=['POST'])
-def update_task_description():
-    data = request.get_json()
-    return json.dumps(task_update_description(data['token'],data['task_title'],data['description']))
-    
-@app.route('/update-task-priority',methods=['POST'])
-def update_task_priority():
-    data = request.get_json()
-    return json.dumps(task_update_priority(data['token'],data['task_title'],data['priority']))
-
-@app.route('/update-task-status', methods=['POST'])
-def update_task_status():
-    data = request.get_json()
-    return json.dumps(task_update_status(data['token'],data['task_title'],data['status']))
-
-@app.route('/update-task-duedate',methods=['POST'])
-def update_task_due_date():
-    data = request.get_json()
-    return json.dumps(task_update_due_date(data['token'],data['task_title'],data['due_date']))
-
-@app.route('/update-task-assignee', methods=['POST'])
-def update_task_assignee():
-    data = request.get_json()
-    return json.dumps(task_update_assignee(data['token'],data['task_title'],data['assignee_email']))
-    
+    return json.dumps(task_update_all(data['token'], data['title'], data['new_title'],data['status'], data['priority'], data['email'], data['due_date'], data['epic_id'], data['description']))
+      
 @app.route('/search_task', methods=['POST'])
 def search_task():
     data = request.get_json()
