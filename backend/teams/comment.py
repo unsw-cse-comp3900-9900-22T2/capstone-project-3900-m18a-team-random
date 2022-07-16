@@ -45,6 +45,7 @@ def comment_edit(token, comment_id, new_content):
     
     comment = Comment.query.filter_by(id=comment_id)
     comment.content = new_content
+    db.session.commit()
 
     return {
         "comment_id": comment.id
