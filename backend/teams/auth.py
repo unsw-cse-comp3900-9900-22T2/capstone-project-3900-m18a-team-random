@@ -31,6 +31,10 @@ def auth_register(email, username, password):
     db.session.add(user)
     db.session.commit()
 
+    #set the status to offline
+    user.set_status(OFFLINE)
+    db.session.commit()
+
     # Generate a JWT token for the newly added user
     token = generate_token(email)
     db.session.add(token)
@@ -54,6 +58,8 @@ def auth_logout(jwt_token):
     user_id = get_user_id_from_token(jwt_token)
     user = db.session.query(User).filter_by(id=user_id).first()
     user.set_status(OFFLINE)
+    db.session.commit()
+    
     
     # Remove token from database
     if token_to_remove is not None:
@@ -69,6 +75,7 @@ def auth_login(email, password):
     if login_details_are_correct(email, password):
         user = get_user_from_email(email)
         user.set_status(ONLINE)
+        db.session.commit()
         user_id = user.id
         
         # Return the same active token if the user has been logged in.
@@ -87,7 +94,6 @@ def auth_login(email, password):
             active_token = token.jwt_token
             db.session.add(token)
             db.session.commit()
-        
         response = {
             "u_id": user_id,
             "token": active_token
@@ -136,6 +142,8 @@ def get_user_info(user):
 
 # Helper function to generate a JWT given an existing email.
 def generate_token(email):
+    if email not in get_active_emails():
+        raise InputError('email not found')
     user = get_user_from_email(email)
     user_info = get_user_info(user)
     return Token(jwt_token=jwt_encode(user_info))
@@ -151,23 +159,26 @@ def get_active_tokens():
 
 # Helper function to return a user object, given that the provided email exists in the database.
 def get_user_from_email(email):
+    if email not in get_active_emails():
+        raise InputError('email not found')
     return User.query.filter_by(email=email).first()
     
 # Helper function to return a user object, given their user id
 def get_user_from_id(id):
+    if id not in get_active_user_ids():
+         raise InputError('user not found')
     return User.query.filter_by(id=id).first()
 
 # Helper function to return a user object from a token
 def get_user_from_token(token):
-    jwt_token = token.jwt_token
-    jwt_token = jwt_decode(jwt_token)
-    user_id = jwt_token["id"]
+    if token not in get_active_tokens():
+        raise InputError('Token failure: user could not be found')
+    token = jwt_decode(token)
+    user_id = token["id"]
+    #user_token = db.session.query(User).filter_by(jwt_token=token).first()
     
     user = User.query.filter_by(id=user_id).first()
-    if user is None:
-        raise InputError('Token failure: user could not be found')
     return user
-
 # Helper function to check if a User with the specified email already exists in the database.
 def user_email_already_exists(email):
     if User.query.filter_by(email=email).first() is None:
@@ -186,3 +197,19 @@ def valid_email(email):
         return True
     
     return False
+
+def get_active_emails():
+    active_emails = []
+    user_list = User.query.all()
+    for user in user_list:
+        active_emails.append(user.email)
+
+    return active_emails
+
+def get_active_user_ids():
+    active_user_ids = []
+    user_list = User.query.all()
+    for user in user_list:
+        active_user_ids.append(user.id)
+
+    return active_user_ids
