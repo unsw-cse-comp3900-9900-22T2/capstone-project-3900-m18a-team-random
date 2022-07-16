@@ -63,7 +63,6 @@ def task_add(token, title, status, description, priority, email, due_date, team_
 
 # Given the task's title, delete the task from the database.
 def task_delete(token, task_title, team_name):
-    user = get_user_from_token(token)
     team = get_team_from_team_name(team_name)
     
     task = get_task_from_team_and_title(team.name, task_title)
