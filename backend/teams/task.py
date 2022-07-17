@@ -189,15 +189,15 @@ def task_search(token, query_string):
     
     # Loop through every task in the user's team task board, add matching task names
     # to the list
-    tasks = Task.query.filter_by(team_id=user.team_id).all()
-    team = Team.query.filter_by(id=user.team_id).first()
-    task_titles = []
-    for task in tasks:
-        task_titles.append(task.title)
-    
-    for task_title in task_titles:
-        if query_string in task_title:
-            task = Task.query.filter_by(team_id=user.team_id,title=task_title).first()
+    task_list = []
+    teams = get_team_from_token(token)
+    for team in teams:
+        tasks = Task.query.filter_by(team_id=team.id).all()
+        for task in tasks:
+            task_list.append(task)
+            
+    for task in task_list:
+        if query_string == task.title:
             assignee = get_user_from_email(task.assignee_email)
             matching_tasks.append(
                 {
