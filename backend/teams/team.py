@@ -3,7 +3,7 @@ from teams.error import InputError, AccessError
 from lib2to3.pgen2.pgen import generate_grammar
 import sys
 import random
-from teams.models import User, Token, ResetCode, Team, Task, UserTeamRelation
+from teams.models import User, Token, ResetCode, Team, Task, UserTeamRelation, Epic
 from teams.auth import get_user_from_token, get_user_from_email
 from teams.task import get_team_from_team_name
 import re
@@ -47,7 +47,7 @@ def team_create(token, team_name):
     db.session.add(relation)
     db.session.commit()
     return {
-        "team_id": team.id
+        "team_id": team.id,"team_name":team.name,"team_task_master_id":team.task_master_id
     }
 
 # Delete a team from the database.
@@ -82,6 +82,11 @@ def team_delete(token,team_name):
     team = db.session.query(Team).filter_by(id=team.id).delete()
     db.session.commit()
 
+    # Delete epic in the team
+    epics = Epic.query.filter_by(team_name=team_name).all()
+    for epic in epics:
+        db.session.delete(epic)
+        db.session.commit()
     return {}
 
 # Update the task master.

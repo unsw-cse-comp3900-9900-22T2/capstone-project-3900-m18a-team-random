@@ -94,7 +94,6 @@ def auth_login(email, password):
             active_token = token.jwt_token
             db.session.add(token)
             db.session.commit()
-        
         response = {
             "u_id": user_id,
             "token": active_token
