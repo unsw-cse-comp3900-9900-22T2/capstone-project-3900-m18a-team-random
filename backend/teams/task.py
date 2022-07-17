@@ -56,6 +56,25 @@ def task_add(token, title, status, description, priority, email, due_date, team_
     return {
         "task_id": task.id
     }
+def task_get():
+    epic_list = {}
+    
+    for epic in Epic.query.all():
+        task_list = {}
+        for task in Task.query.filter_by(epic_id=int(epic.id)).all():
+            task_info = {}
+            task_info['title'] = task.title
+            task_info['status'] = task.status
+            task_info['priority'] = task.priority
+            task_info['assignee_email'] = task.assignee_email
+            task_info['due_date'] = task.due_date
+            task_info['team_id'] = task.team_id
+            task_info['epic_id'] = task.epic_id
+            task_list[task.title] = task_info
+        epic_list[epic.id] = task_list
+
+    return {"epics": epic_list}
+
 
 # Given the task's title, delete the task from the database.
 def task_delete(task, task_title):
