@@ -47,7 +47,7 @@ def team_create(token, team_name):
     db.session.add(relation)
     db.session.commit()
     return {
-        "team_id": team.id
+        "team_id": team.id,"team_name":team.name,"team_task_master_id":team.task_master_id
     }
 
 # Delete a team from the database.

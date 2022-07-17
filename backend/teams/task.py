@@ -35,7 +35,6 @@ def task_add(token, title, status, description, priority, email, due_date, team_
         raise InputError(f'Task creation failed: User is not a member of {team_name}')
 
     # If there is no assignee specified, assign the task to the user
-    
     if email == 'creator':
         email = user.email
     
@@ -48,13 +47,18 @@ def task_add(token, title, status, description, priority, email, due_date, team_
     # Check that the task name is unique within the Team task board that it was created in.
     if Task.query.filter_by(title=title,team_id=team.id).first() is not None:
         raise InputError('Task creation failed: a task with the same title already exists.')
-    get_user_from_email(email)
+    # Check the assignee_user is in same team as the task creater
+    assignee_user = get_user_from_email(email)
+    relation = db.session.query(UserTeamRelation).filter_by(user_id=assignee_user.id,team_id=team.id).first()
+    if relation is None:
+        raise InputError(f'Task creation failed: assignee_user is not a member of {team_name}')
+
     task = Task(title=title,status=status, description=description, priority=priority,assignee_email=email,due_date=due_date,team_id=team.id,epic_id=epic_id)
     db.session.add(task)
     db.session.commit()
     
     return {
-        "task_id": task.id
+        "task_id": task.id, "title":task.title, "description":task.description, "status":task.status, "priority": task.priority, "assignee_email":task.assignee_email, "due_date":task.due_date, "team_id":task.team_id, "epic_id":task.epic_id
     }
 def task_get(token, team_id):
     get_team_from_token(token)
@@ -80,7 +84,11 @@ def task_get(token, team_id):
 
 
 # Given the task's title, delete the task from the database.
-def task_delete(task, task_title):
+def task_delete(token, task_title, team_name):
+    user = get_user_from_token(token)
+    team = get_team_from_team_name(team_name)
+    
+    task = get_task_from_team_and_title(team.name, task_title)
     if task is None:
         raise InputError('Task deletion failed: Task with title ' + task_title + ' does not exist.')
 
@@ -93,8 +101,8 @@ def task_delete(task, task_title):
 # Updates the title of a task with new_task_title.
 def task_update_name(task, new_task_title, team):
     # The task cannot be assigned a new name if a task with the new name already exists.
-    if Task.query.filter_by(team_id=team.id,title=new_task_title).first() is not None:
-        raise InputError('Task name cannot be changed to ' + new_task_title + ' as a task already exists with that name.')
+    #if Task.query.filter_by(team_id=team.id,title=new_task_title).first() is not None:
+    #    raise InputError('Task name cannot be changed to ' + new_task_title + ' as a task already exists with that name.')
     task.set_title(new_task_title)
     db.session.commit()
     return {
@@ -137,7 +145,10 @@ def task_update_due_date(task, due_date):
 # Updates the assignee of a task.
 def task_update_assignee(task, assignee_email):
     #sanity check
-    get_user_from_email(assignee_email)
+    assignee_user = get_user_from_email(assignee_email)
+    relation = db.session.query(UserTeamRelation).filter_by(user_id=assignee_user.id,team_id=task.team_id).first()
+    if relation is None:
+        raise InputError(f'Task creation failed: assignee_user is not a member of team{task.team_id}')
     task.set_assignee_email(assignee_email)
     db.session.commit()
     return {
@@ -184,6 +195,7 @@ def task_update_all(token, title, new_title, status, priority, email, due_date, 
     task_update_description(task, description)
     task_update_due_date(task, due_date)
     task_update_epic(task, int(epic_id))
+    return {"task_id": task.id, "title":task.title, "description":task.description, "status":task.status, "priority": task.priority, "assignee_email":task.assignee_email, "due_date":task.due_date, "team_id":task.team_id, "epic_id":task.epic_id}
 # Search for all tasks within a user's team task board.
 def task_search(token, query_string):
     
