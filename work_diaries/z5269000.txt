@@ -1,0 +1,16 @@
+Week 1
+Set up Jira and discuss with teammates what project to do, propose the project function
+
+Week 2
+We decided to use flask to develop the back end and React to develop the front end to separate the front and back ends. Use mysql as the database. I configured the environment and created the project
+
+Week 3 
+Discuss the specific requirements of the project with teammates, and confirm flow diagrams and user interfaces. And complete the project proposal
+
+Week 4
+There are bugs running locally,, solve local cross-domain problems, create user stories
+
+Week 5
+
+Fix bug in user registration login, json serialization error, write history board content
+
