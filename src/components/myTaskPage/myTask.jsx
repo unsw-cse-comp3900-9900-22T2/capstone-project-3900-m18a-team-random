@@ -13,8 +13,32 @@ import { useParams } from 'react-router-dom';
 import Epic from './epic';
 import NewEpicForm from './newEpicForm';
 
-const MyTask = ({email}) => {
-    const {teamId} = useParams();
+const MyTask = ({teamId}) => {
+    const {teamName} = useParams();
+    const [epics, setEpics] = useState([]);
+
+    useEffect(() => {
+        const fetchTaskData = async () => {
+            const tokenAndTeam = {'token':sessionStorage.getItem('token'), 'team_id':teamId}
+            console.log(token);
+            const response = await fetch('/get_task', {
+                method:'GET',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(tokenAndTeam)
+            });
+            
+            if(response.ok){
+                response.json().then(data =>{
+                    console.log(data);
+                    setEpics(data);
+                })
+            }
+        }
+
+        fetchTaskData();
+    }, []);
 
     return (
         <Box sx={{flexGrow: 1}} mt={4}>
@@ -22,7 +46,7 @@ const MyTask = ({email}) => {
                 <Grid item xs={12} spacing={3} container>
                     <Grid item>
                         <Typography variant='h3'>
-                            {teamId}
+                            {teamName}
                         </Typography>
                     </Grid>
                     <Grid item xs={4}>
@@ -44,7 +68,7 @@ const MyTask = ({email}) => {
             title='New Epic'
             color='primary'
             >
-                <NewEpicForm/>
+                <NewEpicForm teamName={teamName}/>
             </PopupFab>
         </Box>
     )

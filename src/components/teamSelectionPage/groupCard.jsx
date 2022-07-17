@@ -7,14 +7,12 @@ import { CardActionArea } from '@mui/material';
 import GroupDefaultImage from  './GroupDefaultImage.png';
 import { useNavigate } from 'react-router';
 
-const GroupCard = ({teamId, name})=>{
-    const team_id = teamId;
-    const team_name = name;
+const GroupCard = ({teamId, teamName})=>{
     let navigate = useNavigate();
 
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea onClick={()=>{navigate("../Team Random")}}>
+            <CardActionArea onClick={()=>{navigate("../Team Random", {teamId: teamId, teamName: teamName})}}>
                 <CardMedia
                     component="img"
                     height="140"
@@ -22,7 +20,7 @@ const GroupCard = ({teamId, name})=>{
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                        {name}
+                        {teamName}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                         There's no description

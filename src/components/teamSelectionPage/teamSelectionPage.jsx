@@ -6,11 +6,11 @@ import GroupCard from './groupCard';
 import { Box } from '@mui/system';
 
 const TeamSelectionPage = () => {
-    const token = {'token':sessionStorage.getItem('token')}
     const [teams, setTeams] = useState([]);
 
     useEffect(() => {
         const fetchTeamData = async () => {
+            const token = {'token':sessionStorage.getItem('token')}
             console.log(token);
             const response = await fetch('/get_team', {
                 method:'POST',
@@ -36,7 +36,7 @@ const TeamSelectionPage = () => {
             <Grid container spacing={2}>
                 {teams.map((team) => (
                     <Grid item xs={3} key={team.team_id}>
-                        <GroupCard teamId={team.team_id} name={team.team_name}/>
+                        <GroupCard teamId={team.team_id} teamName={team.team_name}/>
                     </Grid>
                 ))}
             </Grid>

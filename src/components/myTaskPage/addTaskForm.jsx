@@ -3,23 +3,39 @@ import React, {useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-const AddTaskForm = ({email}) => {
+const AddTaskForm = ({close, epicId}) => {
+    const {teamName} = useParams();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [deadline, setDeadline] = useState("");
 
     const handleCreateTask = async (e) => {
-        e.preventDefault();
-        
-        
-        const response = await fetch('/login', {
+        e.preventDefault();       
+        const taskCreation = {
+            'token':sessionStorage.getItem('token'), 
+            'title':title,
+            'status':'Not yet started',
+            'priority':'Low',
+            'team_name':teamName,
+            'epic_id':epicId,
+            'description':description,
+            'assignee_email':sessionStorage.getItem('email'),
+            'due_date':deadline
+        };
+        console.log(taskCreation);
+        const response = await fetch('/add-task', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
             },
-            body: JSON.stringify()
+            body: JSON.stringify(taskCreation)
         });
 
         if(response.ok){
+            response.json().then(data =>{
+                console.log(data);
+                close();
+            })
         } else {
             
         }
@@ -35,7 +51,7 @@ const AddTaskForm = ({email}) => {
                         <TextField label='Description' required multiline minRows={3} onChange={e=>setDescription(e.target.value)}/>
                     </Grid>
                     <Grid item>
-                        <TextField required type='date'/>
+                        <TextField required type='date' onChange={e=>setDeadline(e.target.value)}/>
                     </Grid> 
                     <Grid item>
                         <Button type='submit' variant='contained'>Create Task</Button>

@@ -21,7 +21,8 @@ const Login = () => {
 
         if(response.ok){
             response.json().then(data =>{
-                sessionStorage.setItem("token", data['token'])
+                sessionStorage.setItem("token", data['token']);
+                sessionStorage.setItem("email", email);
                 navigate("home");
             })
         } else {

@@ -9,7 +9,7 @@ import MyTask from '../myTaskPage/myTask';
 import Members from '../memberPage/members';
 import HistoryPage from '../history/historyPage';
 
-const TeamPage = ()=>{
+const TeamPage = ({teamId,teamName})=>{
     return (
         <Box>
             <Grid container spacing={2}>
@@ -18,7 +18,7 @@ const TeamPage = ()=>{
                 </Grid>
                 <Grid item xs={10}>
                     <Routes>
-                        <Route path="/" element={<MyTask/>}/>
+                        <Route path="/" element={<MyTask teamId={teamId}/>}/>
                         <Route path="members" element={<Members/>}/>
                         <Route path="history" element={<HistoryPage/>}/>
                     </Routes>

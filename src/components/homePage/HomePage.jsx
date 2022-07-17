@@ -12,7 +12,7 @@ const HomePage = () => {
             <NavBar/>            
             <Routes>
                 <Route path="/" element={<TeamSelectionPage/>}/>
-                <Route path=":teamId/*" element={<TeamPage/>}/>
+                <Route path=":teamName/*" element={<TeamPage/>}/>
             </Routes>
         </Box>
     )

@@ -1,11 +1,33 @@
 import Grid from '@mui/material/Grid';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 const ProfilePanel = ({email}) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+
+    useEffect(() => {
+        const fetchProfileData = async () => {
+            const token = {'token':sessionStorage.getItem('token')}
+            console.log(token);
+            const response = await fetch('/get_team', {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(token)
+            });
+            
+            if(response.ok){
+                response.json().then(data =>{
+                    console.log(data);
+                })
+            }
+        }
+
+        fetchProfileData();
+    }, []);
 
     const handleCreateTask = async (e) => {
         e.preventDefault();       
