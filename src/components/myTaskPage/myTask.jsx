@@ -1,6 +1,6 @@
 import { Box } from '@mui/system';
 import Grid from '@mui/material/Grid';
-import React, { Component } from 'react';
+import React,{ useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
@@ -20,7 +20,7 @@ const MyTask = ({teamId}) => {
     useEffect(() => {
         const fetchTaskData = async () => {
             const tokenAndTeam = {'token':sessionStorage.getItem('token'), 'team_id':teamId}
-            console.log(token);
+            console.log(tokenAndTeam);
             const response = await fetch('/get_task', {
                 method:'GET',
                 headers:{
