@@ -56,10 +56,13 @@ def task_add(token, title, status, description, priority, email, due_date, team_
     return {
         "task_id": task.id
     }
-def task_get():
+def task_get(token, team_id):
+    get_team_from_token(token)
+    team = get_team_from_team_id(int(team_id))
+    if team not in get_team_from_token(token):
+        raise AccessError("Get Task Failed: user is not a member of this team")
     epic_list = {}
-    
-    for epic in Epic.query.all():
+    for epic in Epic.query.filter_by(team_name = team.name).all():
         task_list = {}
         for task in Task.query.filter_by(epic_id=int(epic.id)).all():
             task_info = {}
@@ -183,7 +186,6 @@ def task_update_all(token, title, new_title, status, priority, email, due_date, 
     task_update_epic(task, int(epic_id))
 # Search for all tasks within a user's team task board.
 def task_search(token, query_string):
-    user = get_user_from_token(token)
     
     matching_tasks = []
     
@@ -305,3 +307,14 @@ def get_epic_ids():
         epic_ids.append(epic.id)
 
     return epic_ids
+
+def get_team_from_token(token):
+    user = get_user_from_token(token)
+    relation_info = UserTeamRelation.query.filter_by(user_id=user.id).all()
+    team_list = []
+    for relation in relation_info:
+        team = Team.query.filter_by(id = relation.team_id).first()
+        if team is None:
+            continue
+        team_list.append(team)
+    return team_list
