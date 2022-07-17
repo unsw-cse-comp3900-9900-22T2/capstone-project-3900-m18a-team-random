@@ -12,6 +12,7 @@ from teams.auth_passwordreset import (
 )
 from teams.task import (
     get_team_from_token,
+    task_get,
     task_add,
     task_delete,
     task_search,
@@ -128,11 +129,16 @@ def update_task():
     data = request.get_json()
     return json.dumps(task_update_all(data['token'], data['title'], data['new_title'],data['status'], data['priority'], data['email'], data['due_date'], data['epic_id'], data['description']))
       
-@app.route('/search_task', methods=['POST'])
+@app.route('/search_task', methods=['GET'])
 def search_task():
     data = request.get_json()
     return json.dumps(task_search(data['token'],data['query_string']))
-    
+
+@app.route('/get_task', methods=['GET'])
+def get_task():
+    data = request.get_json()
+    return json.dumps(task_get(data['token'], data['team_id']))
+
 # Team Functions
 
 @app.route('/create_team', methods=['POST'])

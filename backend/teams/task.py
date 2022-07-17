@@ -60,6 +60,28 @@ def task_add(token, title, status, description, priority, email, due_date, team_
     return {
         "task_id": task.id, "title":task.title, "description":task.description, "status":task.status, "priority": task.priority, "assignee_email":task.assignee_email, "due_date":task.due_date, "team_id":task.team_id, "epic_id":task.epic_id
     }
+def task_get(token, team_id):
+    get_team_from_token(token)
+    team = get_team_from_team_id(int(team_id))
+    if team not in get_team_from_token(token):
+        raise AccessError("Get Task Failed: user is not a member of this team")
+    epic_list = {}
+    for epic in Epic.query.filter_by(team_name = team.name).all():
+        task_list = {}
+        for task in Task.query.filter_by(epic_id=int(epic.id)).all():
+            task_info = {}
+            task_info['title'] = task.title
+            task_info['status'] = task.status
+            task_info['priority'] = task.priority
+            task_info['assignee_email'] = task.assignee_email
+            task_info['due_date'] = task.due_date
+            task_info['team_id'] = task.team_id
+            task_info['epic_id'] = task.epic_id
+            task_list[task.title] = task_info
+        epic_list[epic.id] = task_list
+
+    return {"epics": epic_list}
+
 
 # Given the task's title, delete the task from the database.
 def task_delete(token, task_title, team_name):
@@ -176,21 +198,20 @@ def task_update_all(token, title, new_title, status, priority, email, due_date, 
     return {"task_id": task.id, "title":task.title, "description":task.description, "status":task.status, "priority": task.priority, "assignee_email":task.assignee_email, "due_date":task.due_date, "team_id":task.team_id, "epic_id":task.epic_id}
 # Search for all tasks within a user's team task board.
 def task_search(token, query_string):
-    user = get_user_from_token(token)
     
     matching_tasks = []
     
     # Loop through every task in the user's team task board, add matching task names
     # to the list
-    tasks = Task.query.filter_by(team_id=user.team_id).all()
-    team = Team.query.filter_by(id=user.team_id).first()
-    task_titles = []
-    for task in tasks:
-        task_titles.append(task.title)
-    
-    for task_title in task_titles:
-        if query_string in task_title:
-            task = Task.query.filter_by(team_id=user.team_id,title=task_title).first()
+    task_list = []
+    teams = get_team_from_token(token)
+    for team in teams:
+        tasks = Task.query.filter_by(team_id=team.id).all()
+        for task in tasks:
+            task_list.append(task)
+            
+    for task in task_list:
+        if query_string == task.title:
             assignee = get_user_from_email(task.assignee_email)
             matching_tasks.append(
                 {
@@ -298,3 +319,14 @@ def get_epic_ids():
         epic_ids.append(epic.id)
 
     return epic_ids
+
+def get_team_from_token(token):
+    user = get_user_from_token(token)
+    relation_info = UserTeamRelation.query.filter_by(user_id=user.id).all()
+    team_list = []
+    for relation in relation_info:
+        team = Team.query.filter_by(id = relation.team_id).first()
+        if team is None:
+            continue
+        team_list.append(team)
+    return team_list
