@@ -67,11 +67,14 @@ def task_get(token, team_id):
         raise AccessError("Get Task Failed: user is not a member of this team")
     epic_result = []
     for epic in Epic.query.filter_by(team_name = team.name).all():
-        epic_list = {}
         task_result = []
         task_list = {}
         task_wrap = {}
+        task_wrap['epic_name'] = epic.epic_name
+        task_wrap['epic_id'] = epic.id
         for task in Task.query.filter_by(epic_id=int(epic.id)).all():
+            if task is None:
+                continue
             task_info = {}
             task_info['title'] = task.title
             task_info['status'] = task.status
@@ -80,11 +83,14 @@ def task_get(token, team_id):
             task_info['due_date'] = task.due_date
             task_info['team_id'] = task.team_id
             task_info['epic_id'] = task.epic_id
-            task_wrap['epic_id'] = task.epic_id
-            task_wrap['epic_name'] =  Epic.query.filter_by(id=int(task.epic_id)).first().epic_name
+            # task_wrap['epic_id'] = task.epic_id
+            # task_wrap['epic_name'] =  Epic.query.filter_by(id=int(task.epic_id)).first().epic_name
             task_list[task.title] = task_info
         task_result.append(task_list)
-        task_wrap['tasks'] = task_result
+        if len(task_list) != 0:
+            task_wrap['tasks'] = task_result
+        else:
+            task_wrap['tasks'] = []
         epic_result.append(task_wrap)
 
     return {"epics": epic_result}
