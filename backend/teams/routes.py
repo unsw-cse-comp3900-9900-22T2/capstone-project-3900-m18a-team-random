@@ -134,7 +134,7 @@ def search_task():
     data = request.get_json()
     return json.dumps(task_search(data['token'],data['query_string']))
 
-@app.route('/get_task', methods=['GET'])
+@app.route('/get_task', methods=['POST'])
 def get_task():
     data = request.get_json()
     return json.dumps(task_get(data['token'], data['team_id']))
