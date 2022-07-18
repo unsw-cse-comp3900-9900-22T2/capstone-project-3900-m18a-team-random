@@ -82,7 +82,6 @@ def task_get(token, team_id):
             task_info['team_id'] = task.team_id
             task_info['epic_id'] = task.epic_id
             task_list[task.title] = task_info
-            print(task_list)
         task_result.append(task_list)
         task_wrap['tasks'] = task_result
         task_wrap['epic_name'] = Epic.query.filter_by(id=int(task.epic_id)).first().epic_name
