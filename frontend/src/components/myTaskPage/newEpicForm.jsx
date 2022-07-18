@@ -30,7 +30,7 @@ const NewEpicForm = ({teamName, close}) => {
     }
 
     return (
-        <form>
+        <form onSubmit={handleCreateEpic}>
             <Grid container spacing={2} direction='column' alignItems='center'>
                 <Grid item xs={12}>
                     <TextField label='Title' required onChange={e=>{setTitle(e.target.value)}}/>

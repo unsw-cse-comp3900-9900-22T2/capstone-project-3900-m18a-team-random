@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -12,7 +12,7 @@ const GroupCard = ({teamId, teamName})=>{
 
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea onClick={()=>{navigate("../Team Random", {teamId: teamId, teamName: teamName})}}>
+            <CardActionArea onClick={()=>{navigate("../"+teamName, {state:{teamId:teamId,teamName:teamName}})}}>
                 <CardMedia
                     component="img"
                     height="140"

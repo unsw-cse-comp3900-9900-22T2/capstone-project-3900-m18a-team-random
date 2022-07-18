@@ -9,20 +9,22 @@ import TaskTable from './taskTable';
 import PopupButton from '../popupButton';
 import AddTaskForm from './addTaskForm';
 import PopupFab from '../popupFab';
-import { useParams } from 'react-router-dom';
+import { useParams,useLocation } from 'react-router-dom';
 import Epic from './epic';
 import NewEpicForm from './newEpicForm';
 
-const MyTask = ({teamId}) => {
+const MyTask = () => {
     const {teamName} = useParams();
+    const location = useLocation();
     const [epics, setEpics] = useState([]);
 
     useEffect(() => {
+        console.log(location.state.teamId);
         const fetchTaskData = async () => {
-            const tokenAndTeam = {'token':sessionStorage.getItem('token'), 'team_id':teamId}
+            const tokenAndTeam = {'token':sessionStorage.getItem('token'), 'team_id':location.state.teamId}
             console.log(tokenAndTeam);
             const response = await fetch('/get_task', {
-                method:'GET',
+                method:'POST',
                 headers:{
                     'Content-Type':'application/json'
                 },
@@ -55,7 +57,7 @@ const MyTask = ({teamId}) => {
                 </Grid>
 
                 <Grid item>
-                    <Epic title='Profile'/>
+                
                 </Grid>
 
             </Grid>

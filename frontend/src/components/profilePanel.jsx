@@ -3,15 +3,23 @@ import React, {useState,useEffect} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-const ProfilePanel = ({email}) => {
-    const [title, setTitle] = useState("");
+const ProfilePanel = () => {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
     const [description, setDescription] = useState("");
+
+    const getDescription = () => {
+        if(description === null)
+            return "No description here"
+        else
+            return description;
+    }
 
     useEffect(() => {
         const fetchProfileData = async () => {
             const token = {'token':sessionStorage.getItem('token')}
             console.log(token);
-            const response = await fetch('/get_team', {
+            const response = await fetch('/get_profile', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -22,6 +30,9 @@ const ProfilePanel = ({email}) => {
             if(response.ok){
                 response.json().then(data =>{
                     console.log(data);
+                    setName(data['username']);
+                    setEmail(data['email']);
+                    setDescription(data['description']);
                 })
             }
         }
@@ -29,15 +40,16 @@ const ProfilePanel = ({email}) => {
         fetchProfileData();
     }, []);
 
-    const handleCreateTask = async (e) => {
+    const handleUpdateDescription = async (e) => {
         e.preventDefault();       
-        
-        const response = await fetch('/login', {
+        const bundle = {'token': sessionStorage.getItem('token'), 'description': description}
+        console.log(bundle);
+        const response = await fetch('/profile_add_description', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
             },
-            body: JSON.stringify()
+            body: JSON.stringify(bundle)
         });
 
         if(response.ok){
@@ -47,29 +59,18 @@ const ProfilePanel = ({email}) => {
     }
 
     return (
-        <form>
+        <form onSubmit={handleUpdateDescription}>
             <Grid container spacing={2} direction='column' alignItems='center'>
                 <Grid item xs={12}>
-                    <TextField 
-                    label='Name' 
-                    value='Kai' 
-                    required 
-                    onChange={e=>{setTitle(e.target.value)}}
-                    />
+                    {name}
                 </Grid>
                 <Grid item xs={12}>
-                    <TextField 
-                    label='Email' 
-                    type='email'
-                    value='Kai@cc.com' 
-                    required 
-                    onChange={e=>setDescription(e.target.value)}
-                    />
+                    {email}
                 </Grid>
                 <Grid item xs={12}>
                     <TextField 
                     label='Description' 
-                    value='No description here!'
+                    value={getDescription()}
                     required 
                     multiline 
                     minRows={3} 
