@@ -65,7 +65,7 @@ def task_get(token, team_id):
     team = get_team_from_team_id(int(team_id))
     if team not in get_team_from_token(token):
         raise AccessError("Get Task Failed: user is not a member of this team")
-    epic_list = {}
+    epic_list = []
     for epic in Epic.query.filter_by(team_name = team.name).all():
         task_list = {}
         for task in Task.query.filter_by(epic_id=int(epic.id)).all():
@@ -78,9 +78,10 @@ def task_get(token, team_id):
             task_info['team_id'] = task.team_id
             task_info['epic_id'] = task.epic_id
             task_list[task.title] = task_info
-        epic_list[epic.id] = task_list
+            resp = {"title":task.title,"status":task.status,"priority":task.priority,"assignee_email":task.assignee_email,"due_date":task.due_date,"team_id":task.team_id,"epic_id":task.epic_id}
+            epic_list.append(resp)
 
-    return {"epics": epic_list}
+    return epic_list
 
 
 # Given the task's title, delete the task from the database.
