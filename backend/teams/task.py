@@ -80,7 +80,7 @@ def task_get(token, team_id):
             task_list[task.title] = task_info
         epic_list[epic.id] = task_list
 
-    return {"epics": epic_list}
+    return epic_list
 
 
 # Given the task's title, delete the task from the database.
