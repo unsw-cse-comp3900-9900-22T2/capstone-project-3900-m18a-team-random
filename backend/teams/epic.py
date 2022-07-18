@@ -6,6 +6,7 @@ from teams.error import InputError
 def epic_create(token, epic, team_name):
     epic_list = []
     #check if user is in the team
+    epic_list = []
     user = get_user_from_token(token)
     team = get_team_from_team_name(team_name)
     relation = db.session.query(UserTeamRelation).filter_by(user_id=user.id,team_id=team.id).first()

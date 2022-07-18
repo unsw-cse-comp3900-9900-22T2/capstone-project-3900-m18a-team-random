@@ -61,13 +61,17 @@ def task_add(token, title, status, description, priority, email, due_date, team_
         "task_id": task.id, "title":task.title, "description":task.description, "status":task.status, "priority": task.priority, "assignee_email":task.assignee_email, "due_date":task.due_date, "team_id":task.team_id, "epic_id":task.epic_id
     }
 def task_get(token, team_id):
+    result=[]
     get_team_from_token(token)
     team = get_team_from_team_id(int(team_id))
     if team not in get_team_from_token(token):
         raise AccessError("Get Task Failed: user is not a member of this team")
-    epic_list = []
+    epic_result = []
     for epic in Epic.query.filter_by(team_name = team.name).all():
+        epic_list = {}
+        task_result = []
         task_list = {}
+        task_wrap = {}
         for task in Task.query.filter_by(epic_id=int(epic.id)).all():
             task_info = {}
             task_info['title'] = task.title
@@ -78,10 +82,15 @@ def task_get(token, team_id):
             task_info['team_id'] = task.team_id
             task_info['epic_id'] = task.epic_id
             task_list[task.title] = task_info
-            resp = {"title":task.title,"status":task.status,"priority":task.priority,"assignee_email":task.assignee_email,"due_date":task.due_date,"team_id":task.team_id,"epic_id":task.epic_id}
-            epic_list.append(resp)
+        task_result.append(task_list)
+        task_wrap['tasks'] = task_result
+        task_wrap['epic_name'] = Epic.query.filter_by(id=int(task.epic_id)).first().epic_name
+        task_wrap['epic_id'] = task.epic_id
+        epic_result.append(task_wrap)
 
-    return epic_list
+    return {"epics": epic_result}
+
+#[task1:{}, task2:{}, task3:{}] ->> [{task1:{}}, {task2:{}}, {task3:{}}]]
 
 
 # Given the task's title, delete the task from the database.
