@@ -4,6 +4,7 @@ from teams.auth import get_user_from_token
 from teams.error import InputError
 
 def epic_create(token, epic, team_name):
+    epic_list = []
     #check if user is in the team
     epic_list = []
     user = get_user_from_token(token)
@@ -21,9 +22,7 @@ def epic_create(token, epic, team_name):
     db.session.add(epic)
     db.session.commit()
 
-    return {
-        "epic_id": epic.id
-    }
+    return {"epic_id":epic.id}
 
 def get_team_from_team_name(team_name):
     if team_name not in get_active_teams():
