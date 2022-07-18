@@ -5,6 +5,7 @@ from teams.error import InputError
 
 def epic_create(token, epic, team_name):
     #check if user is in the team
+    epic_list = []
     user = get_user_from_token(token)
     team = get_team_from_team_name(team_name)
     relation = db.session.query(UserTeamRelation).filter_by(user_id=user.id,team_id=team.id).first()
@@ -16,6 +17,7 @@ def epic_create(token, epic, team_name):
     if Epic.query.filter_by(epic_name=epic, team_name=team_name).first() is not None:
         raise InputError('Epic creation failed: this epic already exists in this team')
     epic = Epic(epic_name=epic, team_name=team_name)
+    epic_list.append(epic.id)
     db.session.add(epic)
     db.session.commit()
 
