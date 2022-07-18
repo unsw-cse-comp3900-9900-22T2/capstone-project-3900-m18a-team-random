@@ -80,12 +80,11 @@ def task_get(token, team_id):
             task_info['due_date'] = task.due_date
             task_info['team_id'] = task.team_id
             task_info['epic_id'] = task.epic_id
-            epic_name = Epic.query.filter_by(id=int(task.epic_id)).first().epic_name
+            task_wrap['epic_id'] = task.epic_id
+            task_wrap['epic_name'] =  Epic.query.filter_by(id=int(task.epic_id)).first().epic_name
             task_list[task.title] = task_info
         task_result.append(task_list)
         task_wrap['tasks'] = task_result
-        task_wrap['epic_name'] = epic_name
-        task_wrap['epic_id'] = task.epic_id
         epic_result.append(task_wrap)
 
     return {"epics": epic_result}
