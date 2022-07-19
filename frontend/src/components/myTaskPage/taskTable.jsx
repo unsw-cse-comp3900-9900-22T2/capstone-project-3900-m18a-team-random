@@ -19,7 +19,8 @@ const rows = [
 ];
 
 
-const TaskTable = () => {
+const TaskTable = ({tasks}) => {
+    console.log(tasks);
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth:500}}>
@@ -33,14 +34,15 @@ const TaskTable = () => {
             </TableRow>
             </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <TaskItem
-                            taskId={row.taskId}
-                            taskTitle={row.taskTitle}
-                            assignee={row.assignee}
-                            status={row.status}
-                            priority={row.priority}
-                            deadline={row.deadline}
+                    {tasks.map((task) => (
+                        <TaskItem 
+                            key={task['title']}
+                            taskId={task['title']}
+                            taskTitle={task['title']}
+                            assignee={task['assignee_email']}
+                            status={task['status']}
+                            priority={task['priority']}
+                            deadline={task['due_date']}
                         />
                     ))}
                 </TableBody>

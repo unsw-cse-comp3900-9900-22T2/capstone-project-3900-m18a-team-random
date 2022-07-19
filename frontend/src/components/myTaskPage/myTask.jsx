@@ -13,15 +13,12 @@ import { useParams,useLocation } from 'react-router-dom';
 import Epic from './epic';
 import NewEpicForm from './newEpicForm';
 
-const MyTask = () => {
-    const {teamName} = useParams();
-    const location = useLocation();
-    const [epics, setEpics] = useState([]);
+const MyTask = ({teamId, teamName}) => {
+    const [epics, setEpics] = useState({epics:[]});
 
     useEffect(() => {
-        console.log(location.state.teamId);
         const fetchTaskData = async () => {
-            const tokenAndTeam = {'token':sessionStorage.getItem('token'), 'team_id':location.state.teamId}
+            const tokenAndTeam = {'token':sessionStorage.getItem('token'), 'team_id':teamId}
             console.log(tokenAndTeam);
             const response = await fetch('/get_task', {
                 method:'POST',
@@ -55,11 +52,16 @@ const MyTask = () => {
                         <TextField placeholder='Search by Task Name'/>
                     </Grid>
                 </Grid>
-
                 <Grid item>
-                
+                    {epics['epics'].map((epic) => (
+                        <Epic 
+                        key={epic['epic_id']} 
+                        epicId={epic['epic_id']} 
+                        title={epic['epic_name']}
+                        tasks={epic['tasks']}
+                        />
+                    ))}
                 </Grid>
-
             </Grid>
             <PopupFab 
             style={{

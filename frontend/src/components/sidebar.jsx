@@ -15,14 +15,14 @@ import { useNavigate } from 'react-router';
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 
-const Sidebar = () => {
+const Sidebar = ({teamId, teamName}) => {
     let navigate = useNavigate();
 
     return (
         <Box flex={1} p={2}>
             <List>
                 <ListItem disablePadding>
-                    <ListItemButton onClick={()=>{navigate("./")}}>
+                    <ListItemButton onClick={()=>{navigate("./", {state:{teamId:teamId,teamName:teamName}}) }}>
                         <ListItemIcon>
                             <ListIcon />
                         </ListItemIcon>

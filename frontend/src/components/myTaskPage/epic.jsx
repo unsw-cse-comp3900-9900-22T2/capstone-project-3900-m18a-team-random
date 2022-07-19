@@ -8,7 +8,7 @@ import TaskTable from './taskTable';
 import PopupFab from '../popupFab';
 import AddTaskForm from './addTaskForm';
 
-const Epic = ({title, id})=>{
+const Epic = ({title, epicId, tasks})=>{
     return (
         <Accordion>
             <AccordionSummary
@@ -17,7 +17,7 @@ const Epic = ({title, id})=>{
                 <Typography>{title}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-                <TaskTable/>
+                <TaskTable tasks={tasks}/>
                 <PopupFab 
                 style={{
                     marginTop:10
@@ -26,7 +26,7 @@ const Epic = ({title, id})=>{
                 color='secondary'
                 title='New Task'
                 >
-                    <AddTaskForm epicId={id}/>
+                    <AddTaskForm epicId={epicId}/>
                 </PopupFab>
             </AccordionDetails>
       </Accordion>

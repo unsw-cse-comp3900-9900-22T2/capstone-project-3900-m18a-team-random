@@ -21,19 +21,14 @@ const TaskItem = ({taskId, taskTitle, assignee, status, priority, deadline}) => 
                 </PopupButton>
             </TableCell>
             <TableCell>
-                <DropdownField
-                    value={ass}
-                    label="Assignee"
-                    onChange={e=>{setAss(e.target.value)}}
-                    menuItems={['Justin','Barry','Kai']}
-                />
+                {assignee}
             </TableCell>
             <TableCell>
                 <DropdownField
                     value={sta}
                     label="Status"
                     onChange={e=>{setSta(e.target.value)}}
-                    menuItems={['Not started yet','Working on it','Completed']}
+                    menuItems={['Not yet started','Working on it','Completed']}
                 />
             </TableCell>
             <TableCell>

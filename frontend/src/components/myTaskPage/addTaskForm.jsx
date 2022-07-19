@@ -1,7 +1,8 @@
 import Grid from '@mui/material/Grid';
-import React, {useState,useParams} from 'react';
+import React, {useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { useParams,useLocation } from 'react-router-dom';
 
 const AddTaskForm = ({close, epicId}) => {
     const {teamName} = useParams();

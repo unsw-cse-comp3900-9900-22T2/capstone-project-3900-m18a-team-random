@@ -35,6 +35,7 @@ const HistoryTaskTable = () => {
                 <TableBody>
                     {rows.map((row) => (
                         <HistoryTaskItem
+                            key={row.taskId}
                             taskId={row.taskId}
                             taskTitle={row.taskTitle}
                             assignee={row.assignee}

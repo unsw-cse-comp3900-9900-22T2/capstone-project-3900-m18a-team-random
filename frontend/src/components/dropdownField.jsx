@@ -10,7 +10,7 @@ const DropdownField = ({value, label, onChange, menuItems}) => {
             onChange={onChange}
         >
             {menuItems.map((item) => (
-                <MenuItem value={item}>
+                <MenuItem key={item} value={item}>
                     {item}
                 </MenuItem>
             ))}
