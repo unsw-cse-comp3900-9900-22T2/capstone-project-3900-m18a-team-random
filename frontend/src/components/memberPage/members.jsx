@@ -7,7 +7,7 @@ import PopupButton from '../popupButton';
 import AddMemberPanel from './addMemberPanel';
 import PopupFab from '../popupFab';
 
-const Members = () => {
+const Members = ({teamName}) => {
     return(
         <div>
             <Grid container direction='column' spacing={4}>
@@ -29,7 +29,7 @@ const Members = () => {
             title='Invite a Taskmaster'
             color='primary'
             >
-                <AddMemberPanel/>
+                <AddMemberPanel teamName={teamName}/>
             </PopupFab>
         </div>
     )

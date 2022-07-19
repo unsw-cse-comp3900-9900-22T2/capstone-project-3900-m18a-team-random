@@ -15,7 +15,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import InvitationRequest from './InvitationRequest';
 
 
-const MenuIconButton = ({children}) => {
+const MenuIconButton = ({children, menuItems}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClickOpen = (event) => {
@@ -40,8 +40,7 @@ const MenuIconButton = ({children}) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-            <InvitationRequest teamName='Team Random'/>
-            <InvitationRequest teamName='Team otz'/>
+            {menuItems}
         </Menu>
     );
 

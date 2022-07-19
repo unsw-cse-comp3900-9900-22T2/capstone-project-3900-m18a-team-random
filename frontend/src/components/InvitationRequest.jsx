@@ -15,16 +15,53 @@ import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-const InvitationRequest = ({teamName}) => {
+const InvitationRequest = ({teamName, invitationId, deleteInvitation}) => {
+
+    const handleAcceptInvitation = async (e) => {
+        console.log({invitationId});
+        const response = await fetch('/accept-invitation', {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({invitationId})
+        });
+
+        if(response.ok){
+            response.json().then(data =>{
+                deleteInvitation(teamName);
+            })
+        } else {
+        }
+    }
+
+    const handleRefuseInvitation = async (e) => {
+        console.log({invitationId});
+        const response = await fetch('/refuse-invitation', {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({invitationId})
+        });
+
+        if(response.ok){
+            response.json().then(data =>{
+                deleteInvitation(teamName);
+            })
+        } else {
+        }
+    }
+
     return (
         <MenuItem>
             <ListItemText>
                 You are invited to {teamName}
             </ListItemText>
-            <IconButton>
+            <IconButton onClick={handleAcceptInvitation}>
                 <CheckCircleOutlineIcon/>
             </IconButton>
-            <IconButton>
+            <IconButton onClick={handleRefuseInvitation}>
                 <CancelIcon/>
             </IconButton>
         </MenuItem>

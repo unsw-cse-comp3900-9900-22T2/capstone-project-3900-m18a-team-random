@@ -18,7 +18,7 @@ import AppBar from '@mui/material/AppBar';
 import PopupIcon from './popupIcon';
 import ProfilePanel from './profilePanel';
 import { Button } from '@mui/material';
-import MenuIconButton from './menuIconButton';
+import InvitationNotification from './invitationNotification';
 
 const NavBar = () => {
     return (
@@ -35,11 +35,7 @@ const NavBar = () => {
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <MenuIconButton>
-                            <Badge badgeContent={2} color="error">
-                                <MailIcon />
-                            </Badge>
-                        </MenuIconButton>
+                        <InvitationNotification/>
                         <PopupIcon icon={<AccountCircle/>} title='Profile'>
                             <ProfilePanel/>
                         </PopupIcon>
