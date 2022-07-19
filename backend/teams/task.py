@@ -98,7 +98,8 @@ def task_get(token, team_id):
 def task_delete(token, task_title, team_name):
     user = get_user_from_token(token)
     team = get_team_from_team_name(team_name)
-    
+    if team not in get_team_from_token(token):
+        raise AccessError("Delete Task Failed: user is not a member of this team")
     task = get_task_from_team_and_title(team.name, task_title)
     if task is None:
         raise InputError('Task deletion failed: Task with title ' + task_title + ' does not exist.')
