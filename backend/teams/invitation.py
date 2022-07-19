@@ -9,6 +9,10 @@ from teams import db
 def create_invitation(token, user_email, team_name):
     inviter = get_user_from_token(token)
     if(inviter is None): raise InputError("token is invalid")
+    
+    invitation_history = Invitation.query.filter_by(email=user_email,team_name = team_name).first()
+    if invitation_history is not None: raise AccessError("The invitation already sent")
+
     invitation = Invitation(email = user_email, team_name = team_name, inviter_id = inviter.id)
     db.session.add(invitation)
     db.session.commit()
@@ -24,7 +28,7 @@ def get_invitation(token):
         if invitation is None:
             continue
         else:
-            resp = {"invitation_id":invitation.id,"email":invitation.email,"team_name":invitation.email,"inviter_id":invitation.inviter_id}
+            resp = {"invitation_id":invitation.id,"email":invitation.email,"team_name":invitation.team_name,"inviter_id":invitation.inviter_id}
             invitation_list.append(resp)
     return invitation_list
 
