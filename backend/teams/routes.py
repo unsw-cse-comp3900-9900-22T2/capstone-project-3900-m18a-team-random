@@ -41,7 +41,12 @@ from teams.profile import(
 from teams.epic import(
     epic_create
 )
-
+from teams.invitation import(
+    create_invitation,
+    get_invitation,
+    accept_invitation,
+    refuse_invitation
+)
 import json
 from teams.MyEncoder import MyEncoder
 
@@ -139,8 +144,31 @@ def get_task():
     data = request.get_json()
     return json.dumps(task_get(data['token'], data['team_id']))
 
-# Team Functions
+# Invitation Functions
+@app.route('/create-invitation', methods=['POST'])
+def invitation_create():
+    data = request.get_json()
+    token = data['token']
+    user_email = data['user_email']
+    team_name = data['team_name']
+    return json.dumps(create_invitation(token, user_email, team_name))
 
+@app.route('/get-invitation', methods=['POST'])
+def invitation_get():
+    data = request.get_json()
+    return json.dumps(get_invitation(data['token']))
+
+@app.route('/accept-invitation', methods=['POST'])
+def invitation_accept():
+    data = request.get_json()
+    return json.dumps(accept_invitation(data['invitation_id']))
+
+@app.route('/refuse-invitation', methods=['POST'])
+def invitation_refuse():
+    data = request.get_json()
+    return json.dumps(refuse_invitation(data['invitation_id']))
+
+# Team Functions
 @app.route('/create_team', methods=['POST'])
 def create_team():
     data = request.get_json()
@@ -165,11 +193,6 @@ def update_task_master():
 def update_team_name():
     data = request.get_json()
     return json.dumps(team_update_team_name(data['token'],data['new_team_name'],data['old_team_name']))
-
-@app.route('/add_team_member', methods=['POST'])
-def join_team():
-    data = request.get_json()
-    return json.dumps(team_add_team_member(data['token'],data['member_email_address'],data['team_name']))
     
 @app.route('/leave_team',methods=['POST'])
 def leave_team():

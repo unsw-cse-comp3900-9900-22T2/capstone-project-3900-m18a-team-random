@@ -69,6 +69,12 @@ class Team(db.Model):
     def set_task_master_id(self, task_master_id):
         self.task_master_id = task_master_id
 
+class Invitation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120),nullable=False)
+    team_name = db.Column(db.String(120),nullable=False)
+    inviter_id = db.Column(db.Integer, nullable=False)
+
 class UserTeamRelation(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)

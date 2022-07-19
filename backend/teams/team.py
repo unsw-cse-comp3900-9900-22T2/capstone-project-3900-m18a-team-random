@@ -11,7 +11,6 @@ from teams import db
 import jwt
 
 ## MAIN FUNCTIONS
-
 # From user token get team infromation
 def get_team_from_user_token(token):
     user = get_user_from_token(token)
@@ -120,8 +119,8 @@ def team_update_team_name(token, new_team_name, old_team_name):
     }
     
 # Add a team member by email address to your team.
-def team_add_team_member(token, member_email_address,team_name):
-    user = get_user_from_token(token)
+def team_add_team_member(inviter_id, member_email_address,team_name):
+    user = User.query.filter_by(id=inviter_id).first()
     team = get_team_from_team_name(team_name)
     check_user_is_task_master(user,team)
     
