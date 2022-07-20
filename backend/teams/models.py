@@ -69,6 +69,12 @@ class Team(db.Model):
     def set_task_master_id(self, task_master_id):
         self.task_master_id = task_master_id
 
+class Invitation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120),nullable=False)
+    team_name = db.Column(db.String(120),nullable=False)
+    inviter_id = db.Column(db.Integer, nullable=False)
+
 class UserTeamRelation(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
@@ -86,11 +92,18 @@ class UserTeamRelation(db.Model):
     
 class Epic(db.Model):
     id = db.Column(db.Integer,primary_key=True)
-    epic_name = db.Column(db.String(120), nullable=False)   
+    team_name = db.Column(db.String(30),unique=True,nullable=False)
+    epic_name = db.Column(db.String(120), nullable=False)
+    
 
     def __repr__(self):
-        return f"Task('{self.id}','{self.epic_name}'"
+        return f"Epic('{self.id}','{self.epic_name}', '{self.team_name}'"
 
+    def set_epic_id(self, epic_id):
+        self.epic_id = epic_id
+
+    def set_team_name(self,team_name):
+        self.team_name = team_name
 class Task(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     title = db.Column(db.String(50), nullable=False)
