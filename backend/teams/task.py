@@ -45,8 +45,8 @@ def task_add(token, title, status, description, priority, email, due_date, team_
     if epic.team_name != team.name:
         raise InputError("epic does not belong to this team")
     # Check that the task name is unique within the Team task board that it was created in.
-    if Task.query.filter_by(title=title,team_id=team.id).first() is not None:
-        raise InputError('Task creation failed: a task with the same title already exists.')
+    if Task.query.filter_by(title=title,team_id=team.id, epic_id=int(epic_id)).first() is not None:
+        raise InputError('Task creation failed: a task with the same title already exists under this epic.')
     # Check the assignee_user is in same team as the task creater
     assignee_user = get_user_from_email(email)
     relation = db.session.query(UserTeamRelation).filter_by(user_id=assignee_user.id,team_id=team.id).first()
@@ -58,10 +58,10 @@ def task_add(token, title, status, description, priority, email, due_date, team_
     db.session.commit()
     
     return {
-        "task_id": task.id, "title":task.title, "description":task.description, "status":task.status, "priority": task.priority, "assignee_email":task.assignee_email, "due_date":task.due_date, "team_id":task.team_id, "epic_id":task.epic_id
+        "task_id": task.id, "title":task.title, "description":task.description, "status":task.status, "priority": task.priority, "assignee_email":task.assignee_email, "assignee_name":get_user_from_email(task.assignee_email).username,"due_date":task.due_date, "team_id":task.team_id, "team_name":team_name, "epic_id":task.epic_id, "epic_name": Epic.query.filter_by(id = task.epic_id).first().epic_name
     }
 def task_get(token, team_id):
-    get_team_from_token(token)
+    user = get_user_from_token(token)
     team = get_team_from_team_id(int(team_id))
     if team not in get_team_from_token(token):
         raise AccessError("Get Task Failed: user is not a member of this team")
@@ -75,13 +75,19 @@ def task_get(token, team_id):
             if task is None:
                 continue
             task_info = {}
+            assignee_name = get_user_from_email(task.assignee_email).username
+            task_info['task_id'] = task.id
             task_info['title'] = task.title
+            task_info['description'] = task.description
             task_info['status'] = task.status
             task_info['priority'] = task.priority
             task_info['assignee_email'] = task.assignee_email
+            task_info['assingee_name'] = assignee_name
             task_info['due_date'] = task.due_date
             task_info['team_id'] = task.team_id
+            task_info['team_name'] = team.name
             task_info['epic_id'] = task.epic_id
+            task_info['epic_name'] = Epic.query.filter_by(id = task.epic_id).first().epic_name
             task_list.append(task_info)
         if len(task_list) != 0:
             task_wrap['tasks'] = task_list
@@ -232,9 +238,12 @@ def task_search(token, query_string):
                     "task_description": task.description,
                     "task_status": task.status,
                     "task_priority": task.priority,
+                    "task_assignee_email": task.assignee_email,
                     "task_assignee_username": assignee.username,
                     "task_due_date": task.due_date,
-                    "task_team_name": team.name
+                    "task_team_name": get_team_from_team_id(task.team_id).name,
+                    "task_team_id": task.team_id,
+                    "task_epic_id": task.epic_id
                 }
             )
     
