@@ -45,6 +45,7 @@ def task_add(token, title, status, description, priority, email, due_date, team_
     if epic.team_name != team.name:
         raise InputError("epic does not belong to this team")
     # Check that the task name is unique within the Team task board that it was created in.
+
     if Task.query.filter_by(title=title,team_id=team.id, epic_id=int(epic_id)).first() is not None:
         raise InputError('Task creation failed: a task with the same title already exists under this epic.')
     # Check the assignee_user is in same team as the task creater
@@ -88,6 +89,7 @@ def task_get(token, team_id):
             task_info['team_name'] = team.name
             task_info['epic_id'] = task.epic_id
             task_info['epic_name'] = Epic.query.filter_by(id = task.epic_id).first().epic_name
+
             task_list.append(task_info)
         if len(task_list) != 0:
             task_wrap['tasks'] = task_list
