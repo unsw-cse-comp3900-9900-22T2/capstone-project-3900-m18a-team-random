@@ -8,7 +8,11 @@ from teams import db
 # create invitation
 def create_invitation(token, user_email, team_name):
     inviter = get_user_from_token(token)
-    if(inviter is None): raise InputError("token is invalid")
+    if(inviter is None): return "token is invalid"
+    
+    invitation_history = Invitation.query.filter_by(email=user_email,team_name = team_name).first()
+    if invitation_history is not None: return "The invitation already sent"
+
     invitation = Invitation(email = user_email, team_name = team_name, inviter_id = inviter.id)
     db.session.add(invitation)
     db.session.commit()
@@ -24,7 +28,7 @@ def get_invitation(token):
         if invitation is None:
             continue
         else:
-            resp = {"invitation_id":invitation.id,"email":invitation.email,"team_name":invitation.email,"inviter_id":invitation.inviter_id}
+            resp = {"invitation_id":invitation.id,"email":invitation.email,"team_name":invitation.team_name,"inviter_id":invitation.inviter_id}
             invitation_list.append(resp)
     return invitation_list
 
@@ -32,7 +36,7 @@ def get_invitation(token):
 def accept_invitation(invitation_id):
     invitation = Invitation.query.filter_by(id=invitation_id).first()
     if invitation is None:
-        raise InputError("invalid invitation_id")
+        return "invalid invitation_id"
     team_add_team_member(invitation.inviter_id,invitation.email,invitation.team_name)
     db.session.delete(invitation)
     db.session.commit()
@@ -42,7 +46,7 @@ def accept_invitation(invitation_id):
 def refuse_invitation(invitation_id):
     invitation = Invitation.query.filter_by(id=invitation_id).first()
     if invitation is None:
-        raise InputError("invalid invitation_id")
+        return "invalid invitation_id"
     db.session.delete(invitation)
     db.session.commit()
     

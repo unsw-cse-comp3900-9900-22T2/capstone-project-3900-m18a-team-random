@@ -20,6 +20,7 @@ from teams.task import (
 )
 from teams.team import (
     get_team_from_user_token,
+    get_team_member_from_user_token,
     team_create,
     team_delete,
     team_update_task_master,
@@ -174,6 +175,11 @@ def create_team():
     data = request.get_json()
     return json.dumps(team_create(data['token'],data['team_name']))
 
+@app.route('/get-team-member', methods=['POST'])
+def get_team_member():
+    data = request.get_json()
+    return json.dumps(get_team_member_from_user_token(data['token'],data['team_name']))
+        
 @app.route('/get_team', methods=['GET','POST'])
 def get_team():
     data = request.get_json()
