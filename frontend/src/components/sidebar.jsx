@@ -14,6 +14,7 @@ import HelpIcon from '@mui/icons-material/Help';
 import { useNavigate } from 'react-router';
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const Sidebar = ({teamId, teamName}) => {
     let navigate = useNavigate();
@@ -51,6 +52,14 @@ const Sidebar = ({teamId, teamName}) => {
                             <BarChartOutlinedIcon />
                         </ListItemIcon>
                         <ListItemText primary="Analysis" />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton onClick={()=>{navigate("settings")}}>
+                        <ListItemIcon>
+                            <SettingsIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Settings" />
                     </ListItemButton>
                 </ListItem>
             </List>

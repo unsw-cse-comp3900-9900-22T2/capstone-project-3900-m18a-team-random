@@ -8,6 +8,7 @@ import MemberPage from '../memberPage/memberPage';
 import MyTask from '../myTaskPage/myTask';
 import Members from '../memberPage/members';
 import HistoryPage from '../history/historyPage';
+import Settings from '../settings';
 
 const TeamPage = ()=>{
     const location = useLocation();
@@ -46,6 +47,7 @@ const TeamPage = ()=>{
                         <Route path="/" element={<MyTask teamId={getTeamId()} teamName={getTeamName()}/>}/>
                         <Route path="members" element={<Members teamId={getTeamId()} teamName={getTeamName()}/>}/>
                         <Route path="history" element={<HistoryPage teamId={getTeamId()} teamName={getTeamName()}/>}/>
+                        <Route path="settings" element={<Settings teamId={getTeamId()} teamName={getTeamName()}/>}/>
                     </Routes>
                 </Grid>
             </Grid>

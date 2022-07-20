@@ -15,7 +15,8 @@ const AddMemberPanel = ({teamName, close}) => {
             'user_email':email,
             'team_name':teamName
         };
-        const response = await fetch('/invitation-create', {
+        console.log(invitation);
+        const response = await fetch('/create-invitation', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'

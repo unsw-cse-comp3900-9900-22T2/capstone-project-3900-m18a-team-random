@@ -62,7 +62,10 @@ const InvitationNotification = () => {
                     key={invitation['team_name']}
                     teamName={invitation['team_name']}
                     invitationId={invitation['invitation_id']}
-                    deleteInvitation={(teamName)=>{invitations.filter(invitation=>invitation['team_name'] != teamName)}}
+                    deleteInvitation={(teamName)=>{
+                        setInvitations(invitations.filter(invitation=>invitation['team_name'] != teamName));
+                        console.log(invitations);
+                    }}
                     />
                 ))}
             </div>
