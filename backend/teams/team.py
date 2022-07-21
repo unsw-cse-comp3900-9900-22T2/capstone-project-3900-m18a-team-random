@@ -3,7 +3,7 @@ from teams.error import InputError, AccessError
 from lib2to3.pgen2.pgen import generate_grammar
 import sys
 import random
-from teams.models import User, Token, ResetCode, Team, Task, UserTeamRelation, Epic
+from teams.models import User, Token, ResetCode, Team, Task, UserProfile, UserTeamRelation, Epic
 from teams.auth import get_user_from_token, get_user_from_email
 from teams.task import get_team_from_team_name
 import re
@@ -38,8 +38,9 @@ def get_team_member_from_user_token(token, team_name):
             continue
         else:
             user = User.query.filter_by(id = relation.user_id).first()
-            resp = {"member_name":user.username}
-            team_member_list.append(user.username)
+            userprofile = UserProfile.query.filter_by(username = user.username).first()
+            resp = {"member_id":user.id, "member_name":user.username,"member_email":userprofile.email,"description":userprofile.description}
+            team_member_list.append(resp)
     return team_member_list
 
 # Create a team and add to the database.

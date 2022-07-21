@@ -3,7 +3,7 @@ from teams.error import InputError, AccessError
 from lib2to3.pgen2.pgen import generate_grammar
 import sys
 import random
-from teams.models import User, Token, ResetCode, Team, Task
+from teams.models import User, Token, ResetCode, Team, Task, UserProfile
 import re
 from teams import db
 import jwt
@@ -34,6 +34,13 @@ def auth_register(email, username, password):
     #set the status to offline
     user.set_status(OFFLINE)
     db.session.commit()
+
+    # create profile
+    userProfile = UserProfile.query.filter_by(email=email).first()
+    if userProfile is None:
+        user_profile=UserProfile(username=user.username, email=user.email)
+        db.session.add(user_profile)
+        db.session.commit()
 
     # Generate a JWT token for the newly added user
     token = generate_token(email)

@@ -14,13 +14,12 @@ import jwt
 
 def profile_get(token):
 
-    print(token)
     user=get_user_from_token(token)
-    print(user)
     userProfile = UserProfile.query.filter_by(email=user.email).first()
     if userProfile is None:
-        userProfile=UserProfile(username=user.username, email=user.email)
-    print(userProfile)
+        user_profile=UserProfile(username=user.username, email=user.email)
+        db.session.add(user_profile)
+        db.session.commit()
     return {
         "username":userProfile.username,
         "email":userProfile.email,
