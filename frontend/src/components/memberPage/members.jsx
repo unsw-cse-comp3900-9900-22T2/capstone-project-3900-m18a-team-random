@@ -8,22 +8,24 @@ import AddMemberPanel from './addMemberPanel';
 import PopupFab from '../popupFab';
 
 const Members = ({teamName}) => {
+    const [members, setMembers] = useState([]);
 
     useEffect(() => {
         const fetchMemberData = async () => {
-            const token = {'token':sessionStorage.getItem('token')}
-            console.log(token);
-            const response = await fetch('/get_team', {
+            const tokenAndTeam = {'token':sessionStorage.getItem('token'), 'team_name': teamName}
+            console.log(tokenAndTeam);
+            const response = await fetch('/get-team-member', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
                 },
-                body: JSON.stringify(token)
+                body: JSON.stringify(tokenAndTeam)
             });
             
             if(response.ok){
                 response.json().then(data =>{
                     console.log(data);
+                    setMembers(data);
                 })
             }
         }
@@ -40,7 +42,7 @@ const Members = ({teamName}) => {
                     </h1>
                 </Grid>
                 <Grid item>
-                    <TeamMemberTable/>
+                    <TeamMemberTable members={members}/>
                 </Grid>
             </Grid>
             <PopupFab 

@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useParams,useLocation } from 'react-router-dom';
 
-const AddTaskForm = ({close, epicId}) => {
+const AddTaskForm = ({close, epicId, onNewTask}) => {
     const {teamName} = useParams();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -35,6 +35,7 @@ const AddTaskForm = ({close, epicId}) => {
         if(response.ok){
             response.json().then(data =>{
                 console.log(data);
+                onNewTask(data);
                 close();
             })
         } else {

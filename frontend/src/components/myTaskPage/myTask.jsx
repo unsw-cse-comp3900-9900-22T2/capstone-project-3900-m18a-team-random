@@ -15,6 +15,33 @@ import NewEpicForm from './newEpicForm';
 
 const MyTask = ({teamId, teamName}) => {
     const [epics, setEpics] = useState({epics:[]});
+    const [members, setMembers] = useState([]);    
+
+    const onNewEpic = (epic) => {
+        let epicArray = epics['epics'];
+        epicArray = [...epicArray, epic];
+        setEpics({epics:epicArray});
+        console.log(epics);
+    }
+
+    const handleSearch = async () => {
+        const tokenAndTeam = {'token':sessionStorage.getItem('token'), 'team_id':teamId}
+        console.log(tokenAndTeam);
+        const response = await fetch('/get_task', {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(tokenAndTeam)
+        });
+        
+        if(response.ok){
+            response.json().then(data =>{
+                console.log(data);
+                setEpics(data);
+            })
+        }
+    }
 
     useEffect(() => {
         const fetchTaskData = async () => {
@@ -36,6 +63,26 @@ const MyTask = ({teamId, teamName}) => {
             }
         }
 
+        const fetchMemberData = async () => {
+            const tokenAndTeam = {'token':sessionStorage.getItem('token'), 'team_name': teamName}
+            console.log(tokenAndTeam);
+            const response = await fetch('/get-team-member', {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(tokenAndTeam)
+            });
+            
+            if(response.ok){
+                response.json().then(data =>{
+                    console.log(data);
+                    setMembers(data);
+                })
+            }
+        }
+
+        fetchMemberData();
         fetchTaskData();
     }, []);
 
@@ -48,8 +95,11 @@ const MyTask = ({teamId, teamName}) => {
                             {teamName}
                         </Typography>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item>
                         <TextField placeholder='Search by Task Name'/>
+                    </Grid>
+                    <Grid item>
+                        <Button variant='contained'>Search</Button>
                     </Grid>
                 </Grid>
                 <Grid item>
@@ -59,6 +109,7 @@ const MyTask = ({teamId, teamName}) => {
                         epicId={epic['epic_id']} 
                         title={epic['epic_name']}
                         tasks={epic['tasks']}
+                        members={members}
                         />
                     ))}
                 </Grid>
@@ -72,7 +123,7 @@ const MyTask = ({teamId, teamName}) => {
             title='New Epic'
             color='primary'
             >
-                <NewEpicForm teamName={teamName}/>
+                <NewEpicForm teamName={teamName} onNewEpic={onNewEpic}/>
             </PopupFab>
         </Box>
     )

@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-const NewEpicForm = ({teamName, close}) => {
+const NewEpicForm = ({teamName, close, onNewEpic}) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
@@ -22,6 +22,9 @@ const NewEpicForm = ({teamName, close}) => {
         if(response.ok){
             response.json().then(data =>{
                 console.log(data);
+                data['tasks'] = [];
+                console.log(data);
+                onNewEpic(data);
                 close();
             })
         } else {

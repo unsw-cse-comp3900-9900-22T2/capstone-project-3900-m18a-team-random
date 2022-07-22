@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useState,useEffect} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -19,7 +19,7 @@ const rows = [
 ];
 
 
-const TaskTable = ({tasks}) => {
+const TaskTable = ({epicId, tasks, members}) => {
     console.log(tasks);
     return (
         <TableContainer component={Paper}>
@@ -36,13 +36,16 @@ const TaskTable = ({tasks}) => {
                 <TableBody>
                     {tasks.map((task) => (
                         <TaskItem 
-                            key={task['title']}
+                            epicId={epicId}
+                            key={task['task_id']}
                             taskId={task['title']}
                             taskTitle={task['title']}
-                            assignee={task['assignee_email']}
+                            assigneeName={task['assingee_name']}
                             status={task['status']}
                             priority={task['priority']}
                             deadline={task['due_date']}
+                            description={task['description']}
+                            members={members}
                         />
                     ))}
                 </TableBody>

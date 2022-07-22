@@ -20,6 +20,7 @@ from teams.task import (
 )
 from teams.team import (
     get_team_from_user_token,
+    get_team_member_from_user_token,
     team_create,
     team_delete,
     team_update_task_master,
@@ -46,6 +47,10 @@ from teams.invitation import(
     get_invitation,
     accept_invitation,
     refuse_invitation
+)
+
+from teams.analysis import(
+    task_analysis
 )
 import json
 from teams.MyEncoder import MyEncoder
@@ -174,6 +179,11 @@ def create_team():
     data = request.get_json()
     return json.dumps(team_create(data['token'],data['team_name']))
 
+@app.route('/get-team-member', methods=['POST'])
+def get_team_member():
+    data = request.get_json()
+    return json.dumps(get_team_member_from_user_token(data['token'],data['team_name']))
+        
 @app.route('/get_team', methods=['GET','POST'])
 def get_team():
     data = request.get_json()
@@ -225,3 +235,11 @@ def edit_comment():
 def reply_comment():
     data = request.get_json()
     return json.dumps(comment_reply(data['token'],data['parent_comment_id'],data['comment_content']))
+
+
+# Analysis Fuctions
+
+@app.route('/analysis_get', methods=['POST'])
+def analysis_get():
+    data = request.get_json()
+    return json.dumps(task_analysis(data['token'],data['team_id']))

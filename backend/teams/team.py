@@ -3,7 +3,7 @@ from teams.error import InputError, AccessError
 from lib2to3.pgen2.pgen import generate_grammar
 import sys
 import random
-from teams.models import User, Token, ResetCode, Team, Task, UserTeamRelation, Epic
+from teams.models import User, Token, ResetCode, Team, Task, UserProfile, UserTeamRelation, Epic
 from teams.auth import get_user_from_token, get_user_from_email
 from teams.task import get_team_from_team_name
 import re
@@ -24,6 +24,24 @@ def get_team_from_user_token(token):
             resp = {"team_id": team_info.id, "team_name":team_info.name,"team_task_master_id":team_info.task_master_id}
             team_list.append(resp)
     return team_list
+
+# get team member
+def get_team_member_from_user_token(token, team_name):
+    user = get_user_from_token(token)
+    team = Team.query.filter_by(name=team_name).first()
+    relation_info = UserTeamRelation.query.filter_by(user_id=user.id,team_id=team.id).first()
+    if relation_info is None: return "user is not in team"
+    relations = UserTeamRelation.query.filter_by(team_id=team.id).all()
+    team_member_list = []
+    for relation in relations:
+        if (relation is None):
+            continue
+        else:
+            user = User.query.filter_by(id = relation.user_id).first()
+            userprofile = UserProfile.query.filter_by(username = user.username).first()
+            resp = {"member_id":user.id, "member_name":user.username,"member_email":userprofile.email,"description":userprofile.description}
+            team_member_list.append(resp)
+    return team_member_list
 
 # Create a team and add to the database.
 def team_create(token, team_name):
@@ -54,15 +72,9 @@ def team_delete(token,team_name):
     user = get_user_from_token(token)
     team = get_team_from_team_name(team_name)
     if team is None:
-        raise AccessError('the team does not exist')
+        return "the team does not exist"
     # Only the task master of the team can delete the team.
     check_user_is_task_master(user,team)
-    
-    # Unassign all members from the team
-    #team_members = User.query.filter_by(team_id=team.id).all()
-    #for team_member in team_members:
-        #team_member.set_team_id(None)
-        #db.session.commit()
     
     # Remove all tasks
     tasks = Task.query.filter_by(team_id=team.id)
@@ -86,7 +98,7 @@ def team_delete(token,team_name):
     for epic in epics:
         db.session.delete(epic)
         db.session.commit()
-    return {}
+    return "team is successful deleted"
 
 # Update the task master.
 def team_update_task_master(token, new_task_master_email, team_name):
@@ -131,18 +143,18 @@ def team_add_team_member(inviter_id, member_email_address,team_name):
     #team_member.set_team_id(user.team_id)
     #db.session.commit()
     if team_member is None:
-        raise InputError('Email is invalid')
+        return "Email is invalid"
     #user can not join same team more than once
     relation = db.session.query(UserTeamRelation).filter_by(user_id=team_member.id,team_id=team.id).first()
     if relation is not None:
-        raise AccessError("user can not join same team more than once")
+        return "user can not join same team more than once"
     
     relation = UserTeamRelation(user_id=team_member.id,team_id=team.id)
     db.session.add(relation)
     db.session.commit()
 
     return {
-        "team_id": team.id
+        "team_id": team.id, "member_id":team_member.username
     }
     
 # Leave a team.
@@ -150,15 +162,21 @@ def team_leave(token,team_id):
     user = get_user_from_token(token)
     #team master can not leave team wihout update the team master
     team = db.session.query(Team).filter_by(id=team_id).first()
-    if (user.id == team.task_master_id):
-        raise AccessError("team master can not leave team wihout update the team master")
+    relations = UserTeamRelation.query.filter_by(team_id=team.id).all()
+    number_of_team_member = 0
+    for relation in relations:
+        if (relation is None): break
+        number_of_team_member = number_of_team_member + 1
+    if (number_of_team_member == 1):
+        team_delete(token,team.name)
+        return "team is deleted"
+    elif (user.id == team.task_master_id):
+        return "team master can not leave team wihout update the team master"
     else:
         relation = db.session.query(UserTeamRelation).filter_by(user_id=user.id,team_id=team_id).first()
         db.session.delete(relation)
         db.session.commit()
-    return {
-        "user_id": user.id
-    }
+    return "user successful leaves team"
     
 # Remove a team member from your team.
 def team_remove_member(token, member_email_address, team_name):
@@ -168,9 +186,9 @@ def team_remove_member(token, member_email_address, team_name):
 
     # Task master can't remove themselves.
     if member_email_address == user.email:
-        raise InputError('User cannot remove themselves from a team.')
+        return "User cannot remove themselves from a team."
     elif user.id != team.task_master_id:
-        raise InputError('User can only be removed by task master.')
+        return "User can only be removed by task master."
     # remove relationship
     relation = db.session.query(UserTeamRelation).filter_by(user_id=user.id,team_id=team.id).first()
     db.session.delete(relation)

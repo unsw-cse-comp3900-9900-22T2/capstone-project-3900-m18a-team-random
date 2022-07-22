@@ -11,30 +11,14 @@ import HistoryPage from '../history/historyPage';
 import Settings from '../settings';
 
 const TeamPage = ()=>{
-    const location = useLocation();
-    const [teamId, setTeamId] = useState("");
-    const [teamName, setTeamName] = useState("");
 
     const getTeamId = () => {
-        if(teamId === "")
-            return location.state.teamId;
-        else
-            return teamId;
+        return sessionStorage.getItem('teamId');
     }
 
     const getTeamName = () => {
-        if(teamName === "")
-            return location.state.teamName;
-        else
-            return teamName;
+        return sessionStorage.getItem('teamName');
     }
-
-    useEffect(() => {
-        console.log(location.state.teamId);
-        console.log(location.state.teamName);
-        setTeamId(location.state.teamId);
-        setTeamName(location.state.teamName);
-    }, []);
 
     return (
         <Box>

@@ -18,28 +18,35 @@ const rows = [
     orgnizeData('Kai', 'Developer', 'Away')
 ];
 
-const TeamMemberTable = () => {
+const getDescription = (description) => {
+    if(description === null)
+        return "No description here"
+    else
+        return description;
+}
+
+const TeamMemberTable = ({members}) => {
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth:500}}>
             <TableHead>
             <TableRow>
                 <TableCell>User</TableCell>
-                <TableCell>Role</TableCell>
-                <TableCell>Status</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Profile</TableCell>
             </TableRow>
             </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
+                    {members.map((member) => (
                         <TableRow
-                        key={row.name}
+                        key={member['member_name']}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
-                                {row.name}
+                                {member['member_name']}
                             </TableCell>
-                            <TableCell>{row.role}</TableCell>
-                            <TableCell>{row.status}</TableCell>
+                            <TableCell>{member['member_email']}</TableCell>
+                            <TableCell>{getDescription(member['description'])}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

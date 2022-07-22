@@ -12,7 +12,11 @@ const GroupCard = ({teamId, teamName})=>{
 
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea onClick={()=>{navigate("../"+teamName, {state:{teamId:teamId,teamName:teamName}})}}>
+            <CardActionArea onClick={()=>{
+                    sessionStorage.setItem('teamId', teamId);
+                    sessionStorage.setItem('teamName', teamName);
+                    navigate("../"+teamName, {state:{teamId:teamId,teamName:teamName}});
+                }}>
                 <CardMedia
                     component="img"
                     height="140"
