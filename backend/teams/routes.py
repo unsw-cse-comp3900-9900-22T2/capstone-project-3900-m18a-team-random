@@ -37,7 +37,8 @@ from teams.comment import (
 )
 from teams.profile import(
     profile_get,
-    profile_add_description
+    profile_add_description,
+    profile_get_by_email
 )
 from teams.epic import(
     epic_create
@@ -86,6 +87,10 @@ def get_profile():
 def profile_description():
     data = request.get_json()
     return json.dumps(profile_add_description(data['token'],data['description']))
+@app.route("/profile_get_by_email",methods=['POST'])
+def profile_by_email():
+    data = request.get_json()
+    return json.dumps(profile_get_by_email(data['email']))
 
 # Password Reset Functions
     

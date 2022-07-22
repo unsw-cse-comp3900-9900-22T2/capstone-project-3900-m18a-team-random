@@ -40,5 +40,20 @@ def profile_add_description(token,description):
         "email":userProfile.email,
         "description":userProfile.description
     }
+
+def profile_get_by_email(email):
+
+    userProfile = UserProfile.query.filter_by(email=email).first()
+    if userProfile is None:
+        return {
+            "username":None,
+            "email":None,
+            "description":None
+        }
+    return {
+        "username":userProfile.username,
+        "email":userProfile.email,
+        "description":userProfile.description
+    }
     
 
