@@ -48,6 +48,10 @@ from teams.invitation import(
     accept_invitation,
     refuse_invitation
 )
+
+from teams.analysis import(
+    task_analysis
+)
 import json
 from teams.MyEncoder import MyEncoder
 
@@ -231,3 +235,11 @@ def edit_comment():
 def reply_comment():
     data = request.get_json()
     return json.dumps(comment_reply(data['token'],data['parent_comment_id'],data['comment_content']))
+
+
+# Analysis Fuctions
+
+@app.route('/analysis_get', methods=['POST'])
+def analysis_get():
+    data = request.get_json()
+    return json.dumps(task_analysis(data['token'],data['team_id']))
