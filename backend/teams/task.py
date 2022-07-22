@@ -82,7 +82,7 @@ def task_get(token, team_id):
             task_info['status'] = task.status
             task_info['priority'] = task.priority
             task_info['assignee_email'] = task.assignee_email
-            task_info['assingee_name'] = assignee_name
+            task_info['assignee_name'] = assignee_name
             task_info['due_date'] = task.due_date
             task_info['team_id'] = task.team_id
             task_info['team_name'] = team.name
