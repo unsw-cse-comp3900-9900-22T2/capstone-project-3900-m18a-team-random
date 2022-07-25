@@ -25,5 +25,5 @@ In last two week, we almost finish to re-design our backend structure, but the i
 For exmaple, the token should be decoded from byte to json, and the some functions are not fully work weel, I will fix these bugs in week 7.
 
 Week 8
-In last week, I have finished the improvement of our Team system: added the user_team_relation table and invitation table, changed the 1 to N relation between user and team to N to N relation, fiexed the bugs in implementation of Team system, and implement invitation.py to complete the interaction in inviting teammember.
+In last week, I completed the improvement of our Team system last week: added user_team_relation table and invitation table, changed the 1-to-N relationship between users and teams to N-to-N relationship, fixed bugs in the implementation of the Team system, and implemented invitation.py to complete the invitation Interaction of team members.
 
