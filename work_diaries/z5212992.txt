@@ -23,3 +23,7 @@ and I will start to plan what algorithm need to use in "Task Analysis System".
 Week 7
 In last two week, we almost finish to re-design our backend structure, but the implementation has some bugs need to be fixed. 
 For exmaple, the token should be decoded from byte to json, and the some functions are not fully work weel, I will fix these bugs in week 7.
+
+Week 8
+In last week, I have finished the improvement of our Team system: added the user_team_relation table and invitation table, changed the 1 to N relation between user and team to N to N relation, fiexed the bugs in implementation of Team system, and implement invitation.py to complete the interaction in inviting teammember.
+
