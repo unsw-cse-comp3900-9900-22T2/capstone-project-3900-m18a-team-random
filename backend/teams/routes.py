@@ -12,6 +12,7 @@ from teams.auth_passwordreset import (
 )
 from teams.task import (
     get_team_from_token,
+    get_assigned_task,
     task_get,
     task_add,
     task_delete,
@@ -133,6 +134,13 @@ def delete_task():
     team_name = data['team_name']
     
     return json.dumps(task_delete(token, task_title, team_name))
+
+@app.route('/get-assigned-task', methods=['POST'])
+def get_assign_task():
+    data = request.get_json()
+    token = data['token']
+    
+    return json.dumps(get_assigned_task(token))
 
 @app.route('/update-task',methods=['POST'])
 def update_task():

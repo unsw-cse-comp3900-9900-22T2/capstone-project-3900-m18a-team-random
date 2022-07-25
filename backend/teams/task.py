@@ -100,8 +100,30 @@ def task_get(token, team_id):
     return {"epics": epic_result}
 
 #[task1:{}, task2:{}, task3:{}] ->> [{task1:{}}, {task2:{}}, {task3:{}}]]
+def get_assigned_task(token):
+    user = get_user_from_token(token)
+    task_list = []
+    for task in Task.query.filter_by(assignee_email=user.email).all():
+        task_info = {}
+        assignee_name = user.username
+        task_info['task_id'] = task.id
+        task_info['title'] = task.title
+        task_info['description'] = task.description
+        task_info['status'] = task.status
+        task_info['priority'] = task.priority
+        task_info['assignee_email'] = task.assignee_email
+        task_info['assignee_name'] = assignee_name
+        task_info['due_date'] = task.due_date
+        task_info['team_id'] = task.team_id
+        task_info['team_name'] = Team.query.filter_by(id=task.team_id).first().name
+        task_info['epic_id'] = task.epic_id
+        task_info['epic_name'] = Epic.query.filter_by(id = task.epic_id).first().epic_name
 
-
+        task_list.append(task_info)
+    task_list.sort(key=get_ddl)
+    return {"assigned_task_list": task_list}
+def get_ddl(result):
+    return result['due_date']
 # Given the task's title, delete the task from the database.
 def task_delete(token, task_title, team_name):
     user = get_user_from_token(token)
