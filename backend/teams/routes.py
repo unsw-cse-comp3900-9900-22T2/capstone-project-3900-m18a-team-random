@@ -41,7 +41,8 @@ from teams.profile import(
     profile_add_description
 )
 from teams.epic import(
-    epic_create
+    epic_create,
+    epic_delete
 )
 from teams.invitation import(
     create_invitation,
@@ -105,6 +106,12 @@ def reset_password():
 def create_epic():
     data = request.get_json()
     return json.dumps(epic_create(data['token'],data['epic'], data['team_name']))
+
+@app.route("/delete-epic",methods=['POST'])
+def delete_epic():
+    data = request.get_json()
+    return json.dumps(epic_delete(data['token'],data['epic']))
+
 # Task Functions
 
 @app.route('/add-task', methods=['POST'])
