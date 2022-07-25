@@ -1,4 +1,5 @@
 from hashlib import new
+from nis import match
 from teams import epic
 from teams.error import InputError, AccessError
 from teams.models import User, Token, ResetCode, Team, Task, UserTeamRelation, Epic
@@ -22,8 +23,6 @@ def task_add(token, title, status, description, priority, email, due_date, team_
         raise InputError('Task creation failed: you must enter a priority')
     if email  == "":
         raise InputError('Task creation failed: you must enter an email')
-    if due_date  == "":
-        raise InputError('Task creation failed: you must enter a due date')
     if team_name  == "":
         raise InputError('Task creation failed: you must enter a team name')
     if epic_id  == "":
@@ -100,8 +99,32 @@ def task_get(token, team_id):
     return {"epics": epic_result}
 
 #[task1:{}, task2:{}, task3:{}] ->> [{task1:{}}, {task2:{}}, {task3:{}}]]
+def get_assigned_task(token):
+    user = get_user_from_token(token)
+    task_list = []
+    for task in Task.query.filter_by(assignee_email=user.email).all():
+        task_info = {}
+        assignee_name = user.username
+        task_info['task_id'] = task.id
+        task_info['title'] = task.title
+        task_info['description'] = task.description
+        task_info['status'] = task.status
+        task_info['priority'] = task.priority
+        task_info['assignee_email'] = task.assignee_email
+        task_info['assignee_name'] = assignee_name
+        task_info['due_date'] = task.due_date
+        task_info['team_id'] = task.team_id
+        task_info['team_name'] = Team.query.filter_by(id=task.team_id).first().name
+        task_info['epic_id'] = task.epic_id
+        task_info['epic_name'] = Epic.query.filter_by(id = task.epic_id).first().epic_name
 
-
+        task_list.append(task_info)
+    task_list.sort(key=get_ddl)
+    return {"assigned_task_list": task_list}
+def get_ddl(result):
+    if result['due_date'] == '' or result['due_date'] is None:
+        return 'NO DEADLINE'
+    return result['due_date']
 # Given the task's title, delete the task from the database.
 def task_delete(token, task_title, team_name):
     user = get_user_from_token(token)
@@ -220,39 +243,16 @@ def task_update_all(token, title, new_title, status, priority, email, due_date, 
 def task_search(token, query_string):
     
     matching_tasks = []
-    
+    task_list = get_assigned_task(token)['assigned_task_list']
     # Loop through every task in the user's team task board, add matching task names
     # to the list
-    task_list = []
-    teams = get_team_from_token(token)
-    for team in teams:
-        tasks = Task.query.filter_by(team_id=team.id).all()
-        for task in tasks:
-            task_list.append(task)
-            
+    #    
     for task in task_list:
-        if query_string == task.title:
-            assignee = get_user_from_email(task.assignee_email)
-            matching_tasks.append(
-                {
-                    "task_id": task.id,
-                    "task_title": task.title,
-                    "task_description": task.description,
-                    "task_status": task.status,
-                    "task_priority": task.priority,
-                    "task_assignee_email": task.assignee_email,
-                    "task_assignee_username": assignee.username,
-                    "task_due_date": task.due_date,
-                    "task_team_name": get_team_from_team_id(task.team_id).name,
-                    "task_team_id": task.team_id,
-                    "task_epic_id": task.epic_id
-                }
-            )
+        if (task['due_date'] in query_string and task['due_date'] != '') or task['title'] in query_string or task['description'] in query_string or str(task['task_id']) in query_string :
+            matching_tasks.append(task)
     
     return {
-        "tasks": sorted(
-            matching_tasks,key=lambda task: task["task_title"], reverse=False
-        ),
+        "tasks": matching_tasks
     }
 
 ## HELPER FUNCTIONS

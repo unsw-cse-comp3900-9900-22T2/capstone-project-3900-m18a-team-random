@@ -12,6 +12,7 @@ from teams.auth_passwordreset import (
 )
 from teams.task import (
     get_team_from_token,
+    get_assigned_task,
     task_get,
     task_add,
     task_delete,
@@ -40,7 +41,8 @@ from teams.profile import(
     profile_add_description
 )
 from teams.epic import(
-    epic_create
+    epic_create,
+    epic_delete
 )
 from teams.invitation import(
     create_invitation,
@@ -104,6 +106,12 @@ def reset_password():
 def create_epic():
     data = request.get_json()
     return json.dumps(epic_create(data['token'],data['epic'], data['team_name']))
+
+@app.route("/delete-epic",methods=['POST'])
+def delete_epic():
+    data = request.get_json()
+    return json.dumps(epic_delete(data['token'],data['epic']))
+
 # Task Functions
 
 @app.route('/add-task', methods=['POST'])
@@ -133,6 +141,13 @@ def delete_task():
     team_name = data['team_name']
     
     return json.dumps(task_delete(token, task_title, team_name))
+
+@app.route('/get-assigned-task', methods=['POST'])
+def get_assign_task():
+    data = request.get_json()
+    token = data['token']
+    
+    return json.dumps(get_assigned_task(token))
 
 @app.route('/update-task',methods=['POST'])
 def update_task():
