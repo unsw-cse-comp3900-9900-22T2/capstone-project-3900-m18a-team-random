@@ -1,4 +1,5 @@
 from hashlib import new
+from nis import match
 from teams import epic
 from teams.error import InputError, AccessError
 from teams.models import User, Token, ResetCode, Team, Task, UserTeamRelation, Epic
@@ -121,7 +122,7 @@ def get_assigned_task(token):
     task_list.sort(key=get_ddl)
     return {"assigned_task_list": task_list}
 def get_ddl(result):
-    if result['due_date'] is '' or result['due_date'] is None:
+    if result['due_date'] == '' or result['due_date'] is None:
         return 'NO DEADLINE'
     return result['due_date']
 # Given the task's title, delete the task from the database.
@@ -242,39 +243,16 @@ def task_update_all(token, title, new_title, status, priority, email, due_date, 
 def task_search(token, query_string):
     
     matching_tasks = []
-    
+    task_list = get_assigned_task(token)['assigned_task_list']
     # Loop through every task in the user's team task board, add matching task names
     # to the list
-    task_list = []
-    teams = get_team_from_token(token)
-    for team in teams:
-        tasks = Task.query.filter_by(team_id=team.id).all()
-        for task in tasks:
-            task_list.append(task)
-            
+    #    
     for task in task_list:
-        if query_string == task.title:
-            assignee = get_user_from_email(task.assignee_email)
-            matching_tasks.append(
-                {
-                    "task_id": task.id,
-                    "task_title": task.title,
-                    "task_description": task.description,
-                    "task_status": task.status,
-                    "task_priority": task.priority,
-                    "task_assignee_email": task.assignee_email,
-                    "task_assignee_username": assignee.username,
-                    "task_due_date": task.due_date,
-                    "task_team_name": get_team_from_team_id(task.team_id).name,
-                    "task_team_id": task.team_id,
-                    "task_epic_id": task.epic_id
-                }
-            )
+        if (task['due_date'] in query_string and task['due_date'] != '') or task['title'] in query_string or task['description'] in query_string or str(task['task_id']) in query_string :
+            matching_tasks.append(task)
     
     return {
-        "tasks": sorted(
-            matching_tasks,key=lambda task: task["task_title"], reverse=False
-        ),
+        "tasks": matching_tasks
     }
 
 ## HELPER FUNCTIONS
