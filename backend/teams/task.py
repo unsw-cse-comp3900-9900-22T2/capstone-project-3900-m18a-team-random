@@ -22,8 +22,6 @@ def task_add(token, title, status, description, priority, email, due_date, team_
         raise InputError('Task creation failed: you must enter a priority')
     if email  == "":
         raise InputError('Task creation failed: you must enter an email')
-    if due_date  == "":
-        raise InputError('Task creation failed: you must enter a due date')
     if team_name  == "":
         raise InputError('Task creation failed: you must enter a team name')
     if epic_id  == "":
@@ -123,6 +121,8 @@ def get_assigned_task(token):
     task_list.sort(key=get_ddl)
     return {"assigned_task_list": task_list}
 def get_ddl(result):
+    if result['due_date'] is '' or result['due_date'] is None:
+        return 'NO DEADLINE'
     return result['due_date']
 # Given the task's title, delete the task from the database.
 def task_delete(token, task_title, team_name):
