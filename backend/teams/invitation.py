@@ -37,10 +37,10 @@ def accept_invitation(invitation_id):
     invitation = Invitation.query.filter_by(id=invitation_id).first()
     if invitation is None:
         return "invalid invitation_id"
-    team_add_team_member(invitation.inviter_id,invitation.email,invitation.team_name)
+    resp = team_add_team_member(invitation.inviter_id,invitation.email,invitation.team_name)
     db.session.delete(invitation)
     db.session.commit()
-    return "success accept invitation"
+    return resp
     
 # refuse invitation
 def refuse_invitation(invitation_id):
