@@ -154,7 +154,7 @@ def team_add_team_member(inviter_id, member_email_address,team_name):
     db.session.commit()
 
     return {
-        "team_id": team.id, "member_id":team_member.username
+        "team_id": team.id, "team_name":team.name, "task_master_id": team.task_master_id
     }
     
 # Leave a team.
