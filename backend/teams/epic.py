@@ -1,4 +1,4 @@
-from teams.models import Epic, Team, UserTeamRelation
+from teams.models import Epic, Team, UserTeamRelation, Task
 from teams import db
 from teams.auth import get_user_from_token
 from teams.error import InputError
@@ -33,8 +33,13 @@ def epic_delete(token, epic):
     relation = db.session.query(UserTeamRelation).filter_by(user_id=user.id,team_id=team.id).first()
     if relation is None:
         raise InputError(f'Epic deletion failed: User is not a member of {team.name}')
+    #delete all the tasks under this epic
+    Task.query.filter_by(epic_id=epic.id).delete()
+    db.session.commit()
+    #delete this epic
     Epic.query.filter_by(id=epic.id).delete()
     db.session.commit()
+    
 
     return {}
 
