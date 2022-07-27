@@ -25,3 +25,12 @@ We also had some reconsideration about our database design.
 
 week 6
 We had a drastic redesign of our system, I remade most of our frontend ui, but the backend isn't progressing that well.
+
+week 7 
+frontend almost finished, waiting for backend progress
+
+week 8
+Trying to hook the frontend and backend, a lot of bugs were found, a lot of changes made, a very busy week.
+
+week 9
+The project is almost done, with only the last little bit of functionality not hooked up yet.
