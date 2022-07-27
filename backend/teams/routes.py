@@ -151,8 +151,9 @@ def delete_task():
 def get_assign_task():
     data = request.get_json()
     token = data['token']
+    email = data['email']
     
-    return json.dumps(get_assigned_task(token))
+    return json.dumps(get_assigned_task(token, email))
 
 @app.route('/update-task',methods=['POST'])
 def update_task():
@@ -162,7 +163,7 @@ def update_task():
 @app.route('/search_task', methods=['POST'])
 def search_task():
     data = request.get_json()
-    return json.dumps(task_search(data['token'],data['query_string']))
+    return json.dumps(task_search(data['token'],data['team_id'], data['query_string']))
 
 @app.route('/get_task', methods=['POST'])
 def get_task():
