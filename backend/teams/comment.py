@@ -9,10 +9,11 @@ import jwt
 ## MAIN FUNCTIONS
 
 # Add a comment to a task
-def comment_add(token, task_title, comment_content):
+def comment_add(token, team_name, task_title, comment_content):
 
     user = get_user_from_token(token)
-    task = Task.query.filter_by(team_id=user.team_id,title=task_title).first()
+    team = Team.query.filter_by(name=team_name)
+    task = Task.query.filter_by(team_id=team.id,title=task_title).first()
     if task is None:
         raise InputError('Comment add failed: task could not be found.')
     
@@ -23,9 +24,23 @@ def comment_add(token, task_title, comment_content):
     return {
         "author_email": user.email,
         "comment_id": comment.id,
-        "task_id": task.id
+        "task_id": task.id,
+        "team_id": team.id
+    }
+
+# Get all comments associated with a task.
+def comment_get(team_name, task_title):
+    
+    team = Team.query.filter_by(name=team_name).first()
+    task = Task.query.filter_by(team_id=team.id, title=task_title).first()
+    comments = Comment.query.filter_by(task_id=task.id)
+    return {
+        "comments": comments,
+        "task_id": task.id,
+        "team_id": team.id
     }
     
+
 # Delete a comment and any child comments.
 def comment_delete(token, comment_id):
     user = get_user_from_token(token)
@@ -38,9 +53,10 @@ def comment_delete(token, comment_id):
     return {}
     
 # Replace a comment with new content.
-def comment_edit(token, comment_id, task_title, new_content):
+def comment_edit(token, team_name, comment_id, task_title, new_content):
     user = get_user_from_token(token)
     author = get_author_from_comment_id(comment_id)
+    team = Team.query.filter_by(name=team_name).first()
     
     if (user.id != author.id):
         raise InputError('Comment deletion failed: User must be the author to delete a comment.')
@@ -56,7 +72,8 @@ def comment_edit(token, comment_id, task_title, new_content):
     return {
         "author_email": user.email,
         "comment_id": comment.id,
-        "task_id": task.id
+        "task_id": task.id,
+        "team_id": team.id
     }
 
 ## HELPER FUNCTIONS
