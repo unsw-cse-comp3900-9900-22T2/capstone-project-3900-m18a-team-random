@@ -21,7 +21,9 @@ def comment_add(token, task_title, comment_content):
     db.session.commit()
     
     return {
-        "comment_id": comment.id
+        "author_email": user.email,
+        "comment_id": comment.id,
+        "task_id": task.id
     }
     
 # Delete a comment and any child comments.
@@ -32,38 +34,29 @@ def comment_delete(token, comment_id):
     if (user.id != author.id):
         raise InputError('Comment deletion failed: User must be the author to delete a comment.')
     
-    delete_comment_children_recursively(comment_id)
     Comment.query.filter_by(id=comment_id).delete()
+    return {}
     
 # Replace a comment with new content.
-def comment_edit(token, comment_id, new_content):
+def comment_edit(token, comment_id, task_title, new_content):
     user = get_user_from_token(token)
     author = get_author_from_comment_id(comment_id)
     
     if (user.id != author.id):
         raise InputError('Comment deletion failed: User must be the author to delete a comment.')
     
+    task = Task.query.filter_by(team_id=user.team_id,title=task_title).first()
+    if task is None:
+        raise InputError('Comment add failed: task could not be found.')
+    
     comment = Comment.query.filter_by(id=comment_id)
     comment.content = new_content
     db.session.commit()
 
     return {
-        "comment_id": comment.id
-    }
-    
-
-# Reply to an existing comment.
-def comment_reply(token, parent_comment_id, comment_content):
-    user = get_user_from_token(token)
-    task_title = get_task_title_from_comment_id(parent_comment_id)
-    task = Task.query.filter_by(team_id=user.team_id,title=task_title).first()
-
-    comment = Comment(parent_id=parent_comment_id,task_id=task.id,author_id=user.id,content=comment_content)
-    db.session.add(comment)
-    db.session.commit()
-    
-    return {
-        "comment_id": comment.id
+        "author_email": user.email,
+        "comment_id": comment.id,
+        "task_id": task.id
     }
 
 ## HELPER FUNCTIONS
