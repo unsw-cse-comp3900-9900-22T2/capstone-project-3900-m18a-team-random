@@ -49,7 +49,8 @@ def team_create(token, team_name):
     
     # Check that there are no existing teams with the specified team name.
     if Team.query.filter_by(name=team_name).first() is not None:
-        raise InputError('Team creation failed: a team already exists with that name.')
+        #raise InputError('Team creation failed: a team already exists with that name.')
+        return 'Team creation failed: a team already exists with that name.'
     
     # Create the Team object and add to the database. By default, the task master is the creator of the team.
     team = Team(name=team_name, task_master_id=user.id)
