@@ -6,6 +6,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import PopupButton from '../popupButton';
+import MemberProfilePanel from '../memberProfile';
 
 function orgnizeData(name, role, status) {
     return { name, role, status};
@@ -43,7 +45,9 @@ const TeamMemberTable = ({members}) => {
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">
-                                {member['member_name']}
+                                <PopupButton buttonTitle={member['member_name']} title='Profile'>
+                                    <MemberProfilePanel/>
+                                </PopupButton>
                             </TableCell>
                             <TableCell>{member['member_email']}</TableCell>
                             <TableCell>{getDescription(member['description'])}</TableCell>

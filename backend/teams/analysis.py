@@ -9,7 +9,7 @@ from teams.task import task_get
 from teams.team import check_user_is_task_master
 import jwt
 import datetime
-
+from teams.profile import profile_get_by_email
 
 
 def task_analysis(token, team_id):
@@ -24,11 +24,15 @@ def task_analysis(token, team_id):
         for task in task_wrap['tasks']:
             if task['assignee_email'] not in all_email:
                 all_email.append(task['assignee_email'] )
-    resp={}
-    for email in all_email:
-        resp[email]=0
+
+    resp=[]
     
     for email in all_email:
+        user_task={
+            'username':profile_get_by_email(email)['username'],
+            'email':email,
+            'score':0
+        }
         busy=0
         for task_wrap in epic_result:
             for task in task_wrap['tasks']:
@@ -58,7 +62,8 @@ def task_analysis(token, team_id):
                             busy+=score*0.4
                     
                     pass
-        resp[email]=int(busy)
+        user_task['score']=busy
+        resp.append(user_task)
     return resp
 
     

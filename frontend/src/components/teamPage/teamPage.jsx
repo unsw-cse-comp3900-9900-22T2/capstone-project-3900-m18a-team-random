@@ -9,8 +9,9 @@ import MyTask from '../myTaskPage/myTask';
 import Members from '../memberPage/members';
 import HistoryPage from '../history/historyPage';
 import Settings from '../settings';
+import Analysis from '../analysis';
 
-const TeamPage = ()=>{
+const TeamPage = ({onLeaveTeam})=>{
 
     const getTeamId = () => {
         return sessionStorage.getItem('teamId');
@@ -24,7 +25,7 @@ const TeamPage = ()=>{
         <Box>
             <Grid container spacing={2}>
                 <Grid item xs={2}>
-                    <Sidebar teamId={teamId} teamName={teamName}/>
+                    <Sidebar teamId={getTeamId()} teamName={getTeamName()} onLeaveTeam={onLeaveTeam}/>
                 </Grid>
                 <Grid item xs={10}>
                     <Routes>
@@ -32,6 +33,7 @@ const TeamPage = ()=>{
                         <Route path="members" element={<Members teamId={getTeamId()} teamName={getTeamName()}/>}/>
                         <Route path="history" element={<HistoryPage teamId={getTeamId()} teamName={getTeamName()}/>}/>
                         <Route path="settings" element={<Settings teamId={getTeamId()} teamName={getTeamName()}/>}/>
+                        <Route path="analysis" element={<Analysis teamId={getTeamId()} teamName={getTeamName()}/>}/>
                     </Routes>
                 </Grid>
             </Grid>

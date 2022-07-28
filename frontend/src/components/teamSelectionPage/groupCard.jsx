@@ -26,9 +26,6 @@ const GroupCard = ({teamId, teamName})=>{
                     <Typography gutterBottom variant="h5" component="div">
                         {teamName}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        There's no description
-                    </Typography>
                 </CardContent>
             </CardActionArea>
         </Card>

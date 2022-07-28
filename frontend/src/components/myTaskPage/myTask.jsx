@@ -3,7 +3,6 @@ import Grid from '@mui/material/Grid';
 import React,{ useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
 import TaskTable from './taskTable';
 import PopupButton from '../popupButton';
@@ -12,36 +11,13 @@ import PopupFab from '../popupFab';
 import { useParams,useLocation } from 'react-router-dom';
 import Epic from './epic';
 import NewEpicForm from './newEpicForm';
+import SearchPanel from './searchPanel';
+
 
 const MyTask = ({teamId, teamName}) => {
-    const [epics, setEpics] = useState({epics:[]});
-    const [members, setMembers] = useState([]);    
-
-    const onNewEpic = (epic) => {
-        let epicArray = epics['epics'];
-        epicArray = [...epicArray, epic];
-        setEpics({epics:epicArray});
-        console.log(epics);
-    }
-
-    const handleSearch = async () => {
-        const tokenAndTeam = {'token':sessionStorage.getItem('token'), 'team_id':teamId}
-        console.log(tokenAndTeam);
-        const response = await fetch('/get_task', {
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            body: JSON.stringify(tokenAndTeam)
-        });
-        
-        if(response.ok){
-            response.json().then(data =>{
-                console.log(data);
-                setEpics(data);
-            })
-        }
-    }
+    const [epics, setEpics] = useState([]);
+    const [members, setMembers] = useState([]);
+    const [searchString, setSearchString] = useState(""); 
 
     useEffect(() => {
         const fetchTaskData = async () => {
@@ -58,7 +34,7 @@ const MyTask = ({teamId, teamName}) => {
             if(response.ok){
                 response.json().then(data =>{
                     console.log(data);
-                    setEpics(data);
+                    setEpics(data['epics']);
                 })
             }
         }
@@ -88,32 +64,37 @@ const MyTask = ({teamId, teamName}) => {
 
     return (
         <Box sx={{flexGrow: 1}} mt={4}>
-            <Grid container spacing={2} direction='column'>
-                <Grid item xs={12} spacing={3} container>
-                    <Grid item>
-                        <Typography variant='h3'>
-                            {teamName}
-                        </Typography>
+            <form onSubmit={e=>e.preventDefault()}>
+                <Grid container spacing={2} direction='column'>
+                    <Grid item xs={12} spacing={3} container>
+                        <Grid item>
+                            <Typography variant='h3'>
+                                {teamName}
+                            </Typography>
+                        </Grid>
+                            <Grid item>
+                                <TextField required placeholder='Search by Task Name' onChange={e=>setSearchString(e.target.value)}/>
+                            </Grid>
+                            <Grid item>
+                                <PopupButton type='submit' variant='contained' buttonTitle='Search' title='Search Result'>
+                                    <SearchPanel searchString={searchString} members={members} teamId={teamId}/>
+                                </PopupButton>
+                            </Grid>
                     </Grid>
                     <Grid item>
-                        <TextField placeholder='Search by Task Name'/>
-                    </Grid>
-                    <Grid item>
-                        <Button variant='contained'>Search</Button>
+                        {epics.map((epic) => (
+                            <Epic 
+                            key={epic['epic_id']} 
+                            epicId={epic['epic_id']} 
+                            title={epic['epic_name']}
+                            tasks={epic['tasks']}
+                            members={members}
+                            onDeleteEpic={id=>setEpics(epics.filter(epic=>epic['epic_id']!=id))}
+                            />
+                        ))}
                     </Grid>
                 </Grid>
-                <Grid item>
-                    {epics['epics'].map((epic) => (
-                        <Epic 
-                        key={epic['epic_id']} 
-                        epicId={epic['epic_id']} 
-                        title={epic['epic_name']}
-                        tasks={epic['tasks']}
-                        members={members}
-                        />
-                    ))}
-                </Grid>
-            </Grid>
+            </form>
             <PopupFab 
             style={{
                 position:"absolute",
@@ -123,7 +104,7 @@ const MyTask = ({teamId, teamName}) => {
             title='New Epic'
             color='primary'
             >
-                <NewEpicForm teamName={teamName} onNewEpic={onNewEpic}/>
+                <NewEpicForm teamName={teamName} onNewEpic={epic=>setEpics(currentEpics=>[...currentEpics,epic])}/>
             </PopupFab>
         </Box>
     )

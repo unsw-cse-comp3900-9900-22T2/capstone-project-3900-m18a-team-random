@@ -8,18 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TaskItem from './taskItem';
 
-
-function orgnizeData(taskId, taskTitle, assignee, status, priority, deadline) {
-    return {taskId, taskTitle, assignee, status, priority, deadline};
-}
-
-const rows = [
-    orgnizeData(1, 'user authentication', 'Barry', 'Working on it', 'Medium', '07/01/2022'),
-    orgnizeData(2, 'user validation', 'Justin', 'Not started yet', 'High', '07/01/2022')
-];
-
-
-const TaskTable = ({epicId, tasks, members}) => {
+const TaskTable = ({epicId, tasks, members, onDeleteTask}) => {
     console.log(tasks);
     return (
         <TableContainer component={Paper}>
@@ -38,14 +27,15 @@ const TaskTable = ({epicId, tasks, members}) => {
                         <TaskItem 
                             epicId={epicId}
                             key={task['task_id']}
-                            taskId={task['title']}
+                            taskId={task['task_id']}
                             taskTitle={task['title']}
-                            assigneeName={task['assingee_name']}
+                            assigneeName={task['assignee_name']}
                             status={task['status']}
                             priority={task['priority']}
                             deadline={task['due_date']}
                             description={task['description']}
                             members={members}
+                            onDeleteTask={onDeleteTask}
                         />
                     ))}
                 </TableBody>

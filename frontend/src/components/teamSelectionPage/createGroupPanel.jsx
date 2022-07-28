@@ -5,7 +5,6 @@ import Button from '@mui/material/Button';
 
 const CreateGroupPanel = ({onNewTeam, close}) => {
     const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
 
     const handleCreateGroup = async (e) => {
         e.preventDefault();       
@@ -26,8 +25,11 @@ const CreateGroupPanel = ({onNewTeam, close}) => {
                 close();
             })
         } else {
-            
-        }
+            response.json().then(data =>{
+                console.log(data);
+                close();
+            })
+        }   
     }
 
     return (
@@ -35,9 +37,6 @@ const CreateGroupPanel = ({onNewTeam, close}) => {
             <Grid container spacing={2} direction='column' alignItems='center'>
                 <Grid item xs={12}>
                     <TextField label='Group Name' required onChange={e=>{setTitle(e.target.value)}}/>
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField label='Description' multiline minRows={3} onChange={e=>setDescription(e.target.value)}/>
                 </Grid>
                 <Grid item>
                     <Button type='submit' variant='contained'>Create</Button>

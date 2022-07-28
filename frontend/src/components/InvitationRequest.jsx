@@ -15,7 +15,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-const InvitationRequest = ({teamName, invitationId, deleteInvitation}) => {
+const InvitationRequest = ({teamName, invitationId, deleteInvitation, onAccepted}) => {
 
     const handleAcceptInvitation = async (e) => {
         console.log({'invitation_id':invitationId});
@@ -29,6 +29,10 @@ const InvitationRequest = ({teamName, invitationId, deleteInvitation}) => {
 
         if(response.ok){
             deleteInvitation(teamName);
+            response.json().then(data =>{
+                console.log(data);
+                onAccepted(data);
+            })
         } else {
         }
     }

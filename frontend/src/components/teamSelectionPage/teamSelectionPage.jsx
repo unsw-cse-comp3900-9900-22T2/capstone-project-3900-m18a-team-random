@@ -5,31 +5,7 @@ import Grid from '@mui/material/Grid';
 import GroupCard from './groupCard';
 import { Box } from '@mui/system';
 
-const TeamSelectionPage = () => {
-    const [teams, setTeams] = useState([]);
-
-    useEffect(() => {
-        const fetchTeamData = async () => {
-            const token = {'token':sessionStorage.getItem('token')}
-            console.log(token);
-            const response = await fetch('/get_team', {
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify(token)
-            });
-            
-            if(response.ok){
-                response.json().then(data =>{
-                    console.log(data);
-                    setTeams(data);
-                })
-            }
-        }
-
-        fetchTeamData();
-    }, []);
+const TeamSelectionPage = ({teams, setTeams}) => {
 
     return (
         <Box mt={2}>

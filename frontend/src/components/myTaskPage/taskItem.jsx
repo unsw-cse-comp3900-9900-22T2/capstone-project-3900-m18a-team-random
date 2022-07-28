@@ -5,12 +5,14 @@ import TableRow from '@mui/material/TableRow';
 import TaskDetailPanel from './taskDetailPanel';
 import DropdownField from '../dropdownField';
 import TextField from '@mui/material/TextField';
+import { DeselectRounded } from '@mui/icons-material';
 
-const TaskItem = ({epicId, taskId, taskTitle,assigneeName, status, priority, deadline, members, description}) => {
+const TaskItem = ({epicId, taskId, taskTitle,assigneeName, status, priority, deadline, members, description, onDeleteTask}) => {
     const [dea, setDea] = useState(deadline);
     const [ass, setAss] = useState(assigneeName);
     const [sta, setSta] = useState(status);
     const [pri, setPri] = useState(priority);
+    const [des, setDes] = useState(description);
 
     const getMemberName = (members) =>{
         let memberNames = [];
@@ -23,7 +25,7 @@ const TaskItem = ({epicId, taskId, taskTitle,assigneeName, status, priority, dea
         let email = "";
         members.map((member) => {
             if(member['member_name'] === name){
-                email = member['member_email'];
+                email = member['member_email'];    
             }
         });
         console.log(name);
@@ -74,11 +76,14 @@ const TaskItem = ({epicId, taskId, taskTitle,assigneeName, status, priority, dea
                     <TaskDetailPanel
                     taskId={taskId}
                     taskTitle={taskTitle}
-                    assignee={ass}
+                    email={getEmail(members, ass)}
                     status={sta}
                     priority={pri}
                     deadline={dea}
-                    description={description}
+                    description={des}
+                    onDeleteTask={onDeleteTask}
+                    epicId={epicId}
+                    onDescriptionUpdated={des=>setDes(des)}
                     />
                 </PopupButton>
             </TableCell>
@@ -101,7 +106,7 @@ const TaskItem = ({epicId, taskId, taskTitle,assigneeName, status, priority, dea
                         setSta(e.target.value);
                         handleUpdateTask();
                     }}
-                    menuItems={['Not yet started','Working on it','Completed']}
+                    menuItems={['Not Started','In Progress', 'Blocked', 'Completed']}
                 />
             </TableCell>
             <TableCell>

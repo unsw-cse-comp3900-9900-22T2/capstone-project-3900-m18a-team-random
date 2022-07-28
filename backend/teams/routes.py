@@ -12,6 +12,7 @@ from teams.auth_passwordreset import (
 )
 from teams.task import (
     get_team_from_token,
+    get_assigned_task,
     task_get,
     task_add,
     task_delete,
@@ -37,10 +38,12 @@ from teams.comment import (
 )
 from teams.profile import(
     profile_get,
-    profile_add_description
+    profile_add_description,
+    profile_get_by_email
 )
 from teams.epic import(
-    epic_create
+    epic_create,
+    epic_delete
 )
 from teams.invitation import(
     create_invitation,
@@ -86,6 +89,10 @@ def get_profile():
 def profile_description():
     data = request.get_json()
     return json.dumps(profile_add_description(data['token'],data['description']))
+@app.route("/profile_get_by_email",methods=['POST'])
+def profile_by_email():
+    data = request.get_json()
+    return json.dumps(profile_get_by_email(data['email']))
 
 # Password Reset Functions
     
@@ -104,6 +111,12 @@ def reset_password():
 def create_epic():
     data = request.get_json()
     return json.dumps(epic_create(data['token'],data['epic'], data['team_name']))
+
+@app.route("/delete-epic",methods=['POST'])
+def delete_epic():
+    data = request.get_json()
+    return json.dumps(epic_delete(data['token'],data['epic']))
+
 # Task Functions
 
 @app.route('/add-task', methods=['POST'])
@@ -134,15 +147,23 @@ def delete_task():
     
     return json.dumps(task_delete(token, task_title, team_name))
 
+@app.route('/get-assigned-task', methods=['POST'])
+def get_assign_task():
+    data = request.get_json()
+    token = data['token']
+    email = data['email']
+    
+    return json.dumps(get_assigned_task(token, email))
+
 @app.route('/update-task',methods=['POST'])
 def update_task():
     data = request.get_json()
     return json.dumps(task_update_all(data['token'], data['title'], data['new_title'],data['status'], data['priority'], data['email'], data['due_date'], data['epic_id'], data['description']))
       
-@app.route('/search_task', methods=['GET'])
+@app.route('/search_task', methods=['POST'])
 def search_task():
     data = request.get_json()
-    return json.dumps(task_search(data['token'],data['query_string']))
+    return json.dumps(task_search(data['token'],data['team_id'], data['query_string']))
 
 @app.route('/get_task', methods=['POST'])
 def get_task():

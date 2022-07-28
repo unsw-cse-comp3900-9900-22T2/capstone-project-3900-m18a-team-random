@@ -2,11 +2,13 @@ import Grid from '@mui/material/Grid';
 import React, {useState,useEffect} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import AssignedTaskTable from './myTaskPage/assignedTaskTable';
 
 const ProfilePanel = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [description, setDescription] = useState("");
+    const [assignedTasks, setAssignedTasks] = useState([]);
 
     const getDescription = () => {
         if(description === null)
@@ -37,7 +39,26 @@ const ProfilePanel = () => {
             }
         }
 
+        const fetchAssignedTask = async () => {
+            const token = {'token':sessionStorage.getItem('token'),'email':sessionStorage.getItem('email')}
+            const response = await fetch('/get-assigned-task', {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(token)
+            });
+            
+            if(response.ok){
+                response.json().then(data =>{
+                    console.log(data);
+                    setAssignedTasks(data['assigned_task_list']);
+                })
+            }
+        }
+
         fetchProfileData();
+        fetchAssignedTask();
     }, []);
 
     const handleUpdateDescription = async (e) => {
@@ -73,9 +94,13 @@ const ProfilePanel = () => {
                     value={getDescription()}
                     required 
                     multiline 
-                    minRows={3} 
+                    fullWidth
+                    minRows={2} 
                     onChange={e=>setDescription(e.target.value)}
                     />
+                </Grid>
+                <Grid item xs={12}>
+                    <AssignedTaskTable tasks={assignedTasks}/>
                 </Grid>
                 <Grid item>
                     <Button type='submit' variant='contained'>Confirm</Button>

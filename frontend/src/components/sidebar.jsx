@@ -15,13 +15,42 @@ import { useNavigate } from 'react-router';
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import SettingsIcon from '@mui/icons-material/Settings';
+import GroupsIcon from '@mui/icons-material/Groups';
+import LogoutIcon from '@mui/icons-material/Logout';
 
-const Sidebar = ({teamId, teamName}) => {
+const Sidebar = ({teamId, teamName, onLeaveTeam}) => {
     let navigate = useNavigate();
+    
+    const handleLeaveTeam = async (e) => {
+        e.preventDefault();
+        const tokenAndTeam = {'token':sessionStorage.getItem('token'), 'team_id':teamId};
+        console.log(tokenAndTeam);
+        const response = await fetch('/leave_team', {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(tokenAndTeam)
+        });
+
+        if(response.ok){
+            onLeaveTeam(teamId);
+            navigate("../");
+        } else {
+        }
+    }
 
     return (
         <Box flex={1} p={2}>
             <List>
+            <ListItem disablePadding>
+                    <ListItemButton onClick={()=>{navigate("../")}}>
+                        <ListItemIcon>
+                            <GroupsIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Teams" />
+                    </ListItemButton>
+                </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton onClick={()=>{navigate("./", {state:{teamId:teamId,teamName:teamName}}) }}>
                         <ListItemIcon>
@@ -39,15 +68,7 @@ const Sidebar = ({teamId, teamName}) => {
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                    <ListItemButton onClick={()=>{navigate("history")}}>
-                        <ListItemIcon>
-                            <HistoryEduIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="History" />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton>
+                    <ListItemButton onClick={()=>{navigate("analysis")}}>
                         <ListItemIcon>
                             <BarChartOutlinedIcon />
                         </ListItemIcon>
@@ -55,11 +76,11 @@ const Sidebar = ({teamId, teamName}) => {
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                    <ListItemButton onClick={()=>{navigate("settings")}}>
+                    <ListItemButton onClick={handleLeaveTeam}>
                         <ListItemIcon>
-                            <SettingsIcon />
+                            <LogoutIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Settings" />
+                        <ListItemText primary="Leave" />
                     </ListItemButton>
                 </ListItem>
             </List>

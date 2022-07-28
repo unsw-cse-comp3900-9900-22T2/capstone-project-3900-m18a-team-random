@@ -15,7 +15,7 @@ const AddTaskForm = ({close, epicId, onNewTask}) => {
         const taskCreation = {
             'token':sessionStorage.getItem('token'), 
             'title':title,
-            'status':'Not yet started',
+            'status':'Not Started',
             'priority':'Low',
             'team_name':teamName,
             'epic_id':epicId,
