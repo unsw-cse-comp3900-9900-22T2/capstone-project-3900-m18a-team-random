@@ -35,7 +35,7 @@ def comment_get(team_name, task_title):
     task = Task.query.filter_by(team_id=team.id, title=task_title).first()
     comments = Comment.query.filter_by(task_id=task.id)
     return {
-        "comments": comments,
+        "comment_list": comments,
         "task_id": task.id,
         "team_id": team.id
     }
