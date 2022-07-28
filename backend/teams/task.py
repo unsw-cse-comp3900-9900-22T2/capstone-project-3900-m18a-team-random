@@ -132,7 +132,6 @@ def get_ddl(result):
     return result['due_date']
 # Given the task's title, delete the task from the database.
 def task_delete(token, task_title, team_name):
-    user = get_user_from_token(token)
     team = get_team_from_team_name(team_name)
     if team not in get_team_from_token(token):
         raise AccessError("Delete Task Failed: user is not a member of this team")
@@ -147,7 +146,7 @@ def task_delete(token, task_title, team_name):
     return {}
 
 # Updates the title of a task with new_task_title.
-def task_update_name(task, new_task_title, team):
+def task_update_name(task, new_task_title):
     # The task cannot be assigned a new name if a task with the new name already exists.
     #if Task.query.filter_by(team_id=team.id,title=new_task_title).first() is not None:
     #    raise InputError('Task name cannot be changed to ' + new_task_title + ' as a task already exists with that name.')
