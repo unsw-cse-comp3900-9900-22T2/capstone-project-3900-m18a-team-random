@@ -15,7 +15,7 @@ from teams.profile import profile_get_by_email
 def task_analysis(token, team_id):
     team = Team.query.filter_by(id=team_id).first()
     user=get_user_from_token(token)
-    check_user_is_task_master(user,team)
+    # check_user_is_task_master(user,team)
     
     epic_result=task_get(token, team_id)['epics']
     today=datetime.date.today()
