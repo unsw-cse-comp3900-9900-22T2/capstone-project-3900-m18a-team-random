@@ -1,10 +1,8 @@
-'''
 from hashlib import new
 from teams.error import InputError, AccessError
 from teams.models import User, Token, ResetCode, Team, Task, Comment
 from teams.auth import get_user_from_token, get_user_from_email, get_user_from_id
 from teams import db
-import jwt
 
 
 ## MAIN FUNCTIONS
@@ -89,13 +87,4 @@ def get_author_from_comment_id(comment_id):
     comment = Comment.query.filter_by(id=comment_id)
     author = get_user_from_id(comment.author_id)
     return author
-    
-# Recursively delete all children of a deleted comment. 
-### NEEDS TO BE TESTED
-def delete_comment_children_recursively(comment_id):
-    comment_children = Comment.query.filter_by(parent_id=comment_id)
-    for child in comment_children:
-        delete_comment_children_recursively(comment_id=child.id)
-    
-    Comment.query.filter_by(parent_id=comment_id).delete()
-'''
+
