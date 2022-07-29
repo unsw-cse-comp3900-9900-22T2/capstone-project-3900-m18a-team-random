@@ -3,6 +3,7 @@ import React from 'react';
 import Sidebar from '../sidebar';
 import Grid from '@mui/material/Grid';
 import Profile from './profile';
+import NavBar from '../navBar';
 
 const ProfilePage = () => {
     return (
