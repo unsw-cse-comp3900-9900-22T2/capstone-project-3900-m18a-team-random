@@ -30,12 +30,14 @@ from teams.team import (
     team_leave,
     team_remove_member
 )
+'''
 from teams.comment import (
     comment_add,
     comment_delete,
     comment_edit,
     comment_reply
 )
+'''
 from teams.profile import(
     profile_get,
     profile_add_description,
@@ -236,7 +238,7 @@ def remove_team_member():
     return json.dumps(team_remove_member(data['token'],data['member_email_address']))
 
 # Comment Functions
-
+'''
 @app.route('/add_comment', methods=['POST'])
 def add_comment():
     data = request.get_json()
@@ -256,8 +258,7 @@ def edit_comment():
 def reply_comment():
     data = request.get_json()
     return json.dumps(comment_reply(data['token'],data['parent_comment_id'],data['comment_content']))
-
-
+'''
 # Analysis Fuctions
 
 @app.route('/analysis_get', methods=['POST'])

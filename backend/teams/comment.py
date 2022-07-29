@@ -1,3 +1,4 @@
+'''
 from hashlib import new
 from teams.error import InputError, AccessError
 from teams.models import User, Token, ResetCode, Team, Task, Comment
@@ -97,3 +98,4 @@ def delete_comment_children_recursively(comment_id):
         delete_comment_children_recursively(comment_id=child.id)
     
     Comment.query.filter_by(parent_id=comment_id).delete()
+'''
