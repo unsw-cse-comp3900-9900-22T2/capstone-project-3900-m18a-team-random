@@ -22,6 +22,8 @@ def auth_register(email, username, password):
         raise InputError("Email is invalid.")
     elif user_email_already_exists(email): 
         raise InputError("A user with that email already exists.")
+    elif user_name_already_exists(username):
+        raise InputError("A user with that username already exists.")
     
     # Create new instance of a User and add to the database
     user = User(username=username,email=email)
@@ -186,12 +188,20 @@ def get_user_from_token(token):
     
     user = User.query.filter_by(id=user_id).first()
     return user
-# Helper function to check if a User with the specified email already exists in the database.
+# Helper function to check if a User with the specified username already exists in the database.
 def user_email_already_exists(email):
     if User.query.filter_by(email=email).first() is None:
         return False
     return True
+
+# Helper function to check if a User with the specified email already exists in the database.
+def user_name_already_exists(username):
+    if User.query.filter_by(username=username).first() is None:
+        return False
+    return True
     
+
+
 # Helper function to encrypt password and return the hex representation.
 # The length of the encrypted password is 64 characters.
 def encrypt(password):
