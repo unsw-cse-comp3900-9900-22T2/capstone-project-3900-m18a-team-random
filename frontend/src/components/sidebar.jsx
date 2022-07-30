@@ -12,55 +12,75 @@ import GroupIcon from '@mui/icons-material/Groups';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import HelpIcon from '@mui/icons-material/Help';
 import { useNavigate } from 'react-router';
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
+import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
+import SettingsIcon from '@mui/icons-material/Settings';
+import GroupsIcon from '@mui/icons-material/Groups';
+import LogoutIcon from '@mui/icons-material/Logout';
 
-const Sidebar = () => {
+const Sidebar = ({teamId, teamName, onLeaveTeam}) => {
     let navigate = useNavigate();
+    
+    const handleLeaveTeam = async (e) => {
+        e.preventDefault();
+        const tokenAndTeam = {'token':sessionStorage.getItem('token'), 'team_id':teamId};
+        console.log(tokenAndTeam);
+        const response = await fetch('/leave_team', {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(tokenAndTeam)
+        });
+
+        if(response.ok){
+            onLeaveTeam(teamId);
+            navigate("../");
+        } else {
+        }
+    }
 
     return (
         <Box flex={1} p={2}>
             <List>
-                <ListItem disablePadding>
-                    <TextField placeholder='Search Your Task'/>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton onClick={()=>{navigate("/main")}}>
-                    <ListItemIcon>
-                        <ListIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="My Tasks" />
-                    </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding>
-                    <ListItemButton onClick={()=>{navigate("/profile")}}>
-                    <ListItemIcon>
-                        <AccountBoxIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="My Profile" />
+            <ListItem disablePadding>
+                    <ListItemButton onClick={()=>{navigate("../")}}>
+                        <ListItemIcon>
+                            <GroupsIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Teams" />
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                    <ListItemButton onClick={()=>{navigate("/team")}}>
-                    <ListItemIcon>
-                        <GroupIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="My Team" />
+                    <ListItemButton onClick={()=>{navigate("./", {state:{teamId:teamId,teamName:teamName}}) }}>
+                        <ListItemIcon>
+                            <ListIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Tasks" />
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                    <ListItemButton>
-                    <ListItemIcon>
-                        <AutoStoriesIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="User Story" />
+                    <ListItemButton onClick={()=>{navigate("members")}}>
+                        <ListItemIcon>
+                            <GroupIcon />
+                        </ListItemIcon>
+                        <   ListItemText primary="Members" />
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                    <ListItemButton>
-                    <ListItemIcon>
-                        <HelpIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Help" />
+                    <ListItemButton onClick={()=>{navigate("analysis")}}>
+                        <ListItemIcon>
+                            <BarChartOutlinedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Analysis" />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton onClick={handleLeaveTeam}>
+                        <ListItemIcon>
+                            <LogoutIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Leave" />
                     </ListItemButton>
                 </ListItem>
             </List>

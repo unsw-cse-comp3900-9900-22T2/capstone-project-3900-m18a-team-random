@@ -1,10 +1,10 @@
 import { Box, Container } from '@mui/system';
 import React from 'react';
-import Feed from './myTask';
+import MyTask from './myTask';
 import Sidebar from '../sidebar';
 import Grid from '@mui/material/Grid';
 
-const MyTaskPage = () => {
+const MyTaskPage = ({email}) => {
     return (
         <Box>
             <Grid container spacing={2}>
@@ -12,7 +12,7 @@ const MyTaskPage = () => {
                     <Sidebar/>
                 </Grid>
                 <Grid item xs={10}>
-                    <Feed/>
+                    <MyTask email={email}/>
                 </Grid>
             </Grid>
         </Box>

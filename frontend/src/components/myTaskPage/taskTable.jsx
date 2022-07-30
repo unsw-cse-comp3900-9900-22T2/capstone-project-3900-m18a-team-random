@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useState,useEffect} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,27 +6,17 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import PopupButton from '../popupButton';
-import TaskDetailPanel from './taskDetailPanel';
+import TaskItem from './taskItem';
 
-
-function orgnizeData(taskTitle, assignee, status, priority, deadline) {
-    return { taskTitle, assignee, status, priority, deadline};
-}
-
-const rows = [
-    orgnizeData('user authentication', 'Barry', 'Working on it', 'middle', '07/01/2022'),
-    orgnizeData('user validation', 'Justin', 'Not started yet', 'high', '07/01/2022')
-];
-
-
-const TaskTable = () => {
+const TaskTable = ({epicId, tasks, members, onDeleteTask}) => {
+    console.log(tasks);
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth:500}}>
             <TableHead>
             <TableRow>
-                <TableCell>COMP3900-Spring 1</TableCell>
+                <TableCell>Task</TableCell>
+                <TableCell>ID</TableCell>
                 <TableCell>Assignee</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Priority</TableCell>
@@ -34,21 +24,20 @@ const TaskTable = () => {
             </TableRow>
             </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <TableRow
-                        key={row.taskTitle}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row">
-                                <PopupButton buttonTitle={row.taskTitle} title={row.taskTitle}>
-                                    <TaskDetailPanel/>
-                                </PopupButton>
-                            </TableCell>
-                            <TableCell>{row.assignee}</TableCell>
-                            <TableCell>{row.status}</TableCell>
-                            <TableCell>{row.priority}</TableCell>
-                            <TableCell>{row.deadline}</TableCell>
-                        </TableRow>
+                    {tasks.map((task) => (
+                        <TaskItem 
+                            epicId={epicId}
+                            key={task['task_id']}
+                            taskId={task['task_id']}
+                            taskTitle={task['title']}
+                            assigneeName={task['assignee_name']}
+                            status={task['status']}
+                            priority={task['priority']}
+                            deadline={task['due_date']}
+                            description={task['description']}
+                            members={members}
+                            onDeleteTask={onDeleteTask}
+                        />
                     ))}
                 </TableBody>
             </Table>
