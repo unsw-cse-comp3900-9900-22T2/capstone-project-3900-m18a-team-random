@@ -236,9 +236,7 @@ def task_update_all(token, title, new_title, status, priority, email, due_date, 
     task = get_task_from_epid_id(epic_id, title)
     if task is None:
         raise AccessError('Task update failed: task can not be found')
-    if Task.query.filter_by(title=new_title).first() is not None:
-        raise InputError("Task update failed: this task name already exists")
-    task_update_name(task, new_title, team)
+    task_update_name(task, new_title)
     task_update_status(task, status)
     task_update_assignee(task, email)
     task_update_priority(task, priority)

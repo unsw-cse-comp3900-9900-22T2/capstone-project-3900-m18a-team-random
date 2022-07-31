@@ -9,17 +9,6 @@ import Paper from '@mui/material/Paper';
 import PopupButton from '../popupButton';
 import MemberProfilePanel from '../memberProfile';
 
-function orgnizeData(name, role, status) {
-    return { name, role, status};
-}
-
-const rows = [
-    orgnizeData('Barry', 'Developer', 'Online'),
-    orgnizeData('Justin', 'Scrum Master', 'Offline'),
-    orgnizeData('Isaac', 'Developer', 'Away'),
-    orgnizeData('Kai', 'Developer', 'Away')
-];
-
 const getDescription = (description) => {
     if(description === null)
         return "No description here"
@@ -46,7 +35,7 @@ const TeamMemberTable = ({members}) => {
                         >
                             <TableCell component="th" scope="row">
                                 <PopupButton buttonTitle={member['member_name']} title='Profile'>
-                                    <MemberProfilePanel/>
+                                    <MemberProfilePanel memberEmail={member['member_email']}/>
                                 </PopupButton>
                             </TableCell>
                             <TableCell>{member['member_email']}</TableCell>

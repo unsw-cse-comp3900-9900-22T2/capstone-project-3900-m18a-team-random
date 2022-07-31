@@ -34,7 +34,7 @@ const HomePage = () => {
 
     return (
         <Box>
-            <NavBar/>            
+            <NavBar onInvitationAccepted={(team)=>{setTeams(currentTeams=>[...currentTeams,team])}}/>            
             <Routes>
                 <Route path="/" element={<TeamSelectionPage teams={teams} setTeams={setTeams}/>}/>
                 <Route path=":teamName/*" element={<TeamPage onLeaveTeam={teamId=>setTeams(teams.filter(team=>team['team_id']!=teamId))}/>}/>

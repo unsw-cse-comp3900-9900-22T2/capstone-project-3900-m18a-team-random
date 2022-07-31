@@ -6,6 +6,7 @@ import TaskDetailPanel from './taskDetailPanel';
 import DropdownField from '../dropdownField';
 import TextField from '@mui/material/TextField';
 import { DeselectRounded } from '@mui/icons-material';
+import { Button } from '@mui/material';
 
 const TaskItem = ({epicId, taskId, taskTitle,assigneeName, status, priority, deadline, members, description, onDeleteTask}) => {
     const [dea, setDea] = useState(deadline);
@@ -55,14 +56,10 @@ const TaskItem = ({epicId, taskId, taskTitle,assigneeName, status, priority, dea
         });
 
         if(response.ok){
-            response.json().then(data =>{
+            response.json().then((data) =>{
                 console.log(data);
             })
         } else {
-            response.json().then(data =>{
-                console.log(data);
-                alert(data);
-            })
         }
     }
 
@@ -94,9 +91,8 @@ const TaskItem = ({epicId, taskId, taskTitle,assigneeName, status, priority, dea
                 <DropdownField
                     value={ass}
                     label="Assignee"
-                    onChange={e=>{
+                    onChange={(e)=>{
                         setAss(e.target.value);
-                        handleUpdateTask(e.target.value);
                     }}
                     menuItems={getMemberName(members)}
                 />
@@ -105,9 +101,8 @@ const TaskItem = ({epicId, taskId, taskTitle,assigneeName, status, priority, dea
                 <DropdownField
                     value={sta}
                     label="Status"
-                    onChange={e=>{
+                    onChange={(e)=>{
                         setSta(e.target.value);
-                        handleUpdateTask();
                     }}
                     menuItems={['Not Started','In Progress', 'Blocked', 'Completed']}
                 />
@@ -116,20 +111,21 @@ const TaskItem = ({epicId, taskId, taskTitle,assigneeName, status, priority, dea
                 <DropdownField
                     value={pri}
                     label="Priority"
-                    onChange={e=>{
+                    onChange={(e)=>{
                         setPri(e.target.value);
-                        handleUpdateTask();
                     }}
                     menuItems={['High','Medium','Low']}
                 />
             </TableCell>
             <TableCell>
                 <TextField value={dea} type='date' onChange={
-                        e=>{
+                        (e)=>{
                             setDea(e.target.value);
-                            handleUpdateTask();
                         }
                     }/>
+            </TableCell>
+            <TableCell>
+                <Button variant='contained' onClick={()=>handleUpdateTask(ass)}>Confirm</Button>
             </TableCell>
         </TableRow>
     )

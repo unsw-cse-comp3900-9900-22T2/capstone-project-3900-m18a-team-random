@@ -20,7 +20,7 @@ import ProfilePanel from './profilePanel';
 import { Button } from '@mui/material';
 import InvitationNotification from './invitationNotification';
 
-const NavBar = () => {
+const NavBar = ({onInvitationAccepted}) => {
     return (
         <Box>
             <AppBar position="static">
@@ -35,7 +35,7 @@ const NavBar = () => {
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <InvitationNotification/>
+                        <InvitationNotification onInvitationAccepted={onInvitationAccepted}/>
                         <PopupIcon icon={<AccountCircle/>} title='Profile'>
                             <ProfilePanel/>
                         </PopupIcon>

@@ -2,9 +2,9 @@ import Grid from '@mui/material/Grid';
 import React, {useState,useEffect} from 'react';
 import AssignedTaskTable from './myTaskPage/assignedTaskTable';
 
-const MemberProfilePanel = () => {
+const MemberProfilePanel = ({memberEmail}) => {
     const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(memberEmail);
     const [description, setDescription] = useState("");
     const [assignedTasks, setAssignedTasks] = useState([]);
 
@@ -17,7 +17,7 @@ const MemberProfilePanel = () => {
 
     useEffect(() => {
         const fetchProfileData = async () => {
-            const token = {'email':sessionStorage.getItem('email')}
+            const token = {'email':email}
             console.log(token);
             const response = await fetch('/profile_get_by_email', {
                 method:'POST',
@@ -38,7 +38,7 @@ const MemberProfilePanel = () => {
         }
 
         const fetchAssignedTask = async () => {
-            const token = {'token':sessionStorage.getItem('token'),'email':sessionStorage.getItem('email')}
+            const token = {'token':sessionStorage.getItem('token'),'email':email}
             const response = await fetch('/get-assigned-task', {
                 method:'POST',
                 headers:{

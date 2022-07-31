@@ -22,7 +22,7 @@ import InvitationRequest from './InvitationRequest';
 import MenuIconButton from './menuIconButton';
 
 
-const InvitationNotification = () => {
+const InvitationNotification = ({onInvitationAccepted}) => {
     const [invitations, setInvitations] = useState([]);
 
     const getInviationCount = () => {
@@ -62,6 +62,7 @@ const InvitationNotification = () => {
                     key={invitation['team_name']}
                     teamName={invitation['team_name']}
                     invitationId={invitation['invitation_id']}
+                    onAccepted={onInvitationAccepted}
                     deleteInvitation={(teamName)=>{
                         setInvitations(invitations.filter(invitation=>invitation['team_name'] != teamName));
                         console.log(invitations);
