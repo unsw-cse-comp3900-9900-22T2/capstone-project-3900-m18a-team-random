@@ -62,7 +62,7 @@ def task_analysis(token, team_id):
                             busy+=score*0.4
                     
                     pass
-        user_task['score']=busy
+        user_task['score']=int(busy)
         resp.append(user_task)
     return resp
 
