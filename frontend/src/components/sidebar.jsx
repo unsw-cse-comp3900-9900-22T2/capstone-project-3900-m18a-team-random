@@ -17,6 +17,7 @@ import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import SettingsIcon from '@mui/icons-material/Settings';
 import GroupsIcon from '@mui/icons-material/Groups';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 
 const Sidebar = ({teamId, teamName, onLeaveTeam}) => {
     let navigate = useNavigate();
@@ -37,6 +38,22 @@ const Sidebar = ({teamId, teamName, onLeaveTeam}) => {
             onLeaveTeam(teamId);
             navigate("../");
         } else {
+        }
+    }
+    
+    const handleLogout = async (e) => {
+        e.preventDefault()
+        const token = {'token':sessionStorage.getItem('token')};
+        const response = await fetch('/logout', {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(token)
+        });
+        
+        if(response.ok){
+            navigate("/")
         }
     }
 
@@ -81,6 +98,14 @@ const Sidebar = ({teamId, teamName, onLeaveTeam}) => {
                             <LogoutIcon />
                         </ListItemIcon>
                         <ListItemText primary="Leave" />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton onClick={handleLogout}>
+                        <ListItemIcon>
+                            <ExitToAppIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Logout" />
                     </ListItemButton>
                 </ListItem>
             </List>

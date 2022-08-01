@@ -27,6 +27,7 @@ class User(db.Model):
 
     def set_password(self,password):
         self.password = password
+
 class UserProfile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -54,6 +55,9 @@ class ResetCode(db.Model):
     
     def __repr__(self):
         return f"ResetCode('{self.reset_code}','{self.user_id}')"
+    
+    def set_reset_code(self, reset_code):
+        self.reset_code = reset_code
         
 class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)

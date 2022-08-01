@@ -14,7 +14,7 @@ const Register = () => {
         // need to add confirm password checking
         e.preventDefault();
         if(password !== confirmPassword){
-            alert("Please enter the correct confirm password");
+            alert("Please enter the correct confirm password.");
             return;
         }
 
@@ -30,7 +30,7 @@ const Register = () => {
         if(response.ok){
             navigate("/");
         } else {
-            alert("Registration failed");
+            alert("Registration failed. Please enter a valid email address.");
         }
     }
 
@@ -42,6 +42,7 @@ const Register = () => {
                     direction="column" 
                     alignItems="center" 
                     justifyContent="center">
+                <h1>TEAMS</h1>
                 <h2>Sign up</h2>
                     <Grid item>
                         <TextField label='Name' required onChange={e => setName(e.target.value)}/>
