@@ -83,7 +83,7 @@ class UserTeamRelation(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
-    team_id = db.Column(nullable=False)
+    team_id = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return f"User_Team_Relation('{self.id}', '{self.user_id}', '{self.team_id}'')"
