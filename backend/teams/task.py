@@ -106,6 +106,7 @@ def get_assigned_task(token, email):
     user = get_user_from_email(email)
     task_list = []
     for task in Task.query.filter_by(assignee_email=user.email).all():
+        print(task)
         if task is None:
             return {"assigned_task_list": task_list}
         task_info = {}
@@ -125,11 +126,14 @@ def get_assigned_task(token, email):
 
         task_list.append(task_info)
     task_list.sort(key=get_ddl)
+
     return {"assigned_task_list": task_list}
+    
 def get_ddl(result):
     if result['due_date'] == '' or result['due_date'] is None:
         return 'NO DEADLINE'
     return result['due_date']
+    
 # Given the task's title, delete the task from the database.
 def task_delete(token, task_title, team_name):
     team = get_team_from_team_name(team_name)
@@ -212,6 +216,7 @@ def task_update_epic(task, epic_id):
     return {
         "task_id": task.id
     }
+    
 #update everything
 def task_update_all(token, title, new_title, status, priority, email, due_date, epic_id, description):
     if token  == "" or token not in get_active_tokens():
@@ -226,8 +231,6 @@ def task_update_all(token, title, new_title, status, priority, email, due_date, 
         raise InputError('Task update failed: you must enter a priority')
     if email == "" or email not in get_active_emails():
         raise InputError('Task update failed: you must enter a correct email')
-    if due_date  == "":
-        raise InputError('Task update failed: you must enter a due date')
     if epic_id  == "" or int(epic_id) not in get_epic_ids():
         raise InputError('Task update failed: you must enter a correct epic id')
     team = get_team_from_epic_id(int(epic_id))
@@ -244,6 +247,7 @@ def task_update_all(token, title, new_title, status, priority, email, due_date, 
     task_update_due_date(task, due_date)
     task_update_epic(task, int(epic_id))
     return {"task_id": task.id, "title":task.title, "description":task.description, "status":task.status, "priority": task.priority, "assignee_email":task.assignee_email, "due_date":task.due_date, "team_id":task.team_id, "epic_id":task.epic_id}
+
 # Search for all tasks within a user's team task board.
 def task_search(token, team_id, query_string):
     matching_tasks = []

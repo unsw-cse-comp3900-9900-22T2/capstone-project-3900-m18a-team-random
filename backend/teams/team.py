@@ -172,7 +172,14 @@ def team_leave(token,team_id):
         team_delete(token,team.name)
         return "team is deleted"
     elif (user.id == team.task_master_id):
-        return "team master can not leave team wihout update the team master"
+        relation = db.session.query(UserTeamRelation).filter_by(user_id=user.id,team_id=team_id).first()
+        db.session.delete(relation)
+        db.session.commit()
+        
+        next_task_master = UserTeamRelation.query.filter_by(team_id=team.id).first()        
+        team.task_master_id = next_task_master.user_id
+        db.session.commit()
+        return "new task master"
     else:
         relation = db.session.query(UserTeamRelation).filter_by(user_id=user.id,team_id=team_id).first()
         db.session.delete(relation)

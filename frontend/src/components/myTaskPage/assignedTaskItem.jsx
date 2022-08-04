@@ -18,6 +18,9 @@ const AssignedTaskItem = ({taskId, taskTitle, assigneeName, status, priority, de
                 {taskTitle}
             </TableCell>
             <TableCell>
+                {taskId}
+            </TableCell>     
+            <TableCell>
                 {assigneeName}
             </TableCell>
             <TableCell>

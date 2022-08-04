@@ -54,7 +54,7 @@ const AddTaskForm = ({close, epicId, onNewTask}) => {
                         <TextField label='Description' required multiline minRows={3} onChange={e=>setDescription(e.target.value)}/>
                     </Grid>
                     <Grid item>
-                        <TextField required type='date' onChange={e=>setDeadline(e.target.value)}/>
+                        <TextField type='date' onChange={e=>setDeadline(e.target.value)}/>
                     </Grid> 
                     <Grid item>
                         <Button type='submit' variant='contained'>Create Task</Button>

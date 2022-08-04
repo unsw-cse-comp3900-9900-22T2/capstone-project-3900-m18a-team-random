@@ -19,6 +19,8 @@ AWAY = 'Away'
 def auth_register(email, username, password):
 
     if valid_email(email) is False:
+        print(email)
+        print("BAD")
         raise InputError("Email is invalid.")
     elif user_email_already_exists(email): 
         raise InputError("A user with that email already exists.")
@@ -139,7 +141,11 @@ def login_details_are_correct(email,password):
 
 # Helper function encode a dictionary containing user information.
 def jwt_encode(user_info):
-    return jwt.encode(user_info, TOKEN_SECRET_KEY,algorithm="HS256").decode('utf-8')
+    result = jwt.encode(user_info, TOKEN_SECRET_KEY,algorithm="HS256")
+    if isinstance(result,str):
+        return result
+    else:
+        return jwt.encode(user_info, TOKEN_SECRET_KEY,algorithm="HS256").decode('utf-8')
 
 # Helper function to return a dictionary containing the user id, email and username.
 def get_user_info(user):
@@ -209,8 +215,8 @@ def encrypt(password):
 
 # Helper function for validating an email.
 def valid_email(email):
-    regex = r"^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$"
-    if re.search(regex, email):
+    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+    if re.fullmatch(regex, email):
         return True
     
     return False

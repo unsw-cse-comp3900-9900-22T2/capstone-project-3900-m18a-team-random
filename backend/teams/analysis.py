@@ -48,18 +48,22 @@ def task_analysis(token, team_id):
                         score*=1
                     elif task['status']=='Done':
                         score=0
-                    due_dt=string2datetime(task['due_date'])
-                    # this week due
-                    if due_dt.weekday()>=today.weekday() and (due_dt-today).days>=0 and (due_dt-today).days<7:
-                        busy+=score
-                    # this week not due
-                    elif (due_dt-today).days>0:
-                        if (due_dt-today).days<7:
-                            busy+=score*0.8
-                        elif (due_dt-today).days<14:
-                            busy+=score*0.6
-                        else:
-                            busy+=score*0.4
+                    
+                    if task['due_date'] == '':
+                        pass
+                    else:
+                        due_dt=string2datetime(task['due_date'])
+                        # this week due
+                        if due_dt.weekday()>=today.weekday() and (due_dt-today).days>=0 and (due_dt-today).days<7:
+                            busy+=score
+                        # this week not due
+                        elif (due_dt-today).days>0:
+                            if (due_dt-today).days<7:
+                                busy+=score*0.8
+                            elif (due_dt-today).days<14:
+                                busy+=score*0.6
+                            else:
+                                busy+=score*0.4
                     
                     pass
         user_task['score']=int(busy)

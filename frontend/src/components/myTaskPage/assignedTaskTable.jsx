@@ -15,6 +15,7 @@ const AssignedTaskTable = ({tasks}) => {
             <TableHead>
             <TableRow>
                 <TableCell>Task</TableCell>
+                <TableCell>Task ID</TableCell>
                 <TableCell>Assignee</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Priority</TableCell>
