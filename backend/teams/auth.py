@@ -58,7 +58,7 @@ def auth_register(email, username, password):
 
 # Logs out a user and removes their token from the database.
 def auth_logout(jwt_token):
-    
+    print(jwt_token)
     # Get the token object associated with the user
     token_to_remove = db.session.query(Token).filter_by(jwt_token=jwt_token).first()
     is_success = False
@@ -74,6 +74,7 @@ def auth_logout(jwt_token):
     if token_to_remove is not None:
         is_success = True
         db.session.query(Token).filter_by(jwt_token=jwt_token).delete()
+        db.session.commit()
         
     return {
         "is_success": is_success
@@ -113,8 +114,7 @@ def auth_login(email, password):
 
 # Helper function decode the JWT.
 def jwt_decode(token):
-    try:
-        return jwt.decode(token.encode("utf-8"), TOKEN_SECRET_KEY,algorithms=["HS256"])
+    try:        return jwt.decode(token.encode("utf-8"), TOKEN_SECRET_KEY,algorithms=["HS256"])
     except jwt.exceptions.InvalidTokenError:
         raise AccessError("Decoding token failure.")
 

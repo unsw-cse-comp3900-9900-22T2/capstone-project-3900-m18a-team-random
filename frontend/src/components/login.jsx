@@ -38,6 +38,7 @@ const Login = () => {
                 direction="column" 
                 alignItems="center" 
                 justifyContent="center">
+                <h1>TEAMS</h1>
                 <h2>Sign in</h2>
                 <Grid item>
                     <TextField label='Email' type='email' required onChange={e=>{setEmail(e.target.value)}}/>
@@ -48,6 +49,9 @@ const Login = () => {
                 <Grid item>
                     <Button color='secondary' onClick={()=>{navigate("/register")}}>Register</Button>
                     <Button type='submit' color='primary'>Sign in</Button>
+                </Grid>
+                <Grid item>
+                    <Button color='secondary' onClick={()=>{navigate("/reset_password_request")}}>Forgot Password?</Button>
                 </Grid>
             </Grid>
         </form>
