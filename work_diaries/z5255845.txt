@@ -24,3 +24,20 @@ I also added new implementations, including:
 - Comment functionality 
 - Password reset functionality
 
+Week 6 
+Flexi-week. Continued working on Sprint 2 user stories.
+
+Week 7
+Continued working on Sprint 2 user stories.
+
+Week 8
+We completed our lab demo for Progression Check B, and I wrote up the Retrospective B report.
+
+Week 9
+Continued working on Sprint 3 user stories.
+
+Week 10
+I added the logout and reset password functionalities in both frontend and backend. 
+We did the final demonstration and I talked about the user authentication system.
+I then wrote up the entire Project Report except for the user guide.
+I also submitted the final code.
